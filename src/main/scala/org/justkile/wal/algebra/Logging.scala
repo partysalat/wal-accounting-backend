@@ -1,4 +1,4 @@
-package org.typelevel.workshop.algebra
+package org.justkile.wal.algebra
 
 trait Logging[F[_]] {
 
