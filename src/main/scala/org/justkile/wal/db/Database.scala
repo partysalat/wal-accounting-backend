@@ -13,10 +13,8 @@ object Database {
   val schemaDefinition: IO[Unit] = List(
     sql"""
       CREATE TABLE users (
-      id        INTEGER PRIMARY KEY,
-      name      VARCHAR NOT NULL,
-      createdAt DATETIME NOT NULL,
-      updatedAt DATETIME NOT NULL
+      id       INT AUTO_INCREMENT PRIMARY KEY,
+      name     VARCHAR UNIQUE
     )
     """.update.run
   ).traverse_(_.transact(xa))

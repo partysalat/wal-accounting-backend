@@ -9,13 +9,19 @@ import doobie.implicits._
 object UserRepositoryIO {
   implicit def userRepoInterpreter: UserRepository[IO] = new UserRepository[IO] {
     def addUser(username: String): IO[Option[User]] =
-      sql"INSERT INTO user (name ) VALUES ($username)"
+      sql"INSERT INTO users (name) VALUES ($username)"
         .update
         .withUniqueGeneratedKeys[Int]("id")
         .attemptSql
-        .map(_.toOption.map(id => User(username,id)))
+        .map(_.toOption.map(id => User(id, username)))
         .transact(Database.xa)
 
-    override def getUsers: IO[List[User]] = ???
+    def getUsers: IO[List[User]] = sql"""
+        SELECT id, name
+        FROM users
+      """
+      .query[User]
+      .to[List]
+      .transact(Database.xa)
   }
 }
