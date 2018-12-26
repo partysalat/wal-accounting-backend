@@ -8,8 +8,9 @@ import org.http4s.HttpService
 import org.http4s.circe.CirceEntityCodec._
 import org.http4s.dsl.Http4sDsl
 import org.justkile.wal.user.algebra.UserRepository
+import io.chrisdavenport.log4cats.Logger
 
-class UserService[F[_] : Sync : UserRepository] extends Http4sDsl[F] {
+class UserService[F[_] : Sync : UserRepository : Logger] extends Http4sDsl[F] {
 
   case class CreateUserRequest(name: String)
 
@@ -17,6 +18,7 @@ class UserService[F[_] : Sync : UserRepository] extends Http4sDsl[F] {
 
     case req@GET -> Root => for {
       users <- UserRepository[F].getUsers
+      _ <- Logger[F].info("Test")
       result <- Ok(users)
     } yield result
 
