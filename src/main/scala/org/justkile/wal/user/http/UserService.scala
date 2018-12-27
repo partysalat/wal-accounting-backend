@@ -7,27 +7,29 @@ import io.circe.syntax._
 import org.http4s.HttpService
 import org.http4s.circe.CirceEntityCodec._
 import org.http4s.dsl.Http4sDsl
+import org.justkile.wal.event_sourcing.{AggregateRepository, Command, CommandProcessor}
 import org.justkile.wal.user.algebra.UserRepository
+import org.justkile.wal.user.model.{CreateUserCommand, User, UserIdentifier}
 
-class UserService[F[_] : Sync : UserRepository] extends Http4sDsl[F] {
+class UserService[F[_] : Sync : UserRepository: CommandProcessor:AggregateRepository] extends Http4sDsl[F] {
 
   case class CreateUserRequest(name: String)
 
   val service: HttpService[F] = HttpService[F] {
 
-    case req@GET -> Root => for {
-      users <- UserRepository[F].getUsers
-      result <- Ok(users)
+    case req@GET -> Root/userId => for {
+      userTuple <- AggregateRepository[F].load(UserIdentifier(userId,""))
+      (user,_) = userTuple
+      result <- Ok(user)
     } yield result
 
 
     case req@POST -> Root => for {
       createUser <- req.as[CreateUserRequest]
-      userOption <- UserRepository[F].addUser(createUser.name)
-      result <- userOption match {
-        case Some(user) => Created(user)
-        case None => BadRequest("User already exists".asJson)
-      }
+      createUserCommand = CreateUserCommand(createUser.name)
+      _ <- CommandProcessor[F].process[User](createUserCommand)
+      result <- Created()
     } yield result
   }
 }
+//a8fb6bee-b88d-44a3-bebc-90a57e0126f7

@@ -3,16 +3,18 @@ package org.justkile.wal.event_sourcing
 import cats.effect.Sync
 import cats.syntax.flatMap._
 import cats.syntax.functor._
+import io.chrisdavenport.log4cats.Logger
 import org.justkile.wal.utils.Done
 
 trait Command[A] {
   def getAggregateIdentifier: AggregateIdentifier[A]
 }
 
-class CommandProcessor[F[_] : Sync : AggregateRepository, A: Aggregate] {
+class CommandProcessor[F[_] : Sync : AggregateRepository:Logger] {
 
-  def process(command: Command[A]): F[Done] = {
+  def process[A: Aggregate](command: Command[A]): F[Done] = {
     for {
+      _ <- Logger[F].info(s"Processing command $command ")
       aggregateNumberOfEvtTuple <- AggregateRepository[F].load[A](command.getAggregateIdentifier)
       (aggregate, nbrOfExistingEvents) = aggregateNumberOfEvtTuple
       transformedAggregateEventsTuple = Aggregate[A]
@@ -24,10 +26,10 @@ class CommandProcessor[F[_] : Sync : AggregateRepository, A: Aggregate] {
     } yield Done
   }
 
-  private def persist( events: List[Event], id: AggregateIdentifier[A], nbrOfExistingEvents: Int):F[Boolean] =
+  private def persist[A: Aggregate]( events: List[Event], id: AggregateIdentifier[A], nbrOfExistingEvents: Int):F[Boolean] =
       AggregateRepository[F].persist(id, events, nbrOfExistingEvents)
 }
 
-//object CommandProcessor {
-//  def apply[F[_]: CommandProcessor, A]: CommandProcessor[F] = implicitly
-//}
+object CommandProcessor {
+  def apply[F[_]: CommandProcessor]: CommandProcessor[F] = implicitly
+}

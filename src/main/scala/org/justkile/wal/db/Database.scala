@@ -20,7 +20,7 @@ object Database {
     sql"""
       CREATE TABLE IF NOT EXISTS events (
       id       INT AUTO_INCREMENT PRIMARY KEY,
-      identifier STRING,
+      identifier VARCHAR,
       sequence INT UNIQUE,
       event     VARCHAR UNIQUE
     )
