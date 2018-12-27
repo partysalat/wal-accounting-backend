@@ -10,7 +10,6 @@ import org.http4s.server.blaze.BlazeBuilder
 import org.justkile.wal.db.Database
 import org.justkile.wal.user.http.UserService
 import org.justkile.wal.user.interpreters.UserRepositoryIO._
-import org.justkile.wal.utils.LoggerIO._
 
 import scala.concurrent.ExecutionContext
 

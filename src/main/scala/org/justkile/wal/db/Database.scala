@@ -16,6 +16,14 @@ object Database {
       id       INT AUTO_INCREMENT PRIMARY KEY,
       name     VARCHAR UNIQUE
     )
+    """.update.run,
+    sql"""
+      CREATE TABLE IF NOT EXISTS events (
+      id       INT AUTO_INCREMENT PRIMARY KEY,
+      identifier STRING,
+      sequence INT UNIQUE,
+      event     VARCHAR UNIQUE
+    )
     """.update.run
   ).traverse_(_.transact(xa))
 

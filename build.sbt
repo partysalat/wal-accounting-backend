@@ -6,6 +6,7 @@ lazy val LogbackVersion    = "1.2.3"
 lazy val ScalaTestVersion  = "3.0.3"
 lazy val ScalaCheckVersion = "1.13.4"
 lazy val Log4CatsVersion   = "0.1.1"
+lazy val SimulacrumVersion   = "0.14.0"
 
 lazy val root = (project in file("."))
   .settings(
@@ -19,6 +20,7 @@ lazy val root = (project in file("."))
       "UTF-8",
       "-feature",
       "-language:existentials",
+      "-language:implicitConversions",
       "-language:higherKinds",
       "-Ypartial-unification",
       "-Ywarn-unused:implicits",
@@ -27,6 +29,7 @@ lazy val root = (project in file("."))
       "-Ywarn-unused:params",
       "-Ywarn-value-discard"
     ),
+    addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full),
     addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.6"),
     libraryDependencies ++= Seq(
 
@@ -44,7 +47,7 @@ lazy val root = (project in file("."))
 
       "ch.qos.logback"    %  "logback-classic"     % LogbackVersion,
       "io.chrisdavenport" %% "log4cats-slf4j"      % Log4CatsVersion,
-
+      "com.github.mpilquist"      %% "simulacrum"              % SimulacrumVersion,
       "org.scalatest"     %% "scalatest"           % ScalaTestVersion  % Test,
       "org.scalacheck"    %% "scalacheck"          % ScalaCheckVersion % Test
     )
