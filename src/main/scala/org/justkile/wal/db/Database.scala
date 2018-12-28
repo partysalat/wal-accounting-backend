@@ -19,10 +19,10 @@ object Database {
     """.update.run,
     sql"""
       CREATE TABLE IF NOT EXISTS events (
-      id       INT AUTO_INCREMENT PRIMARY KEY,
+      id         INT AUTO_INCREMENT PRIMARY KEY,
       identifier VARCHAR,
-      sequence INT UNIQUE,
-      event     VARCHAR UNIQUE
+      sequence   INT UNIQUE,
+      event      BINARY
     )
     """.update.run
   ).traverse_(_.transact(xa))

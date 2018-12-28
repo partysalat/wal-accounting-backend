@@ -11,19 +11,19 @@ import org.justkile.wal.utils.DefaultSerializer
 
 object EventStoreIO {
 
-  case class EventEnvelope(identifier: String, sequence: Int, event: String)
+  case class EventEnvelope(identifier: String, sequence: Int, event: Array[Byte])
 
   implicit def eventStore: EventStore[IO] = new EventStore[IO] {
     implicit def loggingInterpreter:Logger[IO] = Slf4jLogger.unsafeCreate[IO]
 
     private def toEvent(eventEnvelopes: EventEnvelope):Event= DefaultSerializer.deserialise(eventEnvelopes.event).asInstanceOf[Event]
-    private def eventToString(evt: Event):String= DefaultSerializer.serialise(evt)
+    private def eventToByteArray(evt: Event):Array[Byte] = DefaultSerializer.serialise(evt)
 
     private def insert1(identifier: String, sequence: Int, event: Event) ={
 
       loggingInterpreter.info(s"Persisting $identifier, $sequence")
       sql"""INSERT INTO events (identifier, sequence, event)
-             VALUES ($identifier, $sequence, ${eventToString(event)})
+             VALUES ($identifier, $sequence, ${eventToByteArray(event)})
         """.update
         .withUniqueGeneratedKeys[Int]("id")
         .attemptSql
