@@ -7,7 +7,6 @@ trait Event
 
 trait AggregateIdentifier[A] {
   def idAsString: String
-  // should be at the aggregate itself. feel free to try yourself (bring some time)
   def initialState: A
 }
 

@@ -32,4 +32,3 @@ class UserService[F[_] : Sync : UserRepository: CommandProcessor:AggregateReposi
     } yield result
   }
 }
-//a8fb6bee-b88d-44a3-bebc-90a57e0126f7

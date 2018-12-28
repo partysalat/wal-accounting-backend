@@ -2,7 +2,7 @@ package org.justkile.wal.event_sourcing
 
 import cats.effect.Sync
 import cats.syntax.functor._
-import org.justkile.wal.event_sourcing.algebras.EventStore
+import org.justkile.wal.event_sourcing.store.EventStore
 
 class AggregateRepository[F[_] :Sync:  EventStore] {
 

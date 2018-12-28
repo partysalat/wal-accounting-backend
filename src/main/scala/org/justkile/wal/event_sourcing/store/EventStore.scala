@@ -1,4 +1,4 @@
-package org.justkile.wal.event_sourcing.algebras
+package org.justkile.wal.event_sourcing.store
 
 import org.justkile.wal.event_sourcing.{AggregateIdentifier, Event}
 

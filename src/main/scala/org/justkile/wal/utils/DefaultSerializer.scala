@@ -1,8 +1,6 @@
 package org.justkile.wal.utils
 
 import java.io._
-import java.util.Base64
-import java.nio.charset.StandardCharsets.UTF_8
 
 object DefaultSerializer {
   def serialise(value: Any): Array[Byte] = {

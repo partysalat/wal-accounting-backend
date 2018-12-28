@@ -1,4 +1,4 @@
-package org.justkile.wal.event_sourcing
+package org.justkile.wal.event_sourcing.store
 
 import cats.effect.IO
 import cats.implicits._
@@ -6,8 +6,9 @@ import doobie.implicits._
 import io.chrisdavenport.log4cats.Logger
 import io.chrisdavenport.log4cats.slf4j.Slf4jLogger
 import org.justkile.wal.db.Database
-import org.justkile.wal.event_sourcing.algebras.EventStore
+import org.justkile.wal.event_sourcing.{AggregateIdentifier, Event}
 import org.justkile.wal.utils.DefaultSerializer
+
 
 object EventStoreIO {
 
