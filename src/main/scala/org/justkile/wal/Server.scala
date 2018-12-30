@@ -13,6 +13,7 @@ import org.justkile.wal.event_sourcing.CommandProcessorIO._
 import org.justkile.wal.event_sourcing.event_bus.EventBusIO._
 import org.justkile.wal.user.events.UserEvents
 import org.justkile.wal.utils.LoggerIO._
+import org.justkile.wal.user.interpreters.UserRepositoryIO._
 
 import scala.concurrent.ExecutionContext
 

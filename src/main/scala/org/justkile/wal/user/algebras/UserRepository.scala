@@ -1,9 +1,10 @@
 package org.justkile.wal.user.algebras
 
-import org.justkile.wal.user.domain.User
+import org.justkile.wal.user.domain.UserProjection
 
 trait UserRepository[F[_]] {
-  def addUser(username: String, email: String): F[Option[User]]
+  def addUser(userId: String, name: String): F[Option[UserProjection]]
+  def getUsers: F[List[UserProjection]]
 }
 
 object UserRepository {

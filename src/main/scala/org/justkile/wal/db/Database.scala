@@ -17,6 +17,7 @@ object Database {
     sql"""
       CREATE TABLE IF NOT EXISTS users (
       id       INT AUTO_INCREMENT PRIMARY KEY,
+      userId   VARCHAR UNIQUE NOT NULL,
       name     VARCHAR UNIQUE
     )
     """.update.run,
@@ -24,7 +25,7 @@ object Database {
       CREATE TABLE IF NOT EXISTS events (
       id         INT AUTO_INCREMENT PRIMARY KEY,
       identifier VARCHAR,
-      sequence   INT UNIQUE,
+      sequence   INT,
       event      BINARY
     )
     """.update.run
