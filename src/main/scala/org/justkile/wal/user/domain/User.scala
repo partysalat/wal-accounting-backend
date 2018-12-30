@@ -1,21 +1,21 @@
-package org.justkile.wal.user
+package org.justkile.wal.user.domain
 
 import org.justkile.wal.event_sourcing.{Aggregate, AggregateIdentifier, Command, Event}
 import java.util.UUID.randomUUID
 
-object model {
+case class User(
+    id: String,
+    name: Option[String]
+    //      achievements: List[Achievement]
+)
+
+object User {
 
   case class UserIdentifier(id: String) extends AggregateIdentifier[User] {
     override def idAsString: String = s"user-$id"
 
     override def initialState: User = User(id, None)
   }
-
-  case class User(
-      id: String,
-      name: Option[String]
-//      achievements: List[Achievement]
-  )
 
   //Commands
   case class CreateUserCommand(name: String, id: String = randomUUID().toString) extends Command[User] {
@@ -25,7 +25,7 @@ object model {
   //Events
   case class UserCreated(id: String, name: String) extends Event
 
-  implicit def Aggregate: Aggregate[User] = new Aggregate[User] {
+  implicit def userAggregate: Aggregate[User] = new Aggregate[User] {
     override def identifier(agg: User): AggregateIdentifier[User] = UserIdentifier(agg.id)
 
     override def empty(id: AggregateIdentifier[User]): User = id.initialState

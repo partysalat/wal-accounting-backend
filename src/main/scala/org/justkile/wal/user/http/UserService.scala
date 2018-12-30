@@ -7,7 +7,8 @@ import org.http4s.HttpService
 import org.http4s.circe.CirceEntityCodec._
 import org.http4s.dsl.Http4sDsl
 import org.justkile.wal.event_sourcing.{AggregateRepository, CommandProcessor}
-import org.justkile.wal.user.model.{CreateUserCommand, User, UserIdentifier}
+import org.justkile.wal.user.domain.User
+import org.justkile.wal.user.domain.User._
 
 class UserService[F[_]: Sync: CommandProcessor: AggregateRepository] extends Http4sDsl[F] {
 
