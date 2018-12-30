@@ -22,8 +22,13 @@ object User {
     override def getAggregateIdentifier: AggregateIdentifier[User] = UserIdentifier(id)
   }
 
+  case class AddDrinkCommand(userId: String, drinkId: Int, amount: Int) extends Command[User] {
+    override def getAggregateIdentifier: AggregateIdentifier[User] = UserIdentifier(userId)
+  }
+
   //Events
   case class UserCreated(id: String, name: String) extends Event
+  case class DrinkAdded(userId: String, drinkId: Int, amount: Int) extends Event
 
   implicit def userAggregate: Aggregate[User] = new Aggregate[User] {
     override def identifier(agg: User): AggregateIdentifier[User] = UserIdentifier(agg.id)
@@ -32,10 +37,12 @@ object User {
 
     override def applyEvent(agg: User)(event: Event): User = event match {
       case UserCreated(id, name) => User(id, Some(name))
+      case DrinkAdded(_, _, _) => agg
     }
 
-    override def getEventsFromCommand(agg: User)(command: Command[User]): List[Event] = (command, agg.name) match {
-      case (CreateUserCommand(name, id), None) => List(UserCreated(id, name))
+    override def getEventsFromCommand(agg: User)(command: Command[User]): List[Event] = command match {
+      case CreateUserCommand(name, id) if agg.name.isEmpty => List(UserCreated(id, name))
+      case AddDrinkCommand(userId, drinkId, amount) => List(DrinkAdded(userId, drinkId, amount))
       case _ => List.empty
     }
   }

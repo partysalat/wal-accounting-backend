@@ -15,18 +15,18 @@ object Database {
 
   val schemaDefinition: IO[Unit] = List(
     sql"""
-      CREATE TABLE IF NOT EXISTS users (
-      id       INT AUTO_INCREMENT PRIMARY KEY,
-      userId   VARCHAR UNIQUE NOT NULL,
-      name     VARCHAR UNIQUE
-    )
-    """.update.run,
-    sql"""
       CREATE TABLE IF NOT EXISTS events (
       id         INT AUTO_INCREMENT PRIMARY KEY,
       identifier VARCHAR,
       sequence   INT,
       event      BINARY
+    )
+    """.update.run,
+    sql"""
+      CREATE TABLE IF NOT EXISTS users (
+      id       INT AUTO_INCREMENT PRIMARY KEY,
+      userId   VARCHAR UNIQUE NOT NULL,
+      name     VARCHAR UNIQUE
     )
     """.update.run,
     sql"""
