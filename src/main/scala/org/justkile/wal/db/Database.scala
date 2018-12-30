@@ -28,6 +28,13 @@ object Database {
       sequence   INT,
       event      BINARY
     )
+    """.update.run,
+    sql"""
+      CREATE TABLE IF NOT EXISTS drinks (
+        id        INT AUTO_INCREMENT PRIMARY KEY,
+        drinkName VARCHAR NOT NULL,
+        drinkType VARCHAR NOT NULL
+    )
     """.update.run
   ).traverse_(_.transact(xa))
 //  val insertions: IO[Unit] = List(
