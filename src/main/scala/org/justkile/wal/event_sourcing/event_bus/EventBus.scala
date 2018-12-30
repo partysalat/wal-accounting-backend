@@ -9,14 +9,13 @@ import org.justkile.wal.utils.Done
 import scala.collection.immutable
 import scala.reflect.ClassTag
 
-class EventBus[F[_] : Sync : Logger] {
+class EventBus[F[_]: Sync: Logger] {
 
   import org.justkile.wal.event_sourcing.event_bus.EventBus.EventHandler
 
   lazy val eventHandlerRegistry = new Registry[F]
 
-  def subscribe[T](e: EventHandler[F, T])(
-    implicit c: ClassTag[T]): F[Done] = {
+  def subscribe[T](e: EventHandler[F, T])(implicit c: ClassTag[T]): F[Done] = {
     for {
       _ <- Logger[F].info("Subscribe event handler")
       _ = eventHandlerRegistry.registerEventHandler[T](e)
@@ -32,12 +31,11 @@ class EventBus[F[_] : Sync : Logger] {
   }
 }
 
-
 object EventBus {
 
   trait EventHandler[F[_], E] {
     def handle(event: E): F[Done]
   }
 
-  def apply[F[_] : EventBus]: EventBus[F] = implicitly
+  def apply[F[_]: EventBus]: EventBus[F] = implicitly
 }

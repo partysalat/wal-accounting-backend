@@ -21,7 +21,6 @@ object Server extends StreamApp[IO] {
 
   implicit val ec: ExecutionContext = ExecutionContext.fromExecutor(new ForkJoinPool(16))
 
-
   override def stream(args: List[String], requestShutdown: IO[Unit]): Stream[IO, ExitCode] =
     Stream.eval(Database.schemaDefinition) *>
       Stream.eval(new UserEvents[IO].start) *>

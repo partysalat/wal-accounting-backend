@@ -7,5 +7,3 @@ object EventBusIO {
 
   implicit val eventBusIO: EventBus[IO] = new EventBus[IO]
 }
-
-

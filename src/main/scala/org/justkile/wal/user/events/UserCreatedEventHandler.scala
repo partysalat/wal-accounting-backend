@@ -8,8 +8,9 @@ import org.justkile.wal.event_sourcing.event_bus.EventBus.EventHandler
 import org.justkile.wal.user.model.UserCreated
 import org.justkile.wal.utils.Done
 
-class UserCreatedEventHandler[F[_] : Sync : EventBus : Logger] extends EventHandler[F, UserCreated] {
-  def handle(event: UserCreated): F[Done] = for {
-    _ <- Logger[F].info(s"UserCreatedEventHandler $event")
-  } yield Done
+class UserCreatedEventHandler[F[_]: Sync: EventBus: Logger] extends EventHandler[F, UserCreated] {
+  def handle(event: UserCreated): F[Done] =
+    for {
+      _ <- Logger[F].info(s"UserCreatedEventHandler $event")
+    } yield Done
 }

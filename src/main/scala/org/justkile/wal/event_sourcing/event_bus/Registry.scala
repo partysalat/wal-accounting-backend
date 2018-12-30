@@ -11,9 +11,9 @@ import scala.reflect.ClassTag
   */
 class Registry[F[_]] {
   private[this] val eventHandlers =
-    mutable.Map[Class[_], List[EventHandler[F,_]]]()
+    mutable.Map[Class[_], List[EventHandler[F, _]]]()
 
-  def registerEventHandler[T: ClassTag](h: EventHandler[F,T]): Unit = {
+  def registerEventHandler[T: ClassTag](h: EventHandler[F, T]): Unit = {
     val key = implicitly[ClassTag[T]].runtimeClass
     val l = eventHandlers.getOrElse(key, Nil)
     val x = l :+ h
@@ -23,10 +23,10 @@ class Registry[F[_]] {
   def hasEventHandlerFor[T](implicit ct: ClassTag[T]): Boolean =
     doLookup(ct.runtimeClass).nonEmpty
 
-  def lookUpEventHandler[T](e: T): List[EventHandler[F,T]] =
+  def lookUpEventHandler[T](e: T): List[EventHandler[F, T]] =
     doLookup[T](e.getClass).reverse
 
-  private def doLookup[T](cls: Class[_]): List[EventHandler[F,T]] = {
+  private def doLookup[T](cls: Class[_]): List[EventHandler[F, T]] = {
     val clazz = supertypes(cls)
     clazz.flatMap { x =>
       eventHandlers.getOrElse(x, Nil).asInstanceOf[List[EventHandler[F, T]]].reverse

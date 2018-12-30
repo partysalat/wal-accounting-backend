@@ -7,7 +7,10 @@ import doobie.util.transactor.Transactor
 
 object Database {
   val xa: Transactor[IO] = Transactor.fromDriverManager[IO](
-    "org.h2.Driver", "jdbc:h2:./db.h2:test;DB_CLOSE_DELAY=-1", "sa", ""
+    "org.h2.Driver",
+    "jdbc:h2:./db.h2:test;DB_CLOSE_DELAY=-1",
+    "sa",
+    ""
   )
 
   val schemaDefinition: IO[Unit] = List(
@@ -26,9 +29,6 @@ object Database {
     )
     """.update.run
   ).traverse_(_.transact(xa))
-
-
-
 //  val insertions: IO[Unit] = List(
 //    sql"""
 //      INSERT INTO user (id, username, email)

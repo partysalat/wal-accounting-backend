@@ -16,12 +16,13 @@ object UserRepositoryIO {
 //        .map(_.toOption.map(id => User(id, username)))
 //        .transact(Database.xa)
 
-    def getUsers: IO[List[User]] = sql"""
+    def getUsers: IO[List[User]] =
+      sql"""
         SELECT id, name
         FROM users
       """
-      .query[User]
-      .to[List]
-      .transact(Database.xa)
+        .query[User]
+        .to[List]
+        .transact(Database.xa)
   }
 }

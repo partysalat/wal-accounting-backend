@@ -4,7 +4,7 @@ import cats.effect.Sync
 import cats.syntax.functor._
 import org.justkile.wal.event_sourcing.store.EventStore
 
-class AggregateRepository[F[_] :Sync:  EventStore] {
+class AggregateRepository[F[_]: Sync: EventStore] {
 
   type NumberOfEvents = Int
 
@@ -20,10 +20,8 @@ class AggregateRepository[F[_] :Sync:  EventStore] {
     } yield (aggregate, events.length)
   }
 
-
 }
 
-
 object AggregateRepository {
-  def apply[F[_] : AggregateRepository]: AggregateRepository[F] = implicitly
+  def apply[F[_]: AggregateRepository]: AggregateRepository[F] = implicitly
 }

@@ -24,9 +24,10 @@ trait Aggregate[A] {
 
   def getEventsFromCommand(agg: A)(command: Command[A]): List[Event]
 
-  def processCommand(command: Command[A]): State[A, List[Event]] = State(s => {
-    val events = getEventsFromCommand(s)(command)
-    (events.foldLeft(s)(applyEvent(_)(_)), events)
-  })
+  def processCommand(command: Command[A]): State[A, List[Event]] =
+    State(s => {
+      val events = getEventsFromCommand(s)(command)
+      (events.foldLeft(s)(applyEvent(_)(_)), events)
+    })
 
 }

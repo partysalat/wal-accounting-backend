@@ -14,7 +14,7 @@ trait Command[A] {
   def getAggregateIdentifier: AggregateIdentifier[A]
 }
 
-class CommandProcessor[F[_] : Sync : AggregateRepository : Logger : EventBus] {
+class CommandProcessor[F[_]: Sync: AggregateRepository: Logger: EventBus] {
 
   def process[A: Aggregate](command: Command[A]): F[Done] = {
     for {
@@ -31,7 +31,9 @@ class CommandProcessor[F[_] : Sync : AggregateRepository : Logger : EventBus] {
     } yield Done
   }
 
-  private def persist[A: Aggregate](events: List[Event], id: AggregateIdentifier[A], nbrOfExistingEvents: Int): F[Boolean] =
+  private def persist[A: Aggregate](events: List[Event],
+                                    id: AggregateIdentifier[A],
+                                    nbrOfExistingEvents: Int): F[Boolean] =
     AggregateRepository[F].persist(id, events, nbrOfExistingEvents)
 
   private def publish(events: List[Event]) = {
@@ -46,5 +48,5 @@ class CommandProcessor[F[_] : Sync : AggregateRepository : Logger : EventBus] {
 }
 
 object CommandProcessor {
-  def apply[F[_] : CommandProcessor]: CommandProcessor[F] = implicitly
+  def apply[F[_]: CommandProcessor]: CommandProcessor[F] = implicitly
 }

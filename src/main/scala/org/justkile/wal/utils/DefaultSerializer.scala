@@ -11,7 +11,7 @@ object DefaultSerializer {
     stream.toByteArray
   }
 
-  def deserialise(bytes:Array[Byte]): Any = {
+  def deserialise(bytes: Array[Byte]): Any = {
     val ois = new ObjectInputStream(new ByteArrayInputStream(bytes))
     val value = ois.readObject
     ois.close()

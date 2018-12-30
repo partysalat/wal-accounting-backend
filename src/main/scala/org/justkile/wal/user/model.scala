@@ -12,16 +12,16 @@ object model {
   }
 
   case class User(
-                   id: String,
-                   name: Option[String]
-                 )
+      id: String,
+      name: Option[String]
+  )
 
   //Commands
-  case class CreateUserCommand(name: String, id:String = randomUUID().toString) extends Command[User] {
+  case class CreateUserCommand(name: String, id: String = randomUUID().toString) extends Command[User] {
     override def getAggregateIdentifier: AggregateIdentifier[User] = UserIdentifier(id)
   }
   //Events
-  case class UserCreated(id:String, name: String) extends Event
+  case class UserCreated(id: String, name: String) extends Event
 
   implicit def Aggregate: Aggregate[User] = new Aggregate[User] {
     override def identifier(agg: User): AggregateIdentifier[User] = UserIdentifier(agg.id)
@@ -32,7 +32,7 @@ object model {
       case UserCreated(id, name) => User(id, Some(name))
     }
 
-    override def getEventsFromCommand(agg: User)(command: Command[User]): List[Event] = (command ,agg.name) match {
+    override def getEventsFromCommand(agg: User)(command: Command[User]): List[Event] = (command, agg.name) match {
       case (CreateUserCommand(name, id), None) => List(UserCreated(id, name))
       case _ => List.empty
     }
