@@ -8,8 +8,6 @@ import io.chrisdavenport.log4cats.Logger
 import org.justkile.wal.event_sourcing.event_bus.EventBus
 import org.justkile.wal.utils.Done
 
-import scala.collection.immutable
-
 trait Command[A] {
   def getAggregateIdentifier: AggregateIdentifier[A]
 }

@@ -13,7 +13,7 @@ class Registry[F[_]] {
   private[this] val eventHandlers =
     mutable.Map[Class[_], List[EventHandler[F, _]]]()
 
-  def registerEventHandler[T: ClassTag](h: EventHandler[F, T]): Unit = {
+  def registerEventHandler[T: ClassTag](h: EventHandler[F, T]): Option[List[EventHandler[F, _]]] = {
     val key = implicitly[ClassTag[T]].runtimeClass
     val l = eventHandlers.getOrElse(key, Nil)
     val x = l :+ h

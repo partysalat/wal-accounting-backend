@@ -7,10 +7,9 @@ import org.http4s.HttpService
 import org.http4s.circe.CirceEntityCodec._
 import org.http4s.dsl.Http4sDsl
 import org.justkile.wal.event_sourcing.{AggregateRepository, CommandProcessor}
-import org.justkile.wal.user.algebra.UserRepository
 import org.justkile.wal.user.model.{CreateUserCommand, User, UserIdentifier}
 
-class UserService[F[_]: Sync: UserRepository: CommandProcessor: AggregateRepository] extends Http4sDsl[F] {
+class UserService[F[_]: Sync: CommandProcessor: AggregateRepository] extends Http4sDsl[F] {
 
   case class CreateUserRequest(name: String)
   val service: HttpService[F] = HttpService[F] {

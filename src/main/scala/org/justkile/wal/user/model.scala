@@ -14,12 +14,14 @@ object model {
   case class User(
       id: String,
       name: Option[String]
+//      achievements: List[Achievement]
   )
 
   //Commands
   case class CreateUserCommand(name: String, id: String = randomUUID().toString) extends Command[User] {
     override def getAggregateIdentifier: AggregateIdentifier[User] = UserIdentifier(id)
   }
+
   //Events
   case class UserCreated(id: String, name: String) extends Event
 
