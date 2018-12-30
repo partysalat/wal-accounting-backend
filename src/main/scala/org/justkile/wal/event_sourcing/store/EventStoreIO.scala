@@ -1,5 +1,6 @@
 package org.justkile.wal.event_sourcing.store
 
+import cats.Traverse
 import cats.effect.IO
 import cats.implicits._
 import doobie.implicits._
@@ -9,18 +10,19 @@ import org.justkile.wal.db.Database
 import org.justkile.wal.event_sourcing.{AggregateIdentifier, Event}
 import org.justkile.wal.utils.DefaultSerializer
 
-
 object EventStoreIO {
 
   case class EventEnvelope(identifier: String, sequence: Int, event: Array[Byte])
 
   implicit def eventStore: EventStore[IO] = new EventStore[IO] {
-    implicit def loggingInterpreter:Logger[IO] = Slf4jLogger.unsafeCreate[IO]
+    implicit def loggingInterpreter: Logger[IO] = Slf4jLogger.unsafeCreate[IO]
 
-    private def toEvent(eventEnvelopes: EventEnvelope):Event= DefaultSerializer.deserialise(eventEnvelopes.event).asInstanceOf[Event]
-    private def eventToByteArray(evt: Event):Array[Byte] = DefaultSerializer.serialise(evt)
+    private def toEvent(eventEnvelopes: EventEnvelope): Event =
+      DefaultSerializer.deserialise(eventEnvelopes.event).asInstanceOf[Event]
 
-    private def insert1(identifier: String, sequence: Int, event: Event) ={
+    private def eventToByteArray(evt: Event): Array[Byte] = DefaultSerializer.serialise(evt)
+
+    private def insert1(identifier: String, sequence: Int, event: Event) = {
 
       loggingInterpreter.info(s"Persisting $identifier, $sequence")
       sql"""INSERT INTO events (identifier, sequence, event)
@@ -30,15 +32,20 @@ object EventStoreIO {
         .attemptSql
     }
 
-    override def appendEventsTo[A](aggregateIdentifier: AggregateIdentifier[A], evt: List[Event], numberOfEvents: Int): IO[Boolean] = {
+    override def appendEventsTo[A](aggregateIdentifier: AggregateIdentifier[A],
+                                   evt: List[Event],
+                                   numberOfEvents: Int) = {
+
       evt
         .traverse(item => insert1(aggregateIdentifier.idAsString, numberOfEvents, item))
-        .map(_ => true)
         .transact(Database.xa)
+        .map(Traverse[List].sequence(_))
+        .flatMap {
+          case Left(exception) => IO.raiseError(exception)
+          case Right(res) => IO(res.sum == evt.length)
+        }
 
     }
-
-
 
     override def loadEventsFor[A](aggregateIdentifier: AggregateIdentifier[A]): IO[List[Event]] = {
       sql"""
