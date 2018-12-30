@@ -11,15 +11,14 @@ import org.justkile.wal.event_sourcing.{AggregateRepository, Command, CommandPro
 import org.justkile.wal.user.algebra.UserRepository
 import org.justkile.wal.user.model.{CreateUserCommand, User, UserIdentifier}
 
-class UserService[F[_] : Sync : UserRepository: CommandProcessor:AggregateRepository] extends Http4sDsl[F] {
+class UserService[F[_] : Sync : UserRepository : CommandProcessor : AggregateRepository] extends Http4sDsl[F] {
 
   case class CreateUserRequest(name: String)
-
   val service: HttpService[F] = HttpService[F] {
 
-    case req@GET -> Root/userId => for {
-      userTuple <- AggregateRepository[F].load(UserIdentifier(userId,""))
-      (user,_) = userTuple
+    case req@GET -> Root / userId => for {
+      userTuple <- AggregateRepository[F].load(UserIdentifier(userId, ""))
+      (user, _) = userTuple
       result <- Ok(user)
     } yield result
 
