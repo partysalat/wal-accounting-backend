@@ -5,7 +5,6 @@ import cats.implicits._
 import io.chrisdavenport.log4cats.Logger
 import org.justkile.wal.event_sourcing.event_bus.EventBus
 import org.justkile.wal.user.algebras.UserRepository
-import org.justkile.wal.user.events.user_created.UserCreatedEventHandler
 
 class UserEvents[F[_]: Sync: EventBus: Logger: UserRepository] {
 

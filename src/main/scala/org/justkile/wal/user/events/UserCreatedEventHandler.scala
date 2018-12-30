@@ -1,4 +1,4 @@
-package org.justkile.wal.user.events.user_created
+package org.justkile.wal.user.events
 
 import cats.effect.Sync
 import cats.implicits._
