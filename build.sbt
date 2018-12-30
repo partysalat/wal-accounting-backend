@@ -7,6 +7,7 @@ lazy val ScalaTestVersion  = "3.0.3"
 lazy val ScalaCheckVersion = "1.13.4"
 lazy val Log4CatsVersion   = "0.1.1"
 lazy val SimulacrumVersion   = "0.14.0"
+lazy val PureConfigVersion   = "0.10.1"
 
 lazy val root = (project in file("."))
   .settings(
@@ -47,6 +48,7 @@ lazy val root = (project in file("."))
 
       "ch.qos.logback"    %  "logback-classic"     % LogbackVersion,
       "io.chrisdavenport" %% "log4cats-slf4j"      % Log4CatsVersion,
+      "com.github.pureconfig" %% "pureconfig" % PureConfigVersion,
       "com.github.mpilquist"      %% "simulacrum"              % SimulacrumVersion,
       "org.scalatest"     %% "scalatest"           % ScalaTestVersion  % Test,
       "org.scalacheck"    %% "scalacheck"          % ScalaCheckVersion % Test
