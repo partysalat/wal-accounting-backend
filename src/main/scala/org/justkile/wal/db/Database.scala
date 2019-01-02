@@ -42,7 +42,15 @@ object Database {
         newsType VARCHAR NOT NULL,
         userId VARCHAR NOT NULL,
         amount INT NOT NULL,
-        referenceId INT NOT NULL
+        referenceId INT NOT NULL,
+        createdAt DATETIME NOT NULL
+    )
+    """.update.run,
+    sql"""
+      CREATE TABLE IF NOT EXISTS achievements (
+        id          INT AUTO_INCREMENT PRIMARY KEY,
+        name        VARCHAR NOT NULL,
+        description VARCHAR NOT NULL
     )
     """.update.run
   ).traverse_(_.transact(xa))

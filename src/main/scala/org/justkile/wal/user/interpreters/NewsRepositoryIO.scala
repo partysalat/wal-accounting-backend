@@ -15,7 +15,7 @@ object NewsRepositoryIO {
         .map(_.toOption.map(id => News(id, NewsType.DRINK, userId, amount, drinkId)))
         .transact(Database.xa)
 
-    override def getNews(skip: Int): IO[List[JoinedNews]] =
+    override def getNews(skip: Int, pageSize: Int): IO[List[JoinedNews]] =
       sql"""
          SELECT n.id,
                 n.newsType,
@@ -40,6 +40,8 @@ object NewsRepositoryIO {
          LEFT JOIN ACHIEVEMENTS a ON
              CASE WHEN n.newsType = 'ACHIEVEMENT' AND n.REFERENCEID = a.id THEN 1
              ELSE 0 END = 1
+         ORDER BY createdAt DESC
+         LIMIT $pageSize OFFSET $skip
          """
         .query[(News, UserProjection, Option[DrinkPayload], Option[AchievementPayload])]
         .to[List]
