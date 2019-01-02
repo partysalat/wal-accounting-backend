@@ -35,8 +35,22 @@ object Database {
         drinkName VARCHAR NOT NULL,
         drinkType VARCHAR NOT NULL
     )
+    """.update.run,
+    sql"""
+      CREATE TABLE IF NOT EXISTS news (
+        id        INT AUTO_INCREMENT PRIMARY KEY,
+        newsType VARCHAR NOT NULL,
+        userId VARCHAR NOT NULL,
+        amount INT NOT NULL,
+        referenceId INT NOT NULL
+    )
     """.update.run
   ).traverse_(_.transact(xa))
+  //id: String,
+  //newsType: NewsType,
+  //userId: String,
+  //amount: Int,
+  //referenceId: Int
 //  val insertions: IO[Unit] = List(
 //    sql"""
 //      INSERT INTO user (id, username, email)
