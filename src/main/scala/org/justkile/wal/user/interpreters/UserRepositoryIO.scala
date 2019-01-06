@@ -4,7 +4,6 @@ import cats.effect.IO
 import doobie.implicits._
 import org.justkile.wal.db.Database
 import org.justkile.wal.user.algebras.UserRepository
-import org.justkile.wal.user.domain
 import org.justkile.wal.user.domain.UserProjection
 
 object UserRepositoryIO {

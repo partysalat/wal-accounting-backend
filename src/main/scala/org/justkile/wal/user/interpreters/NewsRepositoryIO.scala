@@ -1,15 +1,21 @@
 package org.justkile.wal.user.interpreters
 
+import java.time.LocalDateTime
+
 import cats.effect.IO
 import doobie.implicits._
+import doobie.util.meta.Meta
+import doobie.util.meta.Meta._
 import org.justkile.wal.db.Database
 import org.justkile.wal.user.algebras.NewsRepository
 import org.justkile.wal.user.domain._
-
 object NewsRepositoryIO {
+  implicit val drinkTypeMeta: Meta[LocalDateTime] = Meta[String]
+    .xmap((s: String) => LocalDateTime.parse(s), (d: LocalDateTime) => d.toString)
+
   implicit def newsRepoInterpreter: NewsRepository[IO] = new NewsRepository[IO] {
-    def addDrinkNews(userId: String, drinkId: Int, amount: Int): IO[Option[News]] =
-      sql"INSERT INTO news (newsType, userId, amount, referenceId) VALUES (${NewsType.DRINK}, $userId, $amount, $drinkId)".update
+    def addDrinkNews(userId: String, drinkId: Int, amount: Int, createdAt: LocalDateTime): IO[Option[News]] =
+      sql"INSERT INTO news (newsType, userId, amount, referenceId, createdAt) VALUES (${NewsType.DRINK}, $userId, $amount, $drinkId, $createdAt)".update
         .withUniqueGeneratedKeys[Int]("id")
         .attemptSql
         .map(_.toOption.map(id => News(id, NewsType.DRINK, userId, amount, drinkId)))
@@ -55,6 +61,10 @@ object NewsRepositoryIO {
                            .find(_.isDefined)
                            .flatten
                            .get)))
+
+    override def removeDrinkNews(userId: String, newsId: Int): IO[Int] =
+      sql"DELETE FROM NEWS where id=$newsId".update.run
+        .transact(Database.xa)
 
   }
 }

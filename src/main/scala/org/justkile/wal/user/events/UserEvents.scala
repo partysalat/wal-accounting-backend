@@ -12,5 +12,6 @@ class UserEvents[F[_]: Sync: EventBus: Logger: UserRepository: NewsRepository] {
     for {
       _ <- EventBus[F].subscribe(new UserCreatedEventHandler[F])
       _ <- EventBus[F].subscribe(new DrinkAddedEventHandler[F])
+      _ <- EventBus[F].subscribe(new DrinkRemovedEventHandler[F])
     } yield ()
 }
