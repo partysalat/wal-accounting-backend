@@ -4,6 +4,7 @@ import cats.effect.IO
 import cats.implicits._
 import doobie.implicits._
 import doobie.util.transactor.Transactor
+import org.justkile.wal.drinks.domain.{Drink, DrinkType}
 
 object Database {
   val xa: Transactor[IO] = Transactor.fromDriverManager[IO](
@@ -54,23 +55,17 @@ object Database {
     )
     """.update.run
   ).traverse_(_.transact(xa))
-  //id: String,
-  //newsType: NewsType,
-  //userId: String,
-  //amount: Int,
-  //referenceId: Int
-//  val insertions: IO[Unit] = List(
-//    sql"""
-//      INSERT INTO user (id, username, email)
-//      VALUES  (0, 'Luka', 'luka.jacobowitz@gmail.com');
-//    """.update.run,
-//    sql"""
-//      INSERT INTO user (id, username, email)
-//      VALUES  (1, 'Typelevel', 'info@typelevel.org');
-//    """.update.run,
-//    sql"""
-//      INSERT INTO project (id, name, description, owner)
-//      VALUES  (0, 'Cats', 'Functional abstractions for Scala', 1);
-//    """.update.run
-//  ).traverse_(_.transact(xa))
+
+  private val drinks = List(
+    Drink(1, "Radeberger", DrinkType.BEER),
+    Drink(2, "Long Island Iced tea", DrinkType.COCKTAIL)
+  ).map(drink => {
+    sql"""MERGE INTO drinks
+          KEY(id)
+          VALUES  (${drink.id}, ${drink.name}, ${drink.`type`})
+      """.update.run
+  })
+//  private val achievements =  List()
+  val insertions: IO[Unit] = List(drinks).flatten
+    .traverse_(_.transact(xa))
 }

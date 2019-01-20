@@ -8,6 +8,7 @@ import fs2.StreamApp.ExitCode
 import fs2.{Stream, StreamApp}
 import org.http4s.server.blaze.BlazeBuilder
 import org.justkile.wal.db.Database
+import org.justkile.wal.user.bootstrap.BootstrapService
 import org.justkile.wal.drinks.http.DrinkService
 import org.justkile.wal.user.http.{NewsService, UserService}
 import org.justkile.wal.event_sourcing.CommandProcessorIO._
@@ -26,6 +27,8 @@ object Server extends StreamApp[IO] {
 
   override def stream(args: List[String], requestShutdown: IO[Unit]): Stream[IO, ExitCode] =
     Stream.eval(Database.schemaDefinition) *>
+      Stream.eval(Database.insertions) *>
+      Stream.eval(new BootstrapService[IO].sendInitialData) *>
       Stream.eval(new UserEvents[IO].start) *>
       BlazeBuilder[IO]
         .bindHttp()
