@@ -28,8 +28,8 @@ object Server extends StreamApp[IO] {
   override def stream(args: List[String], requestShutdown: IO[Unit]): Stream[IO, ExitCode] =
     Stream.eval(Database.schemaDefinition) *>
       Stream.eval(Database.insertions) *>
-      Stream.eval(new BootstrapService[IO].sendInitialData) *>
       Stream.eval(new UserEvents[IO].start) *>
+      Stream.eval(new BootstrapService[IO].sendInitialData) *>
       BlazeBuilder[IO]
         .bindHttp()
         .mountService(new UserService[IO].service, "/api/user")

@@ -10,6 +10,6 @@ import org.justkile.wal.utils.Done
 class AchievementHandler[F[_]: Sync: Logger] extends EventHandler[F, Event] {
   def handle(event: Event): F[Done] =
     for {
-      _ <- Logger[F].info(s"UserDrinkAdded $event")
+      _ <- Logger[F].info(s"Event for achievement handler $event")
     } yield Done
 }
