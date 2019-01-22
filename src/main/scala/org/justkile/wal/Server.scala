@@ -18,6 +18,7 @@ import org.justkile.wal.utils.LoggerIO._
 import org.justkile.wal.user.interpreters.UserRepositoryIO._
 import org.justkile.wal.drinks.interpreters.DrinkRepositoryIO._
 import org.justkile.wal.user.interpreters.NewsRepositoryIO._
+import org.justkile.wal.user.interpreters.AchievementRepositoryIO._
 
 import scala.concurrent.ExecutionContext
 

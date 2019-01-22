@@ -4,25 +4,35 @@ import cats.Applicative
 import cats.effect._
 import cats.implicits._
 import io.circe.generic.auto._
-import org.http4s.HttpService
 import org.http4s.circe.CirceEntityCodec._
+import org.http4s.HttpService
 import org.http4s.dsl.Http4sDsl
+import org.justkile.wal.drinks.domain.DrinkType
 import org.justkile.wal.event_sourcing.CommandProcessor
-import org.justkile.wal.user.algebras.UserRepository
+import org.justkile.wal.user.algebras.{AchievementRepository, UserRepository}
 import org.justkile.wal.user.domain.User
 import org.justkile.wal.user.domain.User._
+import org.justkile.wal.user.interpreters.AchievementRepositoryIO
 
-class UserService[F[_]: Sync: CommandProcessor: UserRepository: Applicative] extends Http4sDsl[F] {
+class UserService[F[_]: Sync: AchievementRepository: CommandProcessor: UserRepository: Applicative]
+    extends Http4sDsl[F] {
 
   case class CreateUserRequest(name: String)
   case class UserNews(userId: String, amount: Int)
   case class AddDrinkRequest(drinkId: Int, users: List[UserNews])
+
   val service: HttpService[F] = HttpService[F] {
 
     case req @ GET -> Root =>
       for {
         users <- UserRepository[F].getUsers
         result <- Ok(users)
+      } yield result
+
+    case req @ GET -> Root / userId / "ach" =>
+      for {
+        achievementUserStats <- AchievementRepository[F].getStatsForUser(userId)
+        result <- Ok(achievementUserStats)
       } yield result
 
     case req @ POST -> Root =>
@@ -48,5 +58,11 @@ class UserService[F[_]: Sync: CommandProcessor: UserRepository: Applicative] ext
         _ <- CommandProcessor[F].process[User](command)
         result <- NoContent()
       } yield result
+
+//    case req @ GET -> Root / userId / "achievementstats" =>
+//      for {
+//        res <- AchievementRepository[F].getStatsForUser(userId)
+//        result <- Ok(res)
+//      } yield result
   }
 }

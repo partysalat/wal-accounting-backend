@@ -39,6 +39,7 @@ lazy val root = (project in file("."))
       "io.circe"              %% "circe-core"          % CirceVersion,
       "io.circe"              %% "circe-generic"       % CirceVersion,
       "io.circe"              %% "circe-parser"        % CirceVersion,
+      "io.circe"              %% "circe-java8"        % CirceVersion,
       "com.h2database"        % "h2"                   % H2Version,
       "org.tpolecat"          %% "doobie-core"         % DoobieVersion,
       "org.tpolecat"          %% "doobie-h2"           % DoobieVersion,
