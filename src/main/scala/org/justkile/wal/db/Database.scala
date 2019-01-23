@@ -5,6 +5,7 @@ import cats.implicits._
 import doobie.implicits._
 import doobie.util.transactor.Transactor
 import org.justkile.wal.drinks.domain.{Drink, DrinkType}
+import org.justkile.wal.user.events.achievements.AchievementDefinitions
 
 object Database {
   val xa: Transactor[IO] = Transactor.fromDriverManager[IO](
@@ -60,6 +61,7 @@ object Database {
       CREATE TABLE IF NOT EXISTS achievements (
         id          INT AUTO_INCREMENT PRIMARY KEY,
         name        VARCHAR NOT NULL,
+        imagePath   VARCHAR NOT NULL,
         description VARCHAR NOT NULL
     )
     """.update.run
@@ -117,7 +119,15 @@ object Database {
           VALUES  (${drink.id}, ${drink.name}, ${drink.`type`})
       """.update.run
   })
-//  private val achievements =  List()
-  val insertions: IO[Unit] = List(drinks).flatten
+  private val achievements = AchievementDefinitions.eventBaseAchievements
+    .map(_.achievement)
+    .map(achievement => {
+      sql"""MERGE INTO achievements
+          KEY(id)
+          VALUES  (${achievement.id}, ${achievement.name}, ${achievement.description}, ${achievement.imagePath})
+      """.update.run
+    })
+
+  val insertions: IO[Unit] = List(drinks, achievements).flatten
     .traverse_(_.transact(xa))
 }

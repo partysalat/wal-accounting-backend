@@ -9,7 +9,10 @@ trait NewsRepository[F[_]] {
                    drinkId: Int,
                    amount: Int,
                    createdAt: LocalDateTime = LocalDateTime.now()): F[Option[News]]
-  def removeDrinkNews(userId: String, newsId: Int): F[Int]
+  def removeNews(userId: String, newsId: Int): F[Int]
+  def addAchievement(userId: String,
+                     achievementId: Int,
+                     createdAt: LocalDateTime = LocalDateTime.now()): F[Option[News]]
   def getNews(skip: Int, pageSize: Int): F[List[JoinedNews]]
 }
 object NewsRepository {

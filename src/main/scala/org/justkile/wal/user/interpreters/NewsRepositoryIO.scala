@@ -62,9 +62,15 @@ object NewsRepositoryIO {
                            .flatten
                            .get)))
 
-    override def removeDrinkNews(userId: String, newsId: Int): IO[Int] =
+    override def removeNews(userId: String, newsId: Int): IO[Int] =
       sql"DELETE FROM NEWS where id=$newsId".update.run
         .transact(Database.xa)
 
+    override def addAchievement(userId: String, achievementId: Int, createdAt: LocalDateTime): IO[Option[News]] =
+      sql"INSERT INTO news (newsType, userId, amount, referenceId, createdAt) VALUES (${NewsType.ACHIEVEMENT}, $userId, 1, $achievementId, $createdAt)".update
+        .withUniqueGeneratedKeys[Int]("id")
+        .attemptSql
+        .map(_.toOption.map(id => News(id, NewsType.DRINK, userId, 1, achievementId)))
+        .transact(Database.xa)
   }
 }

@@ -12,6 +12,6 @@ class DrinkRemovedEventHandler[F[_]: Sync: Logger: NewsRepository] extends Event
   def handle(event: UserDrinkRemoved): F[Done] =
     for {
       _ <- Logger[F].info(s"UserDrinkRemoved $event")
-      _ <- NewsRepository[F].removeDrinkNews(event.userId, event.newsId)
+      _ <- NewsRepository[F].removeNews(event.userId, event.newsId)
     } yield Done
 }
