@@ -37,7 +37,10 @@ object NewsRepositoryIO {
                 d.drinkType,
 
                 a.id,
-                a.name
+                a.name,
+                a.description,
+                a.imagePath
+
          FROM NEWS n
          LEFT JOIN USERS u ON n.userId = u.userId
          LEFT JOIN DRINKS d ON

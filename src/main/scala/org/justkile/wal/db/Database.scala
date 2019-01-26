@@ -45,7 +45,7 @@ object Database {
         userId VARCHAR NOT NULL,
         amount INT NOT NULL,
         referenceId INT NOT NULL,
-        createdAt DATETIME NOT NULL
+        createdAt TIMESTAMP NOT NULL
     )
     """.update.run,
     sql"""
@@ -54,7 +54,7 @@ object Database {
         userId VARCHAR NOT NULL,
         drinkId INT NOT NULL,
         amount INT NOT NULL,
-        createdAt DATETIME NOT NULL
+        createdAt TIMESTAMP NOT NULL
     )
     """.update.run,
     sql"""

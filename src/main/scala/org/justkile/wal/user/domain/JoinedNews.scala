@@ -5,7 +5,7 @@ import org.justkile.wal.drinks.domain.DrinkType.DrinkType
 
 sealed trait NewsPayload
 case class DrinkPayload(id: Int, name: String, `type`: DrinkType) extends NewsPayload
-case class AchievementPayload(id: Int, name: String) extends NewsPayload
+case class AchievementPayload(id: Int, name: String, description: String, imagePath: String) extends NewsPayload
 
 object NewsPayload {
   implicit val encodeNewsPayload: Encoder[NewsPayload] = io.circe.generic.semiauto.deriveEncoder[NewsPayload]

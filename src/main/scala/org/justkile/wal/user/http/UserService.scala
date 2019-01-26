@@ -8,7 +8,7 @@ import org.http4s.circe.CirceEntityCodec._
 import org.http4s.HttpService
 import org.http4s.dsl.Http4sDsl
 import org.justkile.wal.drinks.domain.DrinkType
-import org.justkile.wal.event_sourcing.CommandProcessor
+import org.justkile.wal.event_sourcing.{AggregateRepository, CommandProcessor}
 import org.justkile.wal.user.algebras.{AchievementRepository, UserRepository}
 import org.justkile.wal.user.domain.User
 import org.justkile.wal.user.domain.User._
@@ -31,7 +31,7 @@ class UserService[F[_]: Sync: AchievementRepository: CommandProcessor: UserRepos
 
     case req @ GET -> Root / userId / "ach" =>
       for {
-        achievementUserStats <- AchievementRepository[F].getStatsForUser(userId)
+        achievementUserStats <- AchievementRepository[F].getDrinkEventsForUser(userId)
         result <- Ok(achievementUserStats)
       } yield result
 
@@ -61,8 +61,9 @@ class UserService[F[_]: Sync: AchievementRepository: CommandProcessor: UserRepos
 
 //    case req @ GET -> Root / userId / "achievementstats" =>
 //      for {
-//        res <- AchievementRepository[F].getStatsForUser(userId)
-//        result <- Ok(res)
+////        res <- AchievementRepository[F].getStatsForUser(userId)
+//        res <- AggregateRepository[F].load(UserIdentifier(userId))
+//        result <- Ok(res._1)
 //      } yield result
   }
 }
