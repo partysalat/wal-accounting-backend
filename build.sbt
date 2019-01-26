@@ -9,6 +9,8 @@ lazy val Log4CatsVersion = "0.1.1"
 lazy val SimulacrumVersion = "0.14.0"
 lazy val PureConfigVersion = "0.10.1"
 
+enablePlugins(JavaAppPackaging)
+
 lazy val root = (project in file("."))
   .settings(
     organization := "org.justkile",
