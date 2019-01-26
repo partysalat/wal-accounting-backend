@@ -2,8 +2,7 @@ package org.justkile.wal.user.algebras
 
 import java.time.LocalDateTime
 
-import org.justkile.wal.drinks.domain.Drink
-import org.justkile.wal.user.domain.UserDrinkEvents
+import org.justkile.wal.user.domain.UserDrinkEvent
 import org.justkile.wal.utils.Done
 
 trait AchievementRepository[F[_]] {
@@ -11,7 +10,7 @@ trait AchievementRepository[F[_]] {
                     drinkId: Int,
                     amount: Int,
                     createdAt: LocalDateTime = LocalDateTime.now()): F[Option[Done]]
-  def getDrinkEventsForUser(userId: String): F[List[UserDrinkEvents]]
+  def getDrinkEventsForUser(userId: String): F[List[UserDrinkEvent]]
 }
 
 object AchievementRepository {

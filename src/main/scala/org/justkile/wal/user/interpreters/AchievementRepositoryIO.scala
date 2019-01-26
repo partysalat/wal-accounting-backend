@@ -7,7 +7,7 @@ import doobie.implicits._
 import doobie.util.meta.{Meta, MetaInstances}
 import org.justkile.wal.db.Database
 import org.justkile.wal.user.algebras.AchievementRepository
-import org.justkile.wal.user.domain.UserDrinkEvents
+import org.justkile.wal.user.domain.UserDrinkEvent
 import org.justkile.wal.utils.Done
 
 object AchievementRepositoryIO extends MetaInstances {
@@ -23,7 +23,7 @@ object AchievementRepositoryIO extends MetaInstances {
         .map(_.toOption.map(_ => Done))
         .transact(Database.xa)
 
-    override def getDrinkEventsForUser(userId: String): IO[List[UserDrinkEvents]] =
+    override def getDrinkEventsForUser(userId: String): IO[List[UserDrinkEvent]] =
       sql"""
          SELECT n.id,
                 n.userId,
@@ -38,7 +38,7 @@ object AchievementRepositoryIO extends MetaInstances {
          LEFT JOIN DRINKS d ON n.drinkId = d.id
          ORDER BY createdAt ASC
          """
-        .query[UserDrinkEvents]
+        .query[UserDrinkEvent]
         .to[List]
         .transact(Database.xa)
   }
