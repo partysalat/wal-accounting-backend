@@ -13,7 +13,7 @@ case class Achievement(
 case class AchievementDefinition(achievement: Achievement, predicate: List[UserDrinkEvent] => Boolean)
 object AchievementDefinitions {
   private def countTypes(events: List[UserDrinkEvent], drinkType: DrinkType) =
-    events.count(_.drink.`type` == drinkType)
+    events.filter(_.drink.`type` == drinkType).foldLeft(0)(_ + _.amount)
   import DrinkType._
   val eventBaseAchievements = List(
     /**
@@ -36,7 +36,7 @@ object AchievementDefinitions {
         "5 Bier bestellt",
         "/internal/assets/achievements/lenny.png"
       ),
-      (events: List[UserDrinkEvent]) => events.count(_.drink.`type` == BEER) >= 5
+      (events: List[UserDrinkEvent]) => countTypes(events, BEER) >= 5
     ),
     AchievementDefinition(
       Achievement(
@@ -45,15 +45,15 @@ object AchievementDefinitions {
         "10 Bier bestellt",
         "/internal/assets/achievements/carl.png"
       ),
-      (events: List[UserDrinkEvent]) => events.count(_.drink.`type` == BEER) >= 10
+      (events: List[UserDrinkEvent]) => countTypes(events, BEER) >= 10
     ),
     AchievementDefinition(
       Achievement(4, "Homer", "15 Bier bestellt", "/internal/assets/achievements/homer.png"),
-      (events: List[UserDrinkEvent]) => events.count(_.drink.`type` == BEER) >= 15
+      (events: List[UserDrinkEvent]) => countTypes(events, BEER) >= 15
     ),
     AchievementDefinition(
       Achievement(5, "Barney", "25 Bier bestellt", "/internal/assets/achievements/barney.png"),
-      (events: List[UserDrinkEvent]) => events.count(_.drink.`type` == BEER) >= 25
+      (events: List[UserDrinkEvent]) => countTypes(events, BEER) >= 25
     ),
     /**
       * Cocktails
@@ -61,19 +61,19 @@ object AchievementDefinitions {
 
     AchievementDefinition(
       Achievement(6, "Jeff Lebowski", "1 Cocktails bestellt", "/internal/assets/achievements/derdude.jpg"),
-      (events: List[UserDrinkEvent]) => events.count(_.drink.`type` == COCKTAIL) >= 1
+      (events: List[UserDrinkEvent]) => countTypes(events, COCKTAIL) >= 1
     ),
     AchievementDefinition(
       Achievement(7, "Ernest Hemingway", "5 Cocktails bestellt", "/internal/assets/achievements/hemingway.jpg"),
-      (events: List[UserDrinkEvent]) => events.count(_.drink.`type` == COCKTAIL) >= 5
+      (events: List[UserDrinkEvent]) => countTypes(events, COCKTAIL) >= 5
     ),
     AchievementDefinition(
       Achievement(8, "Winston Churchill", "10 Cocktails bestellt", "/internal/assets/achievements/churchill.jpg"),
-      (events: List[UserDrinkEvent]) => events.count(_.drink.`type` == COCKTAIL) >= 10
+      (events: List[UserDrinkEvent]) => countTypes(events, COCKTAIL) >= 10
     ),
     AchievementDefinition(
       Achievement(9, "George R.R. Martin", "15 Cocktails bestellt", "/internal/assets/achievements/georgerrmartin.jpg"),
-      (events: List[UserDrinkEvent]) => events.count(_.drink.`type` == COCKTAIL) >= 15
+      (events: List[UserDrinkEvent]) => countTypes(events, COCKTAIL) >= 15
     ),
     /**
       * Softdrinks
@@ -83,14 +83,14 @@ object AchievementDefinitions {
                   "Is this just Fanta Sea?",
                   "Mindestens 5 Softdrinks bestellt",
                   "/internal/assets/achievements/fantaSea.jpg"),
-      (events: List[UserDrinkEvent]) => events.count(_.drink.`type` == SOFTDRINK) >= 5
+      (events: List[UserDrinkEvent]) => countTypes(events, SOFTDRINK) >= 5
     ),
     AchievementDefinition(
       Achievement(11,
                   "Coca Cola Fanta Sprite",
                   "Mindestens 10 Softdrinks bestellt",
                   "/internal/assets/achievements/cocacolaFantaSprite.jpg"),
-      (events: List[UserDrinkEvent]) => events.count(_.drink.`type` == SOFTDRINK) >= 10
+      (events: List[UserDrinkEvent]) => countTypes(events, SOFTDRINK) >= 10
     ),
     /**
       * Shotrunden
@@ -157,8 +157,8 @@ object AchievementDefinitions {
                   "Jeweils fünf Biere und Cocktails bestellt",
                   "/internal/assets/achievements/abenteurer.jpg"),
       (events: List[UserDrinkEvent]) =>
-        events.count(_.drink.`type` == BEER) >= 5 &&
-          events.count(_.drink.`type` == COCKTAIL) >= 5
+        countTypes(events, BEER) >= 5 &&
+          countTypes(events, COCKTAIL) >= 5
     ),
     AchievementDefinition(
       Achievement(21,
@@ -166,8 +166,8 @@ object AchievementDefinitions {
                   "Jeweils 10 Biere und Cocktails bestellt",
                   "/internal/assets/achievements/derallestrinker.jpg"),
       (events: List[UserDrinkEvent]) =>
-        events.count(_.drink.`type` == BEER) >= 10 &&
-          events.count(_.drink.`type` == COCKTAIL) >= 10
+        countTypes(events, BEER) >= 10 &&
+          countTypes(events, COCKTAIL) >= 10
     ),
     AchievementDefinition(
       Achievement(22,
