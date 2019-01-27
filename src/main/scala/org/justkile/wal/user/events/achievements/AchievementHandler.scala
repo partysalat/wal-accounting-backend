@@ -12,20 +12,13 @@ import org.justkile.wal.user.domain.User
 import org.justkile.wal.user.domain.User.{GainAchievement, UserCreated, UserDrinkAdded, UserIdentifier}
 import org.justkile.wal.utils.Done
 
-class AchievementHandler[F[_]: Sync: Logger: Applicative: AchievementRepository: CommandProcessor: AggregateRepository]
-    extends EventHandler[F, Event] {
-  def handle(event: Event): F[Done] =
+class AchievementHandler[F[_]: Sync: Logger: AchievementRepository: CommandProcessor: AggregateRepository]
+    extends EventHandler[F, UserDrinkAdded] {
+  def handle(event: UserDrinkAdded): F[Done] =
     for {
-      _ <- event match {
-        case createUserEvent: UserCreated => handleUserCreatedEvent(createUserEvent)
-        case userDrinkAdded: UserDrinkAdded => handleUserDrinkAddedEvent(userDrinkAdded)
-        case _ => Applicative[F].pure(Done)
-      }
+      _ <- handleUserDrinkAddedEvent(event)
     } yield Done
 
-  private def handleUserCreatedEvent(event: UserCreated): F[Unit] = {
-    Logger[F].info(s"user created $event")
-  }
   private def handleUserDrinkAddedEvent(event: UserDrinkAdded): F[Unit] = {
     import event._
     for {
