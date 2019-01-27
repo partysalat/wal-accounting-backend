@@ -9,12 +9,12 @@ import org.http4s.HttpService
 import org.http4s.dsl.Http4sDsl
 import org.justkile.wal.drinks.domain.DrinkType
 import org.justkile.wal.event_sourcing.{AggregateRepository, CommandProcessor}
-import org.justkile.wal.user.algebras.{AchievementRepository, UserRepository}
+import org.justkile.wal.user.algebras.{AchievementRepository, BestlistRepository, UserRepository}
 import org.justkile.wal.user.domain.User
 import org.justkile.wal.user.domain.User._
 import org.justkile.wal.user.interpreters.AchievementRepositoryIO
 
-class UserService[F[_]: Sync: AchievementRepository: CommandProcessor: UserRepository: Applicative]
+class UserService[F[_]: Sync: AchievementRepository: CommandProcessor: UserRepository: BestlistRepository: Applicative]
     extends Http4sDsl[F] {
 
   case class CreateUserRequest(name: String)
@@ -59,11 +59,11 @@ class UserService[F[_]: Sync: AchievementRepository: CommandProcessor: UserRepos
         result <- NoContent()
       } yield result
 
-//    case req @ GET -> Root / userId / "achievementstats" =>
-//      for {
-////        res <- AchievementRepository[F].getStatsForUser(userId)
-//        res <- AggregateRepository[F].load(UserIdentifier(userId))
-//        result <- Ok(res._1)
-//      } yield result
+    case req @ GET -> Root / "bestlist" =>
+      for {
+        res <- BestlistRepository[F].getStats()
+        sortedResult = res.sortBy(item => -(item.beerCount + item.cocktailCount))
+        result <- Ok(sortedResult)
+      } yield result
   }
 }

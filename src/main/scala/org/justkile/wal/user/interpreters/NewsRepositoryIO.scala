@@ -28,6 +28,7 @@ object NewsRepositoryIO {
                 n.userId,
                 n.amount,
                 n.referenceId,
+
                 u.id,
                 u.userId,
                 u.name,

@@ -3,6 +3,7 @@ package org.justkile.wal.user.domain
 import java.util.UUID.randomUUID
 
 import org.justkile.wal.event_sourcing.{Aggregate, AggregateIdentifier, Command, Event}
+import org.justkile.wal.user.domain.NewsType.NewsType
 import org.justkile.wal.user.domain.User.AchievementId
 
 case class User(
@@ -27,6 +28,7 @@ object User {
   case class AddUserDrinkCommand(userId: String, drinkId: Int, amount: Int) extends Command[User] {
     override def getAggregateIdentifier: AggregateIdentifier[User] = UserIdentifier(userId)
   }
+  //TODO: Handle Rollback Case for ALL Event handlers!
   case class RemoveUserDrinkCommand(userId: String, newsId: Int) extends Command[User] {
     override def getAggregateIdentifier: AggregateIdentifier[User] = UserIdentifier(userId)
   }
@@ -54,9 +56,10 @@ object User {
 
     override def getEventsFromCommand(agg: User)(command: Command[User]): List[Event] = command match {
       case CreateUserCommand(name, id) if agg.name.isEmpty => List(UserCreated(id, name))
-      case AddUserDrinkCommand(userId, drinkId, amount) => List(UserDrinkAdded(userId, drinkId, amount))
-      case RemoveUserDrinkCommand(userId, newsId) => List(UserDrinkRemoved(userId, newsId))
-      case GainAchievement(userId, achievementId) if !agg.achievements.contains(achievementId) =>
+      case AddUserDrinkCommand(userId, drinkId, amount) if agg.name.isDefined =>
+        List(UserDrinkAdded(userId, drinkId, amount))
+      case RemoveUserDrinkCommand(userId, newsId) if agg.name.isDefined => List(UserDrinkRemoved(userId, newsId))
+      case GainAchievement(userId, achievementId) if !agg.achievements.contains(achievementId) && agg.name.isDefined =>
         List(AchievementGained(userId, achievementId))
       case _ => List.empty
     }

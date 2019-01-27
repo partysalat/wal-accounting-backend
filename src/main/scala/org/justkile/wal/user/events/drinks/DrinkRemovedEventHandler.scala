@@ -1,4 +1,4 @@
-package org.justkile.wal.user.events
+package org.justkile.wal.user.events.drinks
 
 import cats.effect.Sync
 import cats.implicits._

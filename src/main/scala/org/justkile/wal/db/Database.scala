@@ -58,6 +58,23 @@ object Database {
     )
     """.update.run,
     sql"""
+      CREATE TABLE IF NOT EXISTS bestlist_user_stats (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        userId VARCHAR NOT NULL,
+        beerCount INT NOT NULL DEFAULT 0,
+        cocktailCount INT NOT NULL DEFAULT 0,
+        softdrinkCount INT NOT NULL DEFAULT 0,
+        shotCount INT NOT NULL DEFAULT 0
+    )
+    """.update.run,
+    sql"""
+      CREATE TABLE IF NOT EXISTS bestlist_user_achievements (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        userId VARCHAR NOT NULL,
+        achievementId INT NOT NULL
+    )
+    """.update.run,
+    sql"""
       CREATE TABLE IF NOT EXISTS achievements (
         id          INT AUTO_INCREMENT PRIMARY KEY,
         name        VARCHAR NOT NULL,
