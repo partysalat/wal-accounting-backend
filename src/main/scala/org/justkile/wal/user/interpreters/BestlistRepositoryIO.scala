@@ -1,18 +1,24 @@
 package org.justkile.wal.user.interpreters
 
-import java.time.LocalDateTime
-
 import cats.effect.IO
 import doobie.implicits._
-import doobie.util.meta.{Meta, MetaInstances}
+import doobie.util.meta.MetaInstances
 import org.justkile.wal.db.Database
 import org.justkile.wal.drinks.domain.{Drink, DrinkType}
-import org.justkile.wal.user.algebras.{AchievementRepository, BestlistRepository}
-import org.justkile.wal.user.domain.{BestlistUserStats, UserDrinkEvent}
+import org.justkile.wal.user.algebras.BestlistRepository
+import org.justkile.wal.user.domain.{BestlistUserStats, UserProjection}
+import org.justkile.wal.user.events.achievements.Achievement
 import org.justkile.wal.utils.Done
 
 object BestlistRepositoryIO extends MetaInstances {
   implicit def bestlistRepoInterpreter: BestlistRepository[IO] = new BestlistRepository[IO] {
+    private case class BestlistDrinkStats(id: Int,
+                                          userId: String,
+                                          beerCount: Int,
+                                          cocktailCount: Int,
+                                          softdrinkCount: Int,
+                                          shotCount: Int,
+                                          user: UserProjection)
 
     def initUser(userId: String): IO[Option[Done]] =
       sql"INSERT INTO bestlist_user_stats (userId) VALUES ($userId)".update
@@ -59,24 +65,52 @@ object BestlistRepositoryIO extends MetaInstances {
 
     override def removeAchievement(userId: String, achievementId: Int): IO[Option[Done]] = ???
 
-    override def getStats(): IO[List[BestlistUserStats]] =
-      sql"""
+    override def getStats(): IO[List[BestlistUserStats]] = {
+      for {
+        things <- sql"""
          SELECT s.id,
                 s.userId,
                 s.beerCount,
                 s.cocktailCount,
                 s.softdrinkCount,
                 s.shotCount,
-                
+
                 u.id,
                 u.userId,
                 u.name
          FROM bestlist_user_stats s
          LEFT JOIN USERS u ON s.userId = u.userId
          """
-        .query[BestlistUserStats]
-        .to[List]
-        .transact(Database.xa)
+          .query[BestlistDrinkStats]
+          .to[List]
+          .transact(Database.xa)
+        achievements <- sql"""
+          SELECT
+           ba.userId,
+
+           a.id,
+           a.name,
+           a.description,
+           a.imagePath
+          FROM bestlist_user_achievements ba
+          LEFT JOIN ACHIEVEMENTS a ON ba.ACHIEVEMENTID = a.ID
+              """.query[(String, Achievement)].to[List].transact(Database.xa)
+        groupedAchievements = achievements.groupBy(_._1)
+        stats = things.map { drinkStats =>
+          import drinkStats._
+          BestlistUserStats(id,
+                            userId,
+                            beerCount,
+                            cocktailCount,
+                            softdrinkCount,
+                            shotCount,
+                            user,
+                            groupedAchievements.getOrElse(userId, List.empty).map(_._2))
+        }
+      } yield stats
+
+//      res.transact(Database.xa)
+    }
 
   }
 }

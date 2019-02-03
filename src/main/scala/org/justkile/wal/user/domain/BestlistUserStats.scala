@@ -8,7 +8,5 @@ case class BestlistUserStats(id: Int,
                              cocktailCount: Int,
                              softdrinkCount: Int,
                              shotCount: Int,
-                             user: UserProjection
-//                             ,
-//                             achievements: List[Achievement] = List.empty
-)
+                             user: UserProjection,
+                             achievements: List[Achievement] = List.empty)
