@@ -41,5 +41,12 @@ object AchievementRepositoryIO extends MetaInstances {
         .query[UserDrinkEvent]
         .to[List]
         .transact(Database.xa)
+
+    def subtractUserStats(userId: String, drinkId: Int, amount: Int): IO[Int] =
+      sql"""DELETE FROM achievement_user_stats
+           where USERID=$userId AND DRINKID=$drinkId AND amount=$amount LIMIT 1
+         """.update.run
+        .transact(Database.xa)
+
   }
 }

@@ -13,7 +13,9 @@ trait NewsRepository[F[_]] {
   def addAchievement(userId: String,
                      achievementId: Int,
                      createdAt: LocalDateTime = LocalDateTime.now()): F[Option[News]]
+  def removeAchievement(userId: String, achievementId: Int): F[Int]
   def getNews(skip: Int, pageSize: Int): F[List[JoinedNews]]
+  def getNewsItem(newsId: Int): F[JoinedNews]
 }
 object NewsRepository {
   def apply[F[_]: NewsRepository]: NewsRepository[F] = implicitly

@@ -4,15 +4,13 @@ import cats.Applicative
 import cats.effect._
 import cats.implicits._
 import io.circe.generic.auto._
-import org.http4s.circe.CirceEntityCodec._
 import org.http4s.HttpService
+import org.http4s.circe.CirceEntityCodec._
 import org.http4s.dsl.Http4sDsl
-import org.justkile.wal.drinks.domain.DrinkType
-import org.justkile.wal.event_sourcing.{AggregateRepository, CommandProcessor}
+import org.justkile.wal.event_sourcing.CommandProcessor
 import org.justkile.wal.user.algebras.{AchievementRepository, BestlistRepository, UserRepository}
 import org.justkile.wal.user.domain.User
 import org.justkile.wal.user.domain.User._
-import org.justkile.wal.user.interpreters.AchievementRepositoryIO
 
 class UserService[F[_]: Sync: AchievementRepository: CommandProcessor: UserRepository: BestlistRepository: Applicative]
     extends Http4sDsl[F] {
@@ -52,13 +50,7 @@ class UserService[F[_]: Sync: AchievementRepository: CommandProcessor: UserRepos
         result <- Created(res)
       } yield result
 
-    case req @ DELETE -> Root / userId / "news" / IntVar(newsId) =>
-      for {
-        command <- Applicative[F].pure(RemoveUserDrinkCommand(userId, newsId))
-        _ <- CommandProcessor[F].process[User](command)
-        result <- NoContent()
-      } yield result
-
+//TODO: use gzip
     case req @ GET -> Root / "bestlist" =>
       for {
         res <- BestlistRepository[F].getStats()

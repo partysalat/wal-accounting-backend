@@ -10,6 +10,7 @@ trait AchievementRepository[F[_]] {
                     drinkId: Int,
                     amount: Int,
                     createdAt: LocalDateTime = LocalDateTime.now()): F[Option[Done]]
+  def subtractUserStats(userId: String, drinkId: Int, amount: Int): F[Int]
   def getDrinkEventsForUser(userId: String): F[List[UserDrinkEvent]]
 }
 

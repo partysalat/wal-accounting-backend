@@ -76,5 +76,54 @@ object NewsRepositoryIO {
         .attemptSql
         .map(_.toOption.map(id => News(id, NewsType.DRINK, userId, 1, achievementId)))
         .transact(Database.xa)
+
+    def removeAchievement(userId: String, achievementId: Int): IO[Int] =
+      sql"DELETE FROM NEWS where USERID=$userId AND REFERENCEID=$achievementId".update.run
+        .transact(Database.xa)
+
+    override def getNewsItem(newsId: Int): IO[JoinedNews] =
+      sql"""
+         SELECT n.id,
+                n.newsType,
+                n.userId,
+                n.amount,
+                n.referenceId,
+
+                u.id,
+                u.userId,
+                u.name,
+
+                d.id,
+                d.drinkName,
+                d.drinkType,
+
+                a.id,
+                a.name,
+                a.description,
+                a.imagePath
+
+         FROM NEWS n
+         LEFT JOIN USERS u ON n.userId = u.userId
+         LEFT JOIN DRINKS d ON
+             CASE WHEN n.newsType = 'DRINK' AND n.REFERENCEID = d.id THEN 1
+             ELSE 0 END = 1
+         LEFT JOIN ACHIEVEMENTS a ON
+             CASE WHEN n.newsType = 'ACHIEVEMENT' AND n.REFERENCEID = a.id THEN 1
+             ELSE 0 END = 1
+         WHERE n.id = $newsId     
+         ORDER BY createdAt DESC
+         """
+        .query[(News, UserProjection, Option[DrinkPayload], Option[AchievementPayload])]
+        .unique
+        .transact(Database.xa)
+        .map(
+          res =>
+            JoinedNews(res._1,
+                       res._2,
+                       List(res._3, res._4)
+                         .find(_.isDefined)
+                         .flatten
+                         .get))
+
   }
 }
