@@ -26,22 +26,25 @@ class Accounting extends Component {
             <Grid item xs={3}>
               <AccountingButton icon={faCocktail} color="primary">
                 Cocktails
-                <DrinkDialog drinks="COCKTAIL" />
+                <DrinkDialog drinkType="COCKTAIL" />
               </AccountingButton>
             </Grid>
             <Grid item xs={3}>
               <AccountingButton icon={faBeer} color="secondary">
                 Beer
+                <DrinkDialog drinkType="BEER" />
               </AccountingButton>
             </Grid>
             <Grid item xs={3}>
               <AccountingButton icon={faGlassWhiskey} color="default">
                 Shots
+                <DrinkDialog drinkType="SHOT" />
               </AccountingButton>
             </Grid>
             <Grid item xs={3}>
               <AccountingButton icon={faCoffee} color="primary" className="bnd-green">
                 Softdrinks
+                <DrinkDialog drinkType="SOFTDRINK" />
               </AccountingButton>
             </Grid>
             <Grid item xs={3}>

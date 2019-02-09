@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import { connect } from 'react-redux';
-import { loadUser } from '../../../redux/actions';
+import { loadDrinks, loadUser } from '../../../redux/actions';
 
 class DrinkDialog extends React.Component {
   constructor(props) {
@@ -17,6 +17,7 @@ class DrinkDialog extends React.Component {
   }
   componentDidMount() {
     this.props.loadUser();
+    this.props.loadDrinks(this.props.drinkType);
   }
 
   render() {
@@ -47,10 +48,12 @@ class DrinkDialog extends React.Component {
 function mapStateToProps(state) {
   return {
     users: state.users,
+    drinks: state.drinks,
   };
 }
 const mapDispatchToProps = {
   loadUser,
+  loadDrinks,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DrinkDialog);
