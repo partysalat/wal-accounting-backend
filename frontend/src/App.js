@@ -2,57 +2,63 @@ import React, { Component } from 'react';
 import './App.css';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { faCoffee, faCocktail,faBeer, faGlassWhiskey, faUndo, faUserPlus,faCartPlus, faSync ,faSave} from '@fortawesome/free-solid-svg-icons'
+import {AccountingButton} from "./components/AccountingButton";
+
+
 
 class App extends Component {
   render() {
     return (
       <div className="App">
+        <FontAwesomeIcon icon="coffee" />
         <header className="App-header">
           <Grid container spacing={24} className="grid-container">
             <Grid item xs={3}>
-              <Button variant="contained" color="primary" className="full-height">
+              <AccountingButton icon={faCocktail} color="primary">
                 Cocktails
-              </Button>
+              </AccountingButton>
             </Grid>
             <Grid item xs={3}>
-              <Button variant="contained" color="secondary" className="full-height">
+              <AccountingButton icon={faBeer} color="secondary">
                 Beer
-              </Button>
+              </AccountingButton>
             </Grid>
             <Grid item xs={3}>
-              <Button variant="contained" className="full-height">
+              <AccountingButton icon={faGlassWhiskey}>
                 Shots
-              </Button>
+              </AccountingButton>
             </Grid>
             <Grid item xs={3}>
-              <Button variant="contained" color="primary" className="full-height">
+              <AccountingButton icon={faCoffee}>
                 Softdrinks
-              </Button>
+              </AccountingButton>
             </Grid>
             <Grid item xs={3}>
-              <Button variant="contained" color="primary" className="full-height">
+              <AccountingButton icon={faUndo}>
                 CTRL + Z
-              </Button>
+              </AccountingButton>
             </Grid>
             <Grid item xs={2}>
-              <Button variant="contained" color="primary" className="full-height">
+              <AccountingButton icon={faUserPlus}>
                 Neuer Trinker
-              </Button>
+              </AccountingButton>
             </Grid>
             <Grid item xs={2}>
-              <Button variant="contained" color="primary" className="full-height">
+              <AccountingButton icon={faCartPlus}>
                 Neuer Drink
-              </Button>
+              </AccountingButton>
             </Grid>
             <Grid item xs={2}>
-              <Button variant="contained" color="primary" className="full-height">
+              <AccountingButton icon={faSync}>
                 Sync Drinks
-              </Button>
+              </AccountingButton>
             </Grid>
             <Grid item xs={2}>
-              <Button variant="contained" color="primary" className="full-height">
+              <AccountingButton icon={faSave}>
                 Download Bestlist
-              </Button>
+              </AccountingButton>
             </Grid>
 
           </Grid>
