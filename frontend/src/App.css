@@ -33,3 +33,16 @@ html {
 .grid-container{
   height: 100vh;
 }
+
+.bnd-green{
+  background-color: green!important;
+}
+.bnd-yellow{
+  background-color: yellow!important;
+}
+.bnd-orange{
+  background-color: orange!important;
+}
+.bnd-red{
+  background-color: red!important;
+}
