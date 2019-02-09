@@ -34,7 +34,7 @@ object Server extends StreamApp[IO] {
       Stream.eval(new BootstrapService[IO].sendInitialData) *>
       BlazeBuilder[IO]
         .bindHttp()
-        .mountService(new UserService[IO].service, "/api/user")
+        .mountService(new UserService[IO].service, "/api/users")
         .mountService(new DrinkService[IO].service, "/api/drinks")
         .mountService(new NewsService[IO].service, "/api/news")
         .withExecutionContext(ec)
