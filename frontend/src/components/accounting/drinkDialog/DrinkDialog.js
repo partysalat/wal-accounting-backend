@@ -7,6 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import Slider from '@material-ui/lab/Slider';
 import './DrinkDialog.css';
 import { bookUserDrink, loadDrinks, loadUser } from '../../../redux/actions';
 
@@ -14,6 +15,7 @@ const PAGES = {
   DRINKS: 'DRINKS',
   USERS: 'USERS',
 };
+
 class DrinkDialog extends React.Component {
   constructor(props) {
     super(props);
@@ -23,6 +25,7 @@ class DrinkDialog extends React.Component {
       selectedDrink: null,
     };
     this.goToUserPage = this.goToUserPage.bind(this);
+    this.goToDrinkPage = this.goToDrinkPage.bind(this);
     this.close = this.close.bind(this);
     this.submit = this.submit.bind(this);
   }
@@ -33,18 +36,21 @@ class DrinkDialog extends React.Component {
   goToUserPage(drink) {
     this.setState({ page: PAGES.USERS, selectedDrink: drink });
   }
+  goToDrinkPage() {
+    this.setState({ page: PAGES.DRINKS });
+  }
   reset() {
     this.setState({ page: PAGES.DRINKS, selectedDrink: null });
   }
-  isSelected(user) {
-    return this.state.selectedUsers.indexOf(user) > -1;
+  isSelected(userId) {
+    return this.state.selectedUsers.find(selUser => selUser.userId === userId);
   }
-  selectUser(user) {
+  selectUser(userId) {
     this.setState(prevState => ({
       ...prevState,
-      selectedUsers: this.isSelected(user) ?
-        prevState.selectedUsers.filter(item => item !== user) :
-        [...prevState.selectedUsers, user],
+      selectedUsers: this.isSelected(userId) ?
+        prevState.selectedUsers.filter(item => item.userId !== userId) :
+        [...prevState.selectedUsers, { userId, amount: 1 }],
     }));
   }
   close() {
@@ -55,6 +61,19 @@ class DrinkDialog extends React.Component {
     const { state } = this;
     this.props.bookUserDrink(state.selectedDrink, state.selectedUsers);
     this.close();
+  }
+  handleSliderChange(userId, amount) {
+    this.setState(prevState => ({
+      selectedUsers: prevState.selectedUsers.map((user) => {
+        if (user.userId !== userId) {
+          return user;
+        }
+        return {
+          ...user,
+          amount,
+        };
+      }),
+    }));
   }
   render() {
     let pageContent;
@@ -71,11 +90,25 @@ class DrinkDialog extends React.Component {
     } else {
       pageContent = (
         <Grid container spacing={8}>
-          {this.props.users.map(user => (
-            <Grid xs={3} item key={user.id}>
-              <ButtonBase className={`dialog-buttons ${this.isSelected(user) && 'active'}`} onClick={() => this.selectUser(user)}> {user.name}</ButtonBase>
-            </Grid>
-          ))}
+          {this.props.users.map((user) => {
+            const selectedUser = this.isSelected(user.id);
+            return (
+              <Grid xs={3} item key={user.id}>
+                <ButtonBase
+                  className={`dialog-buttons ${selectedUser && 'active'}`}
+                  onClick={() => this.selectUser(user.id)}
+                > {user.name} {selectedUser ? `(${selectedUser.amount})` : ''}
+                </ButtonBase>
+                {selectedUser && (<Slider
+                  className="dialog-slider"
+                  value={selectedUser.amount}
+                  min={1}
+                  max={20}
+                  step={1}
+                  onChange={(event, amount) => this.handleSliderChange(user.id, amount)}
+                />)}
+              </Grid>);
+          })}
 
         </Grid>
       );
@@ -89,13 +122,16 @@ class DrinkDialog extends React.Component {
         onClose={this.close}
         aria-labelledby="max-width-dialog-title"
       >
-        <DialogTitle id="max-width-dialog-title">Neue Bestellung von {this.props.drinkType}</DialogTitle>
-        <DialogContent>{pageContent}</DialogContent>
+        <DialogTitle id="max-width-dialog-title">Neue Bestellung von {!this.state.selectedDrink && `${this.props.drinkType}`} {this.state.selectedDrink && `${this.state.selectedDrink.name}`}</DialogTitle>
+        <DialogContent className="dialog-content">{pageContent}</DialogContent>
         <DialogActions>
           <Button color="primary" onClick={this.close}>
             Abbrechen
           </Button>
-          {this.state.page === PAGES.USERS && <Button color="primary" onClick={this.submit}>
+          {this.state.page === PAGES.USERS && <Button variant="contained" color="secondary" onClick={this.goToDrinkPage}>
+            Zurück
+          </Button>}
+          {this.state.page === PAGES.USERS && <Button variant="contained" color="primary" onClick={this.submit}>
             Ok
           </Button>}
         </DialogActions>

@@ -1,13 +1,6 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import {call, put, takeEvery} from 'redux-saga/effects';
 import getInstance from './services/httpService';
-import {
-  BOOK_USER_DRINK,
-  bookUserDrinkFailure,
-  bookUserDrinkSuccess,
-  LOAD_DRINKS,
-  loadDrinksFailure,
-  loadDrinksSuccess,
-} from './../actions';
+import {BOOK_USER_DRINK, bookUserDrinkFailure, bookUserDrinkSuccess,} from './../actions';
 
 function* bookUserDrink({ drink, users }) {
   try {

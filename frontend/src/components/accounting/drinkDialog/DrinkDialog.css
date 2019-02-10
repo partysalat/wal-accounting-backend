@@ -13,3 +13,10 @@
 .active{
   background: lightgray!important;
 }
+.dialog-content{
+  overflow-x:hidden;
+}
+.dialog-slider button{
+  width:36px;
+  height:36px;
+}
