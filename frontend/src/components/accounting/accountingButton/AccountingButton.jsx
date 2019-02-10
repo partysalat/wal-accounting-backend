@@ -1,7 +1,7 @@
 import React from 'react';
-import './AccountingButton.css';
 import Button from '@material-ui/core/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import './AccountingButton.css';
 
 
 export function AccountingButton(props) {

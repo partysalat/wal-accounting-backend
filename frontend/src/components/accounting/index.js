@@ -19,6 +19,8 @@ import { AccountingButton } from './accountingButton/AccountingButton';
 import AccountingButtonWithDrinkDialog from './accountingButton/AccountingButtonWithDrinkDialog';
 import { connect } from 'react-redux';
 import { syncAll } from '../../redux/actions';
+import DrinkDialog from './drinkDialog/DrinkDialog';
+import RevertDialog from './revertDialog/RevertDialog';
 
 class Accounting extends Component {
   render() {
@@ -27,29 +29,29 @@ class Accounting extends Component {
         <div className="App-header">
           <Grid container spacing={16} className="grid-container">
             <Grid item xs={3} >
-              <AccountingButtonWithDrinkDialog icon={faCocktail} color="primary" drinkType="COCKTAIL">
+              <AccountingButtonWithDrinkDialog icon={faCocktail} color="primary" drinkType="COCKTAIL" dialogComponent={DrinkDialog}>
                 Cocktails
               </AccountingButtonWithDrinkDialog>
             </Grid>
             <Grid item xs={3}>
-              <AccountingButtonWithDrinkDialog icon={faBeer} color="secondary" drinkType="BEER">
+              <AccountingButtonWithDrinkDialog icon={faBeer} color="secondary" drinkType="BEER" dialogComponent={DrinkDialog}>
                 Beer
               </AccountingButtonWithDrinkDialog>
             </Grid>
             <Grid item xs={3}>
-              <AccountingButtonWithDrinkDialog icon={faGlassWhiskey} color="default" drinkType="SHOT">
+              <AccountingButtonWithDrinkDialog icon={faGlassWhiskey} color="default" drinkType="SHOT" dialogComponent={DrinkDialog}>
                 Shots
               </AccountingButtonWithDrinkDialog>
             </Grid>
             <Grid item xs={3}>
-              <AccountingButtonWithDrinkDialog icon={faCoffee} color="primary" className="bnd-green" drinkType="SOFTDRINK">
+              <AccountingButtonWithDrinkDialog icon={faCoffee} color="primary" className="bnd-green" drinkType="SOFTDRINK" dialogComponent={DrinkDialog}>
                 Softdrinks
               </AccountingButtonWithDrinkDialog>
             </Grid>
             <Grid item xs={3}>
-              <AccountingButton icon={faUndo} color="default" className="bnd-yellow">
+              <AccountingButtonWithDrinkDialog icon={faUndo} color="default" className="bnd-yellow" dialogComponent={RevertDialog}>
                 CTRL + Z
-              </AccountingButton>
+              </AccountingButtonWithDrinkDialog>
             </Grid>
             <Grid item xs={6} container spacing={24}>
               <Grid item xs={6}>

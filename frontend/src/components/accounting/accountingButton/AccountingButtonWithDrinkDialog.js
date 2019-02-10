@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {AccountingButton} from './AccountingButton';
-import DrinkDialog from './../drinkDialog/DrinkDialog';
 
 export default class AccountingButtonWithDrinkDialog extends Component {
   constructor(props) {
@@ -16,13 +15,16 @@ export default class AccountingButtonWithDrinkDialog extends Component {
     this.setState({ isOpen: false });
   }
   render() {
-    const { drinkType, children, ...rest } = this.props;
+    const {
+      drinkType, children, dialogComponent, ...rest
+    } = this.props;
+    const Dialog = dialogComponent;
     return (
       <React.Fragment>
         <AccountingButton {...rest} onClick={this.open}>
           {children}
         </AccountingButton>
-        <DrinkDialog drinkType={drinkType} open={this.state.isOpen} onClose={this.close} />
+        <Dialog drinkType={drinkType} open={this.state.isOpen} onClose={this.close} />
       </React.Fragment>
     );
   }

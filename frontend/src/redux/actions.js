@@ -71,3 +71,46 @@ export function syncAll() {
     type: SYNC_ALL,
   };
 }
+
+export const LOAD_NEWS = 'LOAD_NEWS';
+export const LOAD_NEWS_SUCCESS = 'LOAD_NEWS_SUCCESS';
+export const LOAD_NEWS_FAILED = 'LOAD_NEWS_SUCCESS';
+export function loadNews(offset) {
+  return {
+    type: LOAD_NEWS,
+    offset,
+  };
+}
+export function loadNewsSuccess(news) {
+  return {
+    type: LOAD_NEWS_SUCCESS,
+    data: news,
+  };
+}
+export function loadNewsFailure(message) {
+  return {
+    type: LOAD_NEWS_FAILED,
+    error: message,
+  };
+}
+export const APPEND_NEWS = 'APPEND_NEWS';
+export const APPEND_NEWS_SUCCESS = 'APPEND_NEWS_SUCCESS';
+export const APPEND_NEWS_FAILED = 'APPEND_NEWS_SUCCESS';
+export function appendNews(offset) {
+  return {
+    type: APPEND_NEWS,
+    offset,
+  };
+}
+export function appendNewsSuccess(news) {
+  return {
+    type: APPEND_NEWS_SUCCESS,
+    data: news,
+  };
+}
+export function appendNewsFailure(message) {
+  return {
+    type: APPEND_NEWS_FAILED,
+    error: message,
+  };
+}

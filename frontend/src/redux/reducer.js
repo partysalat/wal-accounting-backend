@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { LOAD_DRINKS_SUCCESS, LOAD_USER_SUCCESS } from './actions';
+import { APPEND_NEWS_SUCCESS, LOAD_DRINKS_SUCCESS, LOAD_NEWS_SUCCESS, LOAD_USER_SUCCESS } from './actions';
 
 function usersReducer(state = [], action) {
   switch (action.type) {
@@ -20,9 +20,20 @@ function drinksReducer(state = [], action) {
       return state;
   }
 }
+function newsReducer(state = [], action) {
+  switch (action.type) {
+    case LOAD_NEWS_SUCCESS:
+      return action.data;
+    case APPEND_NEWS_SUCCESS:
+      return [...state, ...action.data];
+    default:
+      return state;
+  }
+}
 
 export default combineReducers({
   users: usersReducer,
   drinks: drinksReducer,
+  news: newsReducer,
 
 });

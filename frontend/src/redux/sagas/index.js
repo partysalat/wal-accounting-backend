@@ -3,6 +3,7 @@ import userInfoSaga from './userInfoSaga';
 import drinksInfoSaga from './drinksInfoSaga';
 import bookUserDrinkSaga from './bookUserDrinkSaga';
 import syncAllSaga from './syncAllSaga';
+import loadNewsSaga from './loadNewsSaga';
 
 
 export default function* rootSaga() {
@@ -11,6 +12,7 @@ export default function* rootSaga() {
     fork(drinksInfoSaga),
     fork(bookUserDrinkSaga),
     fork(syncAllSaga),
+    fork(loadNewsSaga),
     // fork(mutexSaga),
     // fork(bestlistInfoSaga),
   ]);
