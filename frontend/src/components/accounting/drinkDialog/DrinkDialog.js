@@ -3,18 +3,14 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import { connect } from 'react-redux';
+import Grid from '@material-ui/core/Grid';
+import ButtonBase from "@material-ui/core/ButtonBase";
+import './DrinkDialog.css';
 import { loadDrinks, loadUser } from '../../../redux/actions';
 
 class DrinkDialog extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false,
-    };
-  }
   componentDidMount() {
     this.props.loadUser();
     this.props.loadDrinks(this.props.drinkType);
@@ -25,18 +21,25 @@ class DrinkDialog extends React.Component {
       <Dialog
         fullWidth
         maxWidth="xl"
-        open={this.state.open}
-        // onClose={this.handleClose}
+        scroll="paper"
+        open={this.props.open}
+        onClose={this.props.onClose}
         aria-labelledby="max-width-dialog-title"
       >
-        <DialogTitle id="max-width-dialog-title">Optional sizes</DialogTitle>
+        <DialogTitle id="max-width-dialog-title">Neue Bestellung von {this.props.drinkType}</DialogTitle>
         <DialogContent>
-          <div>test</div>
-          <DialogContentText />
+          <Grid container spacing={8}>
 
+            {this.props.drinks.map(drink => (
+              <Grid xs={3} item key={drink.id}>
+                <ButtonBase className="dialog-buttons"> {drink.name}</ButtonBase>
+              </Grid>
+          ))}
+
+          </Grid>
         </DialogContent>
         <DialogActions>
-          <Button color="primary">
+          <Button color="primary" onClick={this.props.onClose}>
             Close
           </Button>
         </DialogActions>
@@ -45,10 +48,10 @@ class DrinkDialog extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, { drinkType }) {
   return {
     users: state.users,
-    drinks: state.drinks,
+    drinks: state.drinks[drinkType] || [],
   };
 }
 const mapDispatchToProps = {

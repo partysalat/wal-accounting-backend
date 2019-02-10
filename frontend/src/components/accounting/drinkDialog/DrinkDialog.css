@@ -1,0 +1,12 @@
+.drink-dialog{
+  background-color: grey;
+}
+.dialog-buttons{
+  height:100px;
+  width: 100%;
+  font-size: 14pt;
+  background-color: white!important;
+  color: black!important;
+
+  border-radius: 5px!important;
+}
