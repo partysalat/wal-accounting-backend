@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import Grid from '@material-ui/core/Grid';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import './DrinkDialog.css';
-import { loadDrinks, loadUser } from '../../../redux/actions';
+import { bookUserDrink, loadDrinks, loadUser } from '../../../redux/actions';
 
 const PAGES = {
   DRINKS: 'DRINKS',
@@ -24,6 +24,7 @@ class DrinkDialog extends React.Component {
     };
     this.goToUserPage = this.goToUserPage.bind(this);
     this.close = this.close.bind(this);
+    this.submit = this.submit.bind(this);
   }
   componentDidMount() {
     this.props.loadUser();
@@ -49,6 +50,11 @@ class DrinkDialog extends React.Component {
   close() {
     this.props.onClose();
     setTimeout(() => this.reset(), 1000);
+  }
+  submit() {
+    const { state } = this;
+    this.props.bookUserDrink(state.selectedDrink, state.selectedUsers);
+    this.close();
   }
   render() {
     let pageContent;
@@ -89,7 +95,7 @@ class DrinkDialog extends React.Component {
           <Button color="primary" onClick={this.close}>
             Abbrechen
           </Button>
-          {this.state.page === PAGES.USERS && <Button color="primary" onClick={this.close}>
+          {this.state.page === PAGES.USERS && <Button color="primary" onClick={this.submit}>
             Ok
           </Button>}
         </DialogActions>
@@ -107,6 +113,7 @@ function mapStateToProps(state, { drinkType }) {
 const mapDispatchToProps = {
   loadUser,
   loadDrinks,
+  bookUserDrink,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DrinkDialog);

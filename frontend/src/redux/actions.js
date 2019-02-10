@@ -42,3 +42,25 @@ export function loadDrinksFailure(message) {
     error: message,
   };
 }
+
+export const BOOK_USER_DRINK = 'BOOK_USER_DRINK';
+export const BOOK_USER_DRINK_SUCCESS = 'BOOK_USER_DRINK_SUCCESS';
+export const BOOK_USER_DRINK_FAILED = 'BOOK_USER_DRINK_FAILED';
+export function bookUserDrink(drink, users) {
+  return {
+    type: BOOK_USER_DRINK,
+    drink,
+    users,
+  };
+}
+export function bookUserDrinkSuccess() {
+  return {
+    type: BOOK_USER_DRINK_SUCCESS,
+  };
+}
+export function bookUserDrinkFailure(message) {
+  return {
+    type: BOOK_USER_DRINK_FAILED,
+    error: message,
+  };
+}
