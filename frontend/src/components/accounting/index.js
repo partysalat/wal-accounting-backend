@@ -12,6 +12,8 @@ import {
   faUndo,
   faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 import './Accounting.css';
 import { AccountingButton } from './accountingButton/AccountingButton';
 import AccountingButtonWithDrinkDialog from './accountingButton/AccountingButtonWithDrinkDialog';
@@ -73,6 +75,7 @@ class Accounting extends Component {
           </Grid>
 
         </div>
+        <ToastContainer position={toast.POSITION.BOTTOM_CENTER} hideProgressBar newestOnTop />
       </div>
     );
   }
