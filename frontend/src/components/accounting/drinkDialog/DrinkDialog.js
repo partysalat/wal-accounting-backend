@@ -40,7 +40,7 @@ class DrinkDialog extends React.Component {
     this.setState({ page: PAGES.DRINKS });
   }
   reset() {
-    this.setState({ page: PAGES.DRINKS, selectedDrink: null });
+    this.setState({ page: PAGES.DRINKS, selectedDrink: null, selectedUsers: [] });
   }
   isSelected(userId) {
     return this.state.selectedUsers.find(selUser => selUser.userId === userId);
