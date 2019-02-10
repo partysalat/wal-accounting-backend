@@ -6,7 +6,7 @@ function* fetchUser() {
   try {
     const client = yield call(getInstance);
     const user = yield call(client.get, '/api/users');
-    yield put(loadUserSuccess(user.data));
+    yield put(loadUserSuccess(user.data.sort((a, b) => ((a.name > b.name) ? 1 : -1))));
   } catch (e) {
     yield put(loadUserFailure(e.message));
   }
