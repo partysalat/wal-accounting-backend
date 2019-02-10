@@ -64,3 +64,10 @@ export function bookUserDrinkFailure(message) {
     error: message,
   };
 }
+
+export const SYNC_ALL = 'SYNC_ALL';
+export function syncAll() {
+  return {
+    type: SYNC_ALL,
+  };
+}

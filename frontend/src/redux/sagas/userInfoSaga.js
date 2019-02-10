@@ -13,5 +13,5 @@ function* fetchUser() {
 }
 
 export default function* () {
-  yield throttle(60 * 1000, LOAD_USER, fetchUser);
+  yield throttle(2000, LOAD_USER, fetchUser);
 }

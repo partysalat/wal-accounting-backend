@@ -2,6 +2,7 @@ import { fork, all } from 'redux-saga/effects';
 import userInfoSaga from './userInfoSaga';
 import drinksInfoSaga from './drinksInfoSaga';
 import bookUserDrinkSaga from './bookUserDrinkSaga';
+import syncAllSaga from './syncAllSaga';
 
 
 export default function* rootSaga() {
@@ -9,6 +10,7 @@ export default function* rootSaga() {
     fork(userInfoSaga),
     fork(drinksInfoSaga),
     fork(bookUserDrinkSaga),
+    fork(syncAllSaga),
     // fork(mutexSaga),
     // fork(bestlistInfoSaga),
   ]);

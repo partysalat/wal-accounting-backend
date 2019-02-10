@@ -17,6 +17,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import './Accounting.css';
 import { AccountingButton } from './accountingButton/AccountingButton';
 import AccountingButtonWithDrinkDialog from './accountingButton/AccountingButtonWithDrinkDialog';
+import { connect } from 'react-redux';
+import { syncAll } from '../../redux/actions';
 
 class Accounting extends Component {
   render() {
@@ -61,12 +63,12 @@ class Accounting extends Component {
                 </AccountingButton>
               </Grid>
               <Grid item xs={6}>
-                <AccountingButton icon={faSync}>
+                <AccountingButton icon={faSync} onClick={this.props.syncAll}>
                   Sync Drinks
                 </AccountingButton>
               </Grid>
               <Grid item xs={6}>
-                <AccountingButton icon={faSave}>
+                <AccountingButton icon={faSave} >
                   Download Bestlist
                 </AccountingButton>
               </Grid>
@@ -80,5 +82,6 @@ class Accounting extends Component {
     );
   }
 }
-
-export default Accounting;
+export default connect(null, {
+  syncAll,
+})(Accounting);
