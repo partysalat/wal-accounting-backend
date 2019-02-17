@@ -1,11 +1,12 @@
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
+import { toast } from 'react-toastify';
 import {
   appendNewsSuccess,
   APPEND_NEWS,
   appendNewsFailure,
   LOAD_DRINK_NEWS,
   loadNewsFailure,
-  loadNewsSuccess,
+  loadNewsSuccess, REMOVE_NEWS, removeNewsSuccess, removeNewsFailure,
 } from './../actions';
 import getInstance from './services/httpService';
 
@@ -29,6 +30,17 @@ function* appendNewsSaga({ offset }) {
   }
 }
 
+function* removeNewsSaga({ newsId }) {
+  try {
+    const client = yield call(getInstance);
+    const news = yield call(client.delete, `/api/news/item/${newsId}`);
+    yield put(removeNewsSuccess(newsId));
+  } catch (e) {
+    toast.error('Fehler beim News entfernen');
+    yield put(removeNewsFailure(e.message));
+  }
+}
+
 
 export default function* () {
   yield all([
@@ -37,6 +49,9 @@ export default function* () {
     }),
     fork(function* () {
       yield takeEvery(APPEND_NEWS, appendNewsSaga);
+    }),
+    fork(function* () {
+      yield takeEvery(REMOVE_NEWS, removeNewsSaga);
     }),
   ]);
 }
