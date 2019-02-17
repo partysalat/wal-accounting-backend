@@ -9,7 +9,13 @@ import List from '@material-ui/core/List';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItem from '@material-ui/core/ListItem';
 import Infinite from 'react-infinite';
-import { faCocktail } from '@fortawesome/free-solid-svg-icons';
+import {
+  faBeer,
+  faCocktail,
+  faCoffee,
+  faGlassWhiskey,
+} from '@fortawesome/free-solid-svg-icons';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ListItemText from '@material-ui/core/ListItemText';
 import './RevertDialog.css';
@@ -23,16 +29,9 @@ class RevertDialog extends React.Component {
       isInfiniteLoading: false,
     };
     this.close = this.close.bind(this);
-    this.submit = this.submit.bind(this);
     this.onOpen = this.onOpen.bind(this);
   }
-  componentWillMount() {
 
-  }
-
-  submit() {
-
-  }
   close() {
     this.props.onClose();
   }
@@ -49,6 +48,15 @@ class RevertDialog extends React.Component {
       offset: offset + 20,
       isInfiniteLoading: true,
     }));
+  }
+
+  getDrinkIcon(drinkType) {
+    switch (drinkType) {
+      case 'COCKTAIL': return faCocktail;
+      case 'SOFTDRINK': return faCoffee;
+      case 'SHOT': return faGlassWhiskey;
+      case 'BEER': return faBeer;
+    }
   }
   render() {
     return (
@@ -69,28 +77,25 @@ class RevertDialog extends React.Component {
               infiniteLoadBeginEdgeOffset={200}
               onInfiniteLoad={this.handleInfiniteLoad}
               // loadingSpinnerDelegate={this.elementInfiniteLoad()}
-              isInfiniteLoading={this.state.isInfiniteLoading}
+              isInfiniteLoading={this.props.loading || this.props.lastLoadEmpty}
             >{this.props.news.map(newsItem => (
               <ListItem key={newsItem.news.id}>
                 <ListItemIcon>
-                  <FontAwesomeIcon icon={faCocktail} size="2x" />
+                  <FontAwesomeIcon icon={this.getDrinkIcon(newsItem.payload.DrinkPayload.type)} size="2x" />
                 </ListItemIcon>
                 <ListItemText
-                  primary="Single-line item"
-                  secondary="Secondary text"
+                  primary={`${newsItem.news.amount}x ${newsItem.payload.DrinkPayload.name}`}
+                  secondary={`${newsItem.user.name}`}
                 />
               </ListItem>))}
 
-            </Infinite>;
+            </Infinite>
 
 
           </List>
         </DialogContent>
         <DialogActions>
-          <Button color="primary" onClick={this.close}>
-            Abbrechen
-          </Button>
-          <Button variant="contained" color="primary" onClick={this.submit}>
+          <Button variant="contained" color="primary" onClick={this.close}>
             Ok
           </Button>
         </DialogActions>
@@ -101,7 +106,9 @@ class RevertDialog extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    news: state.news || [],
+    news: state.drinkNews.data || [],
+    loading: state.drinkNews.loading || false,
+    lastLoadEmpty: state.drinkNews.lastLoadEmpty,
   };
 }
 const mapDispatchToProps = {

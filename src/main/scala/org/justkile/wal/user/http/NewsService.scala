@@ -22,6 +22,12 @@ class NewsService[F[_]: Sync: NewsRepository: CommandProcessor: Logger] extends 
         res <- Ok(news)
       } yield res
 
+    case req @ GET -> Root / IntVar(skip) / drinks =>
+      for {
+        news <- NewsRepository[F].getDrinkNews(skip, PAGE_SIZE)
+        res <- Ok(news)
+      } yield res
+
     case req @ DELETE -> Root / "item" / IntVar(newsId) =>
       for {
         newsItem <- NewsRepository[F].getNewsItem(newsId)

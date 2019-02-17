@@ -65,6 +65,33 @@ object NewsRepositoryIO {
                            .find(_.isDefined)
                            .flatten
                            .get)))
+    override def getDrinkNews(skip: Int, pageSize: Int): IO[List[JoinedNews]] =
+      sql"""
+         SELECT n.id,
+                n.newsType,
+                n.userId,
+                n.amount,
+                n.referenceId,
+
+                u.id,
+                u.userId,
+                u.name,
+
+                d.id,
+                d.drinkName,
+                d.drinkType
+
+         FROM NEWS n
+         LEFT JOIN USERS u ON n.userId = u.userId
+         LEFT JOIN DRINKS d ON n.REFERENCEID = d.id
+         WHERE n.newsType = 'DRINK'
+         ORDER BY createdAt DESC
+         LIMIT $pageSize OFFSET $skip
+         """
+        .query[(News, UserProjection, DrinkPayload)]
+        .to[List]
+        .transact(Database.xa)
+        .map(_.map(res => JoinedNews(res._1, res._2, res._3)))
 
     override def removeNews(userId: String, newsId: Int): IO[Int] =
       sql"DELETE FROM NEWS where id=$newsId".update.run

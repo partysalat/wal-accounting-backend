@@ -72,24 +72,24 @@ export function syncAll() {
   };
 }
 
-export const LOAD_NEWS = 'LOAD_NEWS';
-export const LOAD_NEWS_SUCCESS = 'LOAD_NEWS_SUCCESS';
-export const LOAD_NEWS_FAILED = 'LOAD_NEWS_SUCCESS';
+export const LOAD_DRINK_NEWS = 'LOAD_DRINK_NEWS';
+export const LOAD_DRINK_NEWS_SUCCESS = 'LOAD_DRINK_NEWS_SUCCESS';
+export const LOAD_DRINK_NEWS_FAILED = 'LOAD_DRINK_NEWS_SUCCESS';
 export function loadNews(offset) {
   return {
-    type: LOAD_NEWS,
+    type: LOAD_DRINK_NEWS,
     offset,
   };
 }
 export function loadNewsSuccess(news) {
   return {
-    type: LOAD_NEWS_SUCCESS,
+    type: LOAD_DRINK_NEWS_SUCCESS,
     data: news,
   };
 }
 export function loadNewsFailure(message) {
   return {
-    type: LOAD_NEWS_FAILED,
+    type: LOAD_DRINK_NEWS_FAILED,
     error: message,
   };
 }

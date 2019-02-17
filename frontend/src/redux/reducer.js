@@ -1,5 +1,11 @@
 import { combineReducers } from 'redux';
-import { APPEND_NEWS_SUCCESS, LOAD_DRINKS_SUCCESS, LOAD_NEWS_SUCCESS, LOAD_USER_SUCCESS } from './actions';
+import {
+  APPEND_NEWS_SUCCESS,
+  LOAD_DRINKS_SUCCESS,
+  LOAD_DRINK_NEWS_SUCCESS,
+  LOAD_USER_SUCCESS,
+  LOAD_DRINK_NEWS, APPEND_NEWS,
+} from './actions';
 
 function usersReducer(state = [], action) {
   switch (action.type) {
@@ -20,12 +26,33 @@ function drinksReducer(state = [], action) {
       return state;
   }
 }
-function newsReducer(state = [], action) {
+function drinkNewsReducer(state = [], action) {
   switch (action.type) {
-    case LOAD_NEWS_SUCCESS:
-      return action.data;
+    case LOAD_DRINK_NEWS:
+      return {
+        loading: true,
+        lastLoadEmpty: false,
+        data: [],
+      };
+
+    case LOAD_DRINK_NEWS_SUCCESS:
+      return {
+        loading: false,
+        data: action.data,
+      };
+
+    case APPEND_NEWS:
+      return {
+        loading: true,
+        data: state.data,
+      };
     case APPEND_NEWS_SUCCESS:
-      return [...state, ...action.data];
+      return {
+        loading: false,
+        lastLoadEmpty: action.data.length === 0,
+        data: [...state.data, ...action.data],
+
+      };
     default:
       return state;
   }
@@ -34,6 +61,6 @@ function newsReducer(state = [], action) {
 export default combineReducers({
   users: usersReducer,
   drinks: drinksReducer,
-  news: newsReducer,
+  drinkNews: drinkNewsReducer,
 
 });
