@@ -16,6 +16,10 @@
 .dialog-content{
   overflow-x:hidden;
 }
+/*body{*/
+  /*-webkit-overflow-scrolling: auto;*/
+  /*overflow-x:hidden;*/
+/*}*/
 .dialog-slider button{
   width:36px;
   height:36px;
