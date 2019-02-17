@@ -19,7 +19,8 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ListItemText from '@material-ui/core/ListItemText';
 import './RevertDialog.css';
-import { appendNews, loadNews } from '../../../redux/actions';
+import { appendNews, loadNews, removeNews } from '../../../redux/actions';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
 class RevertDialog extends React.Component {
   constructor(props) {
@@ -49,7 +50,10 @@ class RevertDialog extends React.Component {
       isInfiniteLoading: true,
     }));
   }
-
+  remove = (newsItem) => {
+    console.log('Remove', newsItem);
+    this.props.removeNews(newsItem.news.id);
+  }
   getDrinkIcon(drinkType) {
     switch (drinkType) {
       case 'COCKTAIL': return faCocktail;
@@ -62,7 +66,7 @@ class RevertDialog extends React.Component {
     return (
       <Dialog
         fullWidth
-        maxWidth="xl"
+        maxWidth="sm"
         scroll="paper"
         open={this.props.open}
         onClose={this.close}
@@ -72,8 +76,8 @@ class RevertDialog extends React.Component {
         <DialogContent className="dialog-content">
           <List dense >
             <Infinite
-              elementHeight={40}
-              containerHeight={250}
+              elementHeight={54}
+              containerHeight={300}
               infiniteLoadBeginEdgeOffset={200}
               onInfiniteLoad={this.handleInfiniteLoad}
               // loadingSpinnerDelegate={this.elementInfiniteLoad()}
@@ -81,12 +85,19 @@ class RevertDialog extends React.Component {
             >{this.props.news.map(newsItem => (
               <ListItem key={newsItem.news.id}>
                 <ListItemIcon>
-                  <FontAwesomeIcon icon={this.getDrinkIcon(newsItem.payload.DrinkPayload.type)} size="2x" />
+                  <FontAwesomeIcon icon={this.getDrinkIcon(newsItem.payload.DrinkPayload.type)} size="2x" style={{ width: '75px' }} />
                 </ListItemIcon>
                 <ListItemText
                   primary={`${newsItem.news.amount}x ${newsItem.payload.DrinkPayload.name}`}
                   secondary={`${newsItem.user.name}`}
                 />
+                <ListItemSecondaryAction>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => this.remove(newsItem)}
+                  >X</Button>
+                </ListItemSecondaryAction>
               </ListItem>))}
 
             </Infinite>
@@ -113,7 +124,8 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = {
   loadNews,
-  appendNews
+  appendNews,
+  removeNews
   ,
 };
 

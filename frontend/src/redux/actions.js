@@ -74,7 +74,7 @@ export function syncAll() {
 
 export const LOAD_DRINK_NEWS = 'LOAD_DRINK_NEWS';
 export const LOAD_DRINK_NEWS_SUCCESS = 'LOAD_DRINK_NEWS_SUCCESS';
-export const LOAD_DRINK_NEWS_FAILED = 'LOAD_DRINK_NEWS_SUCCESS';
+export const LOAD_DRINK_NEWS_FAILED = 'LOAD_DRINK_NEWS_FAILED';
 export function loadNews(offset) {
   return {
     type: LOAD_DRINK_NEWS,
@@ -93,9 +93,10 @@ export function loadNewsFailure(message) {
     error: message,
   };
 }
+
 export const APPEND_NEWS = 'APPEND_NEWS';
 export const APPEND_NEWS_SUCCESS = 'APPEND_NEWS_SUCCESS';
-export const APPEND_NEWS_FAILED = 'APPEND_NEWS_SUCCESS';
+export const APPEND_NEWS_FAILED = 'APPEND_NEWS_FAILURE';
 export function appendNews(offset) {
   return {
     type: APPEND_NEWS,
@@ -111,6 +112,28 @@ export function appendNewsSuccess(news) {
 export function appendNewsFailure(message) {
   return {
     type: APPEND_NEWS_FAILED,
+    error: message,
+  };
+}
+
+export const REMOVE_NEWS = 'REMOVE_NEWS';
+export const REMOVE_NEWS_SUCCESS = 'REMOVE_NEWS_SUCCESS';
+export const REMOVE_NEWS_FAILED = 'REMOVE_NEWS_SUCCESS';
+export function removeNews(newsId) {
+  return {
+    type: REMOVE_NEWS,
+    newsId,
+  };
+}
+export function removeNewsSuccess(newsId) {
+  return {
+    type: REMOVE_NEWS_SUCCESS,
+    newsId,
+  };
+}
+export function removeNewsFailure(message) {
+  return {
+    type: REMOVE_NEWS_FAILED,
     error: message,
   };
 }

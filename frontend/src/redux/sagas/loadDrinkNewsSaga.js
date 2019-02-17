@@ -1,5 +1,12 @@
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { appendNewsSuccess, APPEND_NEWS, appendNewsFailure, LOAD_DRINK_NEWS, loadNewsFailure, loadNewsSuccess } from './../actions';
+import {
+  appendNewsSuccess,
+  APPEND_NEWS,
+  appendNewsFailure,
+  LOAD_DRINK_NEWS,
+  loadNewsFailure,
+  loadNewsSuccess,
+} from './../actions';
 import getInstance from './services/httpService';
 
 function* loadDrinkNewsSaga({ offset }) {
@@ -11,6 +18,7 @@ function* loadDrinkNewsSaga({ offset }) {
     yield put(loadNewsFailure(e.message));
   }
 }
+
 function* appendNewsSaga({ offset }) {
   try {
     const client = yield call(getInstance);

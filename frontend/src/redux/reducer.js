@@ -4,7 +4,7 @@ import {
   LOAD_DRINKS_SUCCESS,
   LOAD_DRINK_NEWS_SUCCESS,
   LOAD_USER_SUCCESS,
-  LOAD_DRINK_NEWS, APPEND_NEWS,
+  LOAD_DRINK_NEWS, APPEND_NEWS, REMOVE_NEWS,
 } from './actions';
 
 function usersReducer(state = [], action) {
@@ -45,6 +45,11 @@ function drinkNewsReducer(state = [], action) {
       return {
         loading: true,
         data: state.data,
+      };
+    case REMOVE_NEWS:
+      return {
+        loading: state.loading,
+        data: state.data.filter(item => item.news.id !== action.newsId),
       };
     case APPEND_NEWS_SUCCESS:
       return {
