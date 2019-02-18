@@ -9,7 +9,7 @@ function* bookUserDrink({ drink, users }) {
     const client = yield call(getInstance);
     yield call(client.post, '/api/users/drink', {
       drinkId: drink.id,
-      users: users.map(user => ({ userId: `${user.userId}`, amount: 1 })),
+      users: users.map(user => ({ userId: `${user.userId}`, amount: user.amount })),
     });
     toast.info('Erfolg!');
     yield put(bookUserDrinkSuccess());
