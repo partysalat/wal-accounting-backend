@@ -4,9 +4,10 @@ import cats.effect._
 import cats.implicits._
 import io.chrisdavenport.log4cats.Logger
 import io.circe.generic.auto._
+import io.circe.syntax._
 import org.http4s.HttpService
-import org.http4s.circe.CirceEntityCodec._
 import org.http4s.dsl.Http4sDsl
+import org.http4s.circe._
 import org.justkile.wal.event_sourcing.CommandProcessor
 import org.justkile.wal.user.algebras.NewsRepository
 import org.justkile.wal.user.domain.{DrinkPayload, User}
@@ -19,13 +20,28 @@ class NewsService[F[_]: Sync: NewsRepository: CommandProcessor: Logger] extends 
     case req @ GET -> Root / IntVar(skip) =>
       for {
         news <- NewsRepository[F].getNews(skip, PAGE_SIZE)
-        res <- Ok(news)
+        res <- Ok(news.asJson)
+      } yield res
+    case req @ GET -> Root / "csv" =>
+      for {
+        news <- NewsRepository[F].getDrinkNews(0, Integer.MAX_VALUE)
+        csv = news
+          .map(newsItem => {
+            newsItem.payload match {
+              case DrinkPayload(id, drinkName, drinkType) =>
+                List(newsItem.user.name, drinkName, newsItem.news.amount).mkString(",")
+              case _ => ""
+            }
+          })
+          .mkString("\n")
+
+        res <- Ok(csv)
       } yield res
 
     case req @ GET -> Root / IntVar(skip) / drinks =>
       for {
         news <- NewsRepository[F].getDrinkNews(skip, PAGE_SIZE)
-        res <- Ok(news)
+        res <- Ok(news.asJson)
       } yield res
 
     case req @ DELETE -> Root / "item" / IntVar(newsId) =>

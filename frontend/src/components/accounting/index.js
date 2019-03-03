@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import Grid from '@material-ui/core/Grid';
 import {
@@ -13,12 +13,12 @@ import {
   faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import 'react-toastify/dist/ReactToastify.css';
-import {toast, ToastContainer} from 'react-toastify';
-import {connect} from 'react-redux';
+import { toast, ToastContainer } from 'react-toastify';
+import { connect } from 'react-redux';
 import './Accounting.css';
-import {AccountingButton} from './accountingButton/AccountingButton';
+import { AccountingButton } from './accountingButton/AccountingButton';
 import AccountingButtonWithDrinkDialog from './accountingButton/AccountingButtonWithDrinkDialog';
-import {syncAll} from '../../redux/actions';
+import { syncAll } from '../../redux/actions';
 import DrinkDialog from './drinkDialog/DrinkDialog';
 import RevertDialog from './revertDialog/RevertDialog';
 
@@ -70,7 +70,7 @@ class Accounting extends Component {
             </Grid>
             <Grid item xs={6}>
               <AccountingButton icon={faSave} >
-                  Download Bestlist
+                <a href="/api/news/csv">Download Bestlist</a>
               </AccountingButton>
             </Grid>
           </Grid>
