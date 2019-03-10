@@ -5,7 +5,7 @@ import cats.implicits._
 import io.chrisdavenport.log4cats.Logger
 import io.circe.generic.auto._
 import io.circe.syntax._
-import org.http4s.HttpService
+import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
 import org.http4s.circe._
 import org.justkile.wal.event_sourcing.CommandProcessor
@@ -15,7 +15,7 @@ import org.justkile.wal.user.domain.User.RemoveUserDrinkCommand
 
 class NewsService[F[_]: Sync: NewsRepository: CommandProcessor: Logger] extends Http4sDsl[F] {
   val PAGE_SIZE = 20
-  val service: HttpService[F] = HttpService[F] {
+  val service: HttpRoutes[F] = HttpRoutes.of[F] {
 
     case req @ GET -> Root / IntVar(skip) =>
       for {

@@ -5,7 +5,7 @@ import cats.effect._
 import cats.implicits._
 import io.circe.generic.auto._
 import org.http4s.circe.CirceEntityCodec._
-import org.http4s.HttpService
+import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
 import org.justkile.wal.drinks.algebras.DrinkRepository
 import org.justkile.wal.drinks.domain.DrinkType
@@ -13,7 +13,7 @@ import org.justkile.wal.drinks.domain.DrinkType.DrinkType
 
 class DrinkService[F[_]: Sync: DrinkRepository: Applicative] extends Http4sDsl[F] {
   case class CreateDrinkRequest(name: String, `type`: DrinkType)
-  val service: HttpService[F] = HttpService[F] {
+  val service: HttpRoutes[F] = HttpRoutes.of[F] {
 
     case req @ POST -> Root =>
       for {

@@ -4,7 +4,7 @@ import cats.Applicative
 import cats.effect._
 import cats.implicits._
 import io.circe.generic.auto._
-import org.http4s.HttpService
+import org.http4s.HttpRoutes
 import org.http4s.circe.CirceEntityCodec._
 import org.http4s.dsl.Http4sDsl
 import org.justkile.wal.event_sourcing.CommandProcessor
@@ -19,7 +19,7 @@ class UserService[F[_]: Sync: AchievementRepository: CommandProcessor: UserRepos
   case class UserNews(userId: String, amount: Int)
   case class AddDrinkRequest(drinkId: Int, users: List[UserNews])
 
-  val service: HttpService[F] = HttpService[F] {
+  val service: HttpRoutes[F] = HttpRoutes.of[F] {
 
     case req @ GET -> Root =>
       for {

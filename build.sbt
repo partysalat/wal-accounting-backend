@@ -1,4 +1,4 @@
-lazy val Http4sVersion = "0.18.21"
+lazy val Http4sVersion = "0.20.0-M6"
 lazy val CirceVersion = "0.10.1"
 lazy val DoobieVersion = "0.5.3"
 lazy val H2Version = "1.4.196"
