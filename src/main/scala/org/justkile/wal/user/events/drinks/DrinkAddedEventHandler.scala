@@ -6,13 +6,18 @@ import io.chrisdavenport.log4cats.Logger
 import org.justkile.wal.event_sourcing.event_bus.EventBus.EventHandler
 import org.justkile.wal.user.algebras.NewsRepository
 import org.justkile.wal.user.domain.User.UserDrinkAdded
+import org.justkile.wal.user.http.websocket.NewsWebsocketQueue
 import org.justkile.wal.utils.Done
 
-class DrinkAddedEventHandler[F[_]: Sync: Logger: NewsRepository] extends EventHandler[F, UserDrinkAdded] {
+class DrinkAddedEventHandler[F[_]: Sync: Logger: NewsRepository: NewsWebsocketQueue]
+    extends EventHandler[F, UserDrinkAdded] {
   def handle(event: UserDrinkAdded): F[Done] =
     for {
       _ <- Logger[F].info(s"UserDrinkAdded $event")
       res <- NewsRepository[F].addDrinkNews(event.userId, event.drinkId, event.amount)
+//      drinkNews <- Traverse[Option].sequence(res.map(news => NewsRepository[F].getNewsItem(news.id)))
+      drinkNews <- res.map(news => NewsRepository[F].getNewsItem(news.id)).sequence
+      _ <- drinkNews.map(NewsWebsocketQueue[F].publish(_)).sequence
       _ <- Logger[F].info(s"UserDrinkAdded result $res")
     } yield Done
 }

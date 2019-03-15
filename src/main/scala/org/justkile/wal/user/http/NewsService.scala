@@ -5,15 +5,28 @@ import cats.implicits._
 import io.chrisdavenport.log4cats.Logger
 import io.circe.generic.auto._
 import io.circe.syntax._
+import fs2._
 import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
+import cats.effect._
+import org.http4s.HttpService
 import org.http4s.circe._
+import org.http4s.dsl.Http4sDsl
+import org.http4s.server.websocket.WebSocketBuilder
+import org.http4s.websocket.WebSocketFrame
+import org.http4s.websocket.WebSocketFrame.Text
 import org.justkile.wal.event_sourcing.CommandProcessor
 import org.justkile.wal.user.algebras.NewsRepository
-import org.justkile.wal.user.domain.{DrinkPayload, User}
 import org.justkile.wal.user.domain.User.RemoveUserDrinkCommand
+import org.justkile.wal.user.domain.{DrinkPayload, JoinedNews, User}
+import org.justkile.wal.user.http.websocket.NewsWebsocketQueue
 
-class NewsService[F[_]: Sync: NewsRepository: CommandProcessor: Logger] extends Http4sDsl[F] {
+import scala.concurrent.duration._
+import scala.concurrent.ExecutionContext
+
+class NewsService[F[_]: Sync: NewsRepository: CommandProcessor: Logger: Timer](websocketQueue: NewsWebsocketQueue[F])(
+    implicit F: Effect[F])
+    extends Http4sDsl[F] {
   val PAGE_SIZE = 20
   val service: HttpRoutes[F] = HttpRoutes.of[F] {
 
@@ -22,6 +35,25 @@ class NewsService[F[_]: Sync: NewsRepository: CommandProcessor: Logger] extends 
         news <- NewsRepository[F].getNews(skip, PAGE_SIZE)
         res <- Ok(news.asJson)
       } yield res
+
+    case GET -> Root / "ws" =>
+      val toClient: Stream[F, WebSocketFrame] =
+//        Stream.emit(Text("How can I do this from a class instance?"))
+        websocketQueue.stream.map(news => Text(news.asJson.toString))
+////      Stream.awakeEvery[F](1.seconds).map(d => Text(s"Ping! $d"))
+//      val fromClient: Pipe[F, WebSocketFrame, Unit] = _.evalMap {
+//        case Text(t, _) => F.delay(println(t))
+//        case f => F.delay(println(s"Unknown type: $f"))
+//      }
+//      WebSocketBuilder[F].build(toClient, fromClient)
+//      val toClient: Stream[F, WebSocketFrame] =
+//        Stream.awakeEvery[F](1.seconds).map(d => Text(s"Ping! $d"))
+      val fromClient: Pipe[F, WebSocketFrame, Unit] = _.evalMap {
+        case Text(t, _) => F.delay(println(t))
+        case f => F.delay(println(s"Unknown type: $f"))
+      }
+      WebSocketBuilder[F].build(toClient, fromClient)
+
     case req @ GET -> Root / "csv" =>
       for {
         news <- NewsRepository[F].getDrinkNews(0, Integer.MAX_VALUE)

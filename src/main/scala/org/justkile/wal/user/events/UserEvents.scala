@@ -10,10 +10,12 @@ import org.justkile.wal.user.events.achievements.{AchievementHandler, Achievemen
 import org.justkile.wal.user.events.bestlist.BestlistStatsEventHandler
 import org.justkile.wal.user.events.drinks.{DrinkAddedEventHandler, DrinkRemovedEventHandler}
 import org.justkile.wal.user.events.news.{AchievementRemovedEventHandler, GainedAchievementEventHandler}
+import org.justkile.wal.user.http.websocket.NewsWebsocketQueue
 
 class UserEvents[
-    F[_]: Sync: EventBus: Logger: UserRepository: NewsRepository: AchievementRepository: CommandProcessor: AggregateRepository: BestlistRepository] {
-
+    F[_]: Sync: EventBus: Logger: UserRepository: NewsRepository: AchievementRepository: CommandProcessor: AggregateRepository: BestlistRepository](
+    websocketQueue: NewsWebsocketQueue[F]) {
+  implicit val queue = websocketQueue
   def start: F[Unit] =
     for {
       _ <- EventBus[F].subscribe(new UserCreatedEventHandler[F])
