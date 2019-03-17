@@ -20,6 +20,9 @@ class AddUserDialog extends React.Component {
   }
 
   close() {
+    this.setState({
+      drinker: '',
+    });
     this.props.onClose();
   }
   handleChange =(event) => {

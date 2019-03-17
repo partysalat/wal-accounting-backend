@@ -22,12 +22,17 @@ class AddDrinkDialog extends React.Component {
     super(props);
     this.state = {
       drinkName: '',
+      drinkType: null,
     };
     this.close = this.close.bind(this);
     this.onOpen = this.onOpen.bind(this);
   }
 
   close() {
+    this.setState({
+      drinkName: '',
+      drinkType: null,
+    });
     this.props.onClose();
   }
   handleChange =(event) => {
