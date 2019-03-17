@@ -1,0 +1,26 @@
+.drink-dialog{
+  background-color: grey;
+}
+.dialog-buttons{
+  height:100px;
+  width: 100%;
+  font-size: 14pt;
+  background-color: white!important;
+  color: black!important;
+
+  border-radius: 5px!important;
+}
+.active{
+  background: lightgray!important;
+}
+.dialog-content{
+  overflow-x:hidden;
+}
+/*body{*/
+  /*-webkit-overflow-scrolling: auto;*/
+  /*overflow-x:hidden;*/
+/*}*/
+.dialog-slider button{
+  width:36px;
+  height:36px;
+}
