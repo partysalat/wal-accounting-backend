@@ -163,7 +163,7 @@ export function addUserFailure(message) {
 export const ADD_DRINK = 'ADD_DRINK';
 export const ADD_DRINK_SUCCESS = 'ADD_DRINK_SUCCESS';
 export const ADD_DRINK_FAILED = 'ADD_DRINK_SUCCESS';
-export function addDrink(drinkType, drinkName) {
+export function addDrink(drinkName, drinkType) {
   return {
     type: ADD_DRINK,
     drinkType,

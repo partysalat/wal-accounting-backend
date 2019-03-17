@@ -5,15 +5,23 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
-import './AddUserDialog.css';
+import ButtonBase from '@material-ui/core/ButtonBase';
+import Grid from '@material-ui/core/Grid';
 import { connect } from 'react-redux';
-import { addUser, loadNews } from '../../../redux/actions';
+import './AddDrinkDialog.css';
+import { addDrink } from '../../../redux/actions';
 
-class AddUserDialog extends React.Component {
+const DRINKS = [
+  'COCKTAIL',
+  'BEER',
+  'SHOT',
+  'SOFTDRINK',
+];
+class AddDrinkDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      drinker: '',
+      drinkName: '',
     };
     this.close = this.close.bind(this);
     this.onOpen = this.onOpen.bind(this);
@@ -24,14 +32,19 @@ class AddUserDialog extends React.Component {
   }
   handleChange =(event) => {
     this.setState({
-      drinker: event.target.value,
+      drinkName: event.target.value,
     });
   }
   onOpen() {
     // this.props.loadNews(0);
   }
+  selectDrinkType = (drinkType) => {
+    this.setState({
+      drinkType,
+    });
+  }
   onSubmit = () => {
-    this.props.addUser(this.state.drinker);
+    this.props.addDrink(this.state.drinkName, this.state.drinkType);
     this.close();
   }
   render() {
@@ -44,13 +57,23 @@ class AddUserDialog extends React.Component {
         onClose={this.close}
         onEnter={this.onOpen}
       >
-        <DialogTitle>Neuer Trinker</DialogTitle>
+        <DialogTitle>Neuer Drink</DialogTitle>
         <DialogContent className="dialog-content">
+          <Grid container>
+            {DRINKS.map(drink =>
+            (<Grid xs={3} item key={drink}>
+              <ButtonBase
+                className={`dialog-buttons ${this.state.drinkType === drink && 'active'}`}
+                onClick={() => this.selectDrinkType(drink)}
+              > {drink}
+              </ButtonBase>
+            </Grid>))}
+          </Grid>
           <form noValidate autoComplete="off">
             <TextField
               id="standard-name"
               label="Name"
-              value={this.state.drinker}
+              value={this.state.drinkName}
               onChange={this.handleChange}
               margin="normal"
             />
@@ -63,14 +86,23 @@ class AddUserDialog extends React.Component {
           <Button variant="contained" color="primary" onClick={this.onSubmit}>
             Ok
           </Button>
+
+
         </DialogActions>
       </Dialog>
     );
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    news: state.drinkNews.data || [],
+    loading: state.drinkNews.loading || false,
+    lastLoadEmpty: state.drinkNews.lastLoadEmpty,
+  };
+}
 const mapDispatchToProps = {
-  addUser,
+  addDrink,
 };
 
-export default connect(null, mapDispatchToProps)(AddUserDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(AddDrinkDialog);

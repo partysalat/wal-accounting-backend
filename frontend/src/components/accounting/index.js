@@ -22,6 +22,7 @@ import { syncAll } from '../../redux/actions';
 import DrinkDialog from './drinkDialog/DrinkDialog';
 import RevertDialog from './revertDialog/RevertDialog';
 import AddUserDialog from './addUserDialog/AddUserDialog';
+import AddDrinkDialog from './addDrinkDialog/AddDrinkDialog';
 
 class Accounting extends Component {
   render() {
@@ -60,9 +61,10 @@ class Accounting extends Component {
               </AccountingButtonWithDrinkDialog>
             </Grid>
             <Grid item xs={6}>
-              <AccountingButton icon={faCartPlus}>
-                  Neuer Drink
-              </AccountingButton>
+              <AccountingButtonWithDrinkDialog icon={faCartPlus} color="default" dialogComponent={AddDrinkDialog}>
+                Neuer Drink
+              </AccountingButtonWithDrinkDialog>
+
             </Grid>
             <Grid item xs={6}>
               <AccountingButton icon={faSync} onClick={this.props.syncAll}>
@@ -71,7 +73,7 @@ class Accounting extends Component {
             </Grid>
             <Grid item xs={6}>
               <AccountingButton icon={faSave} >
-                <a href="/api/news/csv">Download Bestlist</a>
+                <a href="/api/news/csv" target="_blank">Download Bestlist</a>
               </AccountingButton>
             </Grid>
           </Grid>
