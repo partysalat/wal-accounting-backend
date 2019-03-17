@@ -41,8 +41,8 @@ object Server extends IOApp {
       websocketQueue = new NewsWebsocketQueue[IO](topic)
       _ <- Stream.eval(Database.schemaDefinition)
       _ <- Stream.eval(Database.insertions)
-      _ <- Stream.eval(new BootstrapService[IO].sendInitialData)
       _ <- Stream.eval(new UserEvents[IO](websocketQueue).start)
+      _ <- Stream.eval(new BootstrapService[IO].sendInitialData)
 
       _ <- BlazeBuilder[IO]
         .bindHttp()

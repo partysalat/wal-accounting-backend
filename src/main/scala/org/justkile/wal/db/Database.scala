@@ -17,6 +17,9 @@ object Database {
 
   val schemaDefinition: IO[Unit] = List(
     sql"""
+      SET IGNORECASE TRUE
+    """.update.run,
+    sql"""
       CREATE TABLE IF NOT EXISTS events (
       id         INT AUTO_INCREMENT PRIMARY KEY,
       identifier VARCHAR,

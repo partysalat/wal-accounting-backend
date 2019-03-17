@@ -19,6 +19,7 @@ object UserRepositoryIO {
       sql"""
         SELECT id, userId, name
         FROM users
+        ORDER BY name ASC
       """
         .query[UserProjection]
         .to[List]

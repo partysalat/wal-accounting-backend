@@ -22,6 +22,7 @@ object DrinkRepositoryIO {
         SELECT id, drinkName, drinkType
         FROM drinks
         WHERE drinkType = $drinkType
+        ORDER BY DRINKNAME ASC
       """
         .query[Drink]
         .to[List]
