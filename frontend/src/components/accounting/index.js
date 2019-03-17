@@ -21,6 +21,7 @@ import AccountingButtonWithDrinkDialog from './accountingButton/AccountingButton
 import { syncAll } from '../../redux/actions';
 import DrinkDialog from './drinkDialog/DrinkDialog';
 import RevertDialog from './revertDialog/RevertDialog';
+import AddUserDialog from './addUserDialog/AddUserDialog';
 
 class Accounting extends Component {
   render() {
@@ -54,9 +55,9 @@ class Accounting extends Component {
           </Grid>
           <Grid item xs={6} container spacing={24}>
             <Grid item xs={6}>
-              <AccountingButton icon={faUserPlus}>
-                  Neuer Trinker
-              </AccountingButton>
+              <AccountingButtonWithDrinkDialog icon={faUserPlus} color="default" dialogComponent={AddUserDialog}>
+                Neuer Trinker
+              </AccountingButtonWithDrinkDialog>
             </Grid>
             <Grid item xs={6}>
               <AccountingButton icon={faCartPlus}>

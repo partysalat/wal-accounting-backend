@@ -137,3 +137,47 @@ export function removeNewsFailure(message) {
     error: message,
   };
 }
+
+
+export const ADD_USER = 'ADD_USER';
+export const ADD_USER_SUCCESS = 'ADD_USER_SUCCESS';
+export const ADD_USER_FAILED = 'ADD_USER_SUCCESS';
+export function addUser(userName) {
+  return {
+    type: ADD_USER,
+    userName,
+  };
+}
+export function addUserSuccess() {
+  return {
+    type: ADD_USER_SUCCESS,
+  };
+}
+export function addUserFailure(message) {
+  return {
+    type: ADD_USER_FAILED,
+    error: message,
+  };
+}
+
+export const ADD_DRINK = 'ADD_DRINK';
+export const ADD_DRINK_SUCCESS = 'ADD_DRINK_SUCCESS';
+export const ADD_DRINK_FAILED = 'ADD_DRINK_SUCCESS';
+export function addDrink(drinkType, drinkName) {
+  return {
+    type: ADD_DRINK,
+    drinkType,
+    drinkName,
+  };
+}
+export function addDrinkSuccess() {
+  return {
+    type: ADD_DRINK_SUCCESS,
+  };
+}
+export function addDrinkFailure(message) {
+  return {
+    type: ADD_DRINK_FAILED,
+    error: message,
+  };
+}

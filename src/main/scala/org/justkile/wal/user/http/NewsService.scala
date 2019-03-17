@@ -38,16 +38,7 @@ class NewsService[F[_]: Sync: NewsRepository: CommandProcessor: Logger: Timer](w
 
     case GET -> Root / "ws" =>
       val toClient: Stream[F, WebSocketFrame] =
-//        Stream.emit(Text("How can I do this from a class instance?"))
         websocketQueue.stream.map(news => Text(news.asJson.toString))
-////      Stream.awakeEvery[F](1.seconds).map(d => Text(s"Ping! $d"))
-//      val fromClient: Pipe[F, WebSocketFrame, Unit] = _.evalMap {
-//        case Text(t, _) => F.delay(println(t))
-//        case f => F.delay(println(s"Unknown type: $f"))
-//      }
-//      WebSocketBuilder[F].build(toClient, fromClient)
-//      val toClient: Stream[F, WebSocketFrame] =
-//        Stream.awakeEvery[F](1.seconds).map(d => Text(s"Ping! $d"))
       val fromClient: Pipe[F, WebSocketFrame, Unit] = _.evalMap {
         case Text(t, _) => F.delay(println(t))
         case f => F.delay(println(s"Unknown type: $f"))
