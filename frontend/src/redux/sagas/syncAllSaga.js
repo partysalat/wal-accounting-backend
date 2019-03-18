@@ -1,6 +1,5 @@
 import { put, takeEvery } from 'redux-saga/effects';
-import { loadDrinks, SYNC_ALL } from './../actions';
-import { loadUser } from '../actions';
+import { loadDrinks, SYNC_ALL, loadUser } from './../actions';
 
 function* sync() {
   yield put(loadUser());

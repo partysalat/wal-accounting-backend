@@ -181,3 +181,47 @@ export function addDrinkFailure(message) {
     error: message,
   };
 }
+
+
+export const LOAD_NEWS = 'LOAD_NEWS';
+export const LOAD_NEWS_SUCCESS = 'LOAD_NEWS_SUCCESS';
+export const LOAD_NEWS_FAILED = 'LOAD_NEWS_FAILED';
+export function loadNewsItems(offset) {
+  return {
+    type: LOAD_NEWS,
+    offset,
+  };
+}
+export function loadNewsItemsSuccess(news) {
+  return {
+    type: LOAD_NEWS_SUCCESS,
+    data: news,
+  };
+}
+export function loadNewsItemsFailure(message) {
+  return {
+    type: LOAD_NEWS_FAILED,
+    error: message,
+  };
+}
+export const APPEND_NEWS_ITEMS = 'APPEND_NEWS_ITEMS';
+export const APPEND_NEWS_ITEMS_SUCCESS = 'APPEND_NEWS_ITEMS_SUCCESS';
+export const APPEND_NEWS_ITEMS_FAILED = 'APPEND_NEWS_ITEMS_FAILED';
+export function appendNewsItems(offset) {
+  return {
+    type: APPEND_NEWS_ITEMS,
+    offset,
+  };
+}
+export function appendNewsItemsSuccess(news) {
+  return {
+    type: APPEND_NEWS_ITEMS_SUCCESS,
+    data: news,
+  };
+}
+export function appendNewsItemsFailure(message) {
+  return {
+    type: APPEND_NEWS_ITEMS_FAILED,
+    error: message,
+  };
+}
