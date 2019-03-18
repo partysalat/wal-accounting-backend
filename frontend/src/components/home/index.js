@@ -8,8 +8,8 @@ export default function Accounting() {
   return (
     <div>
       <Grid container>
-        <Grid item xs={9}><Bestlist /></Grid>
-        <Grid item xs={3}><Feed /></Grid>
+        <Grid item xs={8}><Bestlist /></Grid>
+        <Grid item xs={4}><Feed /></Grid>
       </Grid>
 
     </div>
