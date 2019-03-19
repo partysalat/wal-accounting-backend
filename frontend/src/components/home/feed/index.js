@@ -34,7 +34,7 @@ class Feed extends Component {
       <div>
         <Infinite
           elementHeight={80}
-          // containerHeight={300}
+          // containerHeight={}
           useWindowAsScrollContainer
           infiniteLoadBeginEdgeOffset={0}
           onInfiniteLoad={this.handleInfiniteLoad}

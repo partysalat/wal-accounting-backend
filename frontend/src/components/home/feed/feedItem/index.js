@@ -2,20 +2,10 @@ import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
+import Tooltip from '@material-ui/core/Tooltip';
 import { format } from 'date-fns';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBeer,
-  faCartPlus,
-  faCocktail,
-  faCoffee,
-  faGlassWhiskey,
-  faSave,
-  faSync,
-  faUndo,
-  faUserPlus,
-} from '@fortawesome/free-solid-svg-icons';
-
+import { faBeer, faCocktail, faCoffee, faGlassWhiskey } from '@fortawesome/free-solid-svg-icons';
 import './FeedItem.css';
 
 const ACHIEVEMENT = 'ACHIEVEMENT';
@@ -34,7 +24,9 @@ function AchievementItem(news) {
   return (<Card className="feedItem">
     <CardHeader
       avatar={
-        <Avatar alt={payload.name} src={payload.imagePath} />
+        <Tooltip title={`${payload.name}:${payload.description}`}>
+          <Avatar alt={payload.name} src={payload.imagePath} />
+        </Tooltip>
       }
       title={`${user.name} hat "${payload.name}" erreicht`}
       subheader={format(new Date(newsMeta.createdAt), 'DD.MM.YYYY HH:mm')}
@@ -53,7 +45,7 @@ function DrinkItem(news) {
           <FontAwesomeIcon icon={typeToIconMap[drinkPayload.type]} size="1x" />
         </Avatar>
       }
-      title={`${user.name} hat ${drinkPayload.name} bestellt`}
+      title={`${user.name} hat ${newsMeta.amount}x ${drinkPayload.name} bestellt`}
       subheader={format(new Date(newsMeta.createdAt), 'DD.MM.YYYY HH:mm')}
     />
 
