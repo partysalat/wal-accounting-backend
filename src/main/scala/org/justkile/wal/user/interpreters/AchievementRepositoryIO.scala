@@ -36,6 +36,7 @@ object AchievementRepositoryIO extends MetaInstances {
                 d.drinkType
          FROM achievement_user_stats n
          LEFT JOIN DRINKS d ON n.drinkId = d.id
+         WHERE n.userId = $userId
          ORDER BY createdAt ASC
          """
         .query[UserDrinkEvent]

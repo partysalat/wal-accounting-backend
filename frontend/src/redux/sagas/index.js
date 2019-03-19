@@ -6,6 +6,7 @@ import syncAllSaga from './syncAllSaga';
 import loadDrinkNewsSaga from './loadDrinkNewsSaga';
 import createNewEntitySaga from './createNewEntitySaga';
 import loadNewsSaga from './loadNewsSaga';
+import subscribeSaga from './subscribeSaga';
 
 
 export default function* rootSaga() {
@@ -17,6 +18,7 @@ export default function* rootSaga() {
     fork(loadDrinkNewsSaga),
     fork(loadNewsSaga),
     fork(createNewEntitySaga),
+    fork(subscribeSaga),
     // fork(mutexSaga),
     // fork(bestlistInfoSaga),
   ]);

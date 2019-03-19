@@ -225,3 +225,16 @@ export function appendNewsItemsFailure(message) {
     error: message,
   };
 }
+export const SUBSCRIBE_NEWS_UPDATE = 'SUBSCRIBE_NEWS_UPDATE';
+export const PREPEND_NEWS_ITEM = 'PREPEND_NEWS_ITEM';
+export function subscribeToNewsUpdate() {
+  return {
+    type: SUBSCRIBE_NEWS_UPDATE,
+  };
+}
+export function prependNewsItem(newsItem) {
+  return {
+    type: PREPEND_NEWS_ITEM,
+    data: newsItem,
+  };
+}

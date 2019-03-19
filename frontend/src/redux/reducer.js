@@ -10,7 +10,7 @@ import {
   REMOVE_NEWS_SUCCESS,
   APPEND_NEWS_ITEMS,
   APPEND_NEWS_ITEMS_SUCCESS,
-  LOAD_NEWS_SUCCESS, LOAD_NEWS,
+  LOAD_NEWS_SUCCESS, LOAD_NEWS, PREPEND_NEWS_ITEM,
 } from './actions';
 
 function usersReducer(state = [], action) {
@@ -93,6 +93,11 @@ function newsReducer(state = [], action) {
         loading: false,
         lastLoadEmpty: action.data.length === 0,
         data: [...state.data, ...action.data],
+
+      };
+    case PREPEND_NEWS_ITEM:
+      return {
+        data: [action.data, ...state.data],
 
       };
     default:

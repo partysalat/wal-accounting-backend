@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import FeedItem from './feedItem';
 import { connect } from 'react-redux';
 import Infinite from 'react-infinite';
-import { appendNewsItems, loadNewsItems } from '../../../redux/actions';
+import { appendNewsItems, loadNewsItems, subscribeToNewsUpdate } from '../../../redux/actions';
 
 class Feed extends Component {
   constructor(props) {
@@ -14,11 +14,13 @@ class Feed extends Component {
   }
   componentWillMount() {
     this.props.loadNewsItems(0);
+    this.props.subscribeToNewsUpdate();
   }
+
   handleInfiniteLoad = () => {
     console.log('On infinite load');
     // this.props.appendNewsItems(this.state.offset + 20);
-    if (this.props.news.length) {
+    if (this.props.news.length > 19) {
       this.props.appendNewsItems(this.props.news.length);
     }
     this.setState(({ offset }) => ({
@@ -48,6 +50,7 @@ class Feed extends Component {
 const mapDispatchToProps = {
   loadNewsItems,
   appendNewsItems,
+  subscribeToNewsUpdate,
 };
 
 const mapStateToProps = state => ({
