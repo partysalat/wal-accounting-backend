@@ -1,5 +1,7 @@
 package org.justkile.wal.user.domain
 
+import java.time.LocalDateTime
+
 import doobie.util.meta.Meta
 import io.circe.{Decoder, Encoder}
 import org.justkile.wal.user.domain.NewsType.NewsType
@@ -22,5 +24,6 @@ case class News(
     newsType: NewsType,
     userId: String,
     amount: Int,
-    referenceId: Int
+    referenceId: Int,
+    createdAt: LocalDateTime
 )

@@ -28,6 +28,7 @@ object NewsRepositoryIO {
                 n.userId,
                 n.amount,
                 n.referenceId,
+                n.createdAt,
 
                 u.id,
                 u.userId,
@@ -72,6 +73,7 @@ object NewsRepositoryIO {
                 n.userId,
                 n.amount,
                 n.referenceId,
+                n.createdAt,
 
                 u.id,
                 u.userId,
@@ -115,6 +117,7 @@ object NewsRepositoryIO {
                 n.userId,
                 n.amount,
                 n.referenceId,
+                n.createdAt,
 
                 u.id,
                 u.userId,
