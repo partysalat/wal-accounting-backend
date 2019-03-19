@@ -25,7 +25,7 @@ object AchievementDefinitions {
         1,
         "Moe",
         "1 Bier bestellt",
-        "/internal/assets/achievements/moe.png"
+        "/images/achievements/moe.png"
       ),
       (events: List[UserDrinkEvent]) => events.exists(_.drink.`type` == BEER)
     ),
@@ -34,7 +34,7 @@ object AchievementDefinitions {
         2,
         "Lenny",
         "5 Bier bestellt",
-        "/internal/assets/achievements/lenny.png"
+        "/images/achievements/lenny.png"
       ),
       (events: List[UserDrinkEvent]) => countTypes(events, BEER) >= 5
     ),
@@ -43,16 +43,16 @@ object AchievementDefinitions {
         3,
         "Carl",
         "10 Bier bestellt",
-        "/internal/assets/achievements/carl.png"
+        "/images/achievements/carl.png"
       ),
       (events: List[UserDrinkEvent]) => countTypes(events, BEER) >= 10
     ),
     AchievementDefinition(
-      Achievement(4, "Homer", "15 Bier bestellt", "/internal/assets/achievements/homer.png"),
+      Achievement(4, "Homer", "15 Bier bestellt", "/images/achievements/homer.png"),
       (events: List[UserDrinkEvent]) => countTypes(events, BEER) >= 15
     ),
     AchievementDefinition(
-      Achievement(5, "Barney", "25 Bier bestellt", "/internal/assets/achievements/barney.png"),
+      Achievement(5, "Barney", "25 Bier bestellt", "/images/achievements/barney.png"),
       (events: List[UserDrinkEvent]) => countTypes(events, BEER) >= 25
     ),
     /**
@@ -60,19 +60,19 @@ object AchievementDefinitions {
       */
 
     AchievementDefinition(
-      Achievement(6, "Jeff Lebowski", "1 Cocktails bestellt", "/internal/assets/achievements/derdude.jpg"),
+      Achievement(6, "Jeff Lebowski", "1 Cocktails bestellt", "/images/achievements/derdude.jpg"),
       (events: List[UserDrinkEvent]) => countTypes(events, COCKTAIL) >= 1
     ),
     AchievementDefinition(
-      Achievement(7, "Ernest Hemingway", "5 Cocktails bestellt", "/internal/assets/achievements/hemingway.jpg"),
+      Achievement(7, "Ernest Hemingway", "5 Cocktails bestellt", "/images/achievements/hemingway.jpg"),
       (events: List[UserDrinkEvent]) => countTypes(events, COCKTAIL) >= 5
     ),
     AchievementDefinition(
-      Achievement(8, "Winston Churchill", "10 Cocktails bestellt", "/internal/assets/achievements/churchill.jpg"),
+      Achievement(8, "Winston Churchill", "10 Cocktails bestellt", "/images/achievements/churchill.jpg"),
       (events: List[UserDrinkEvent]) => countTypes(events, COCKTAIL) >= 10
     ),
     AchievementDefinition(
-      Achievement(9, "George R.R. Martin", "15 Cocktails bestellt", "/internal/assets/achievements/georgerrmartin.jpg"),
+      Achievement(9, "George R.R. Martin", "15 Cocktails bestellt", "/images/achievements/georgerrmartin.jpg"),
       (events: List[UserDrinkEvent]) => countTypes(events, COCKTAIL) >= 15
     ),
     /**
@@ -82,14 +82,14 @@ object AchievementDefinitions {
       Achievement(10,
                   "Is this just Fanta Sea?",
                   "Mindestens 5 Softdrinks bestellt",
-                  "/internal/assets/achievements/fantaSea.jpg"),
+                  "/images/achievements/fantaSea.jpg"),
       (events: List[UserDrinkEvent]) => countTypes(events, SOFTDRINK) >= 5
     ),
     AchievementDefinition(
       Achievement(11,
                   "Coca Cola Fanta Sprite",
                   "Mindestens 10 Softdrinks bestellt",
-                  "/internal/assets/achievements/cocacolaFantaSprite.jpg"),
+                  "/images/achievements/cocacolaFantaSprite.jpg"),
       (events: List[UserDrinkEvent]) => countTypes(events, SOFTDRINK) >= 10
     ),
     /**
@@ -99,14 +99,14 @@ object AchievementDefinitions {
       Achievement(12,
                   "Die nächste Runde geht auf mich",
                   "Mindestens 10 Shots auf einmal bestellt",
-                  "/internal/assets/achievements/dienaechsterundegehtaufmich.jpg"),
+                  "/images/achievements/dienaechsterundegehtaufmich.jpg"),
       (events: List[UserDrinkEvent]) => events.last.amount > 10 && events.last.drink.`type` == SHOT
     ),
     AchievementDefinition(
       Achievement(13,
                   "'ne Runde für alle!",
                   "Mindestens 20 Shots auf einmal bestellt",
-                  "/internal/assets/achievements/nerundefueralle.jpg"),
+                  "/images/achievements/nerundefueralle.jpg"),
       (events: List[UserDrinkEvent]) => events.last.amount > 20 && events.last.drink.`type` == SHOT
     ),
     /**
@@ -120,23 +120,23 @@ object AchievementDefinitions {
       * Einmalig
       */
 //    AchievementDefinition(
-//      Achievement(14, "Glückspils", "25. Bier bestellt", "/internal/assets/achievements/glueckspils.png"),
+//      Achievement(14, "Glückspils", "25. Bier bestellt", "/images/achievements/glueckspils.png"),
 //      List((BEER, ALL) countEquals 25)
 //    ),
 //    AchievementDefinition(
-//      Achievement(15, "Es geht seinen Gang", "50. Bier bestellt", "/internal/assets/achievements/esgehtseinengang.png"),
+//      Achievement(15, "Es geht seinen Gang", "50. Bier bestellt", "/images/achievements/esgehtseinengang.png"),
 //      List((BEER, ALL) countEquals 50)
 //    ),
 //    AchievementDefinition(
-//      Achievement(16, "Veni Vidi Bieri", "100. Bier bestellt", "/internal/assets/achievements/venividibieri.png"),
+//      Achievement(16, "Veni Vidi Bieri", "100. Bier bestellt", "/images/achievements/venividibieri.png"),
 //      List((BEER, ALL) countEquals 100)
 //    ),
 //    AchievementDefinition(
-//      Achievement(17, "Halbzeit", "150. Bier bestellt", "/internal/assets/achievements/halbzeit.png"),
+//      Achievement(17, "Halbzeit", "150. Bier bestellt", "/images/achievements/halbzeit.png"),
 //      List((BEER, ALL) countEquals 150)
 //    ),
 //    AchievementDefinition(
-//      Achievement(18, "This is Sparta!", "300. Bier bestellt", "/internal/assets/achievements/thisissparta.png"),
+//      Achievement(18, "This is Sparta!", "300. Bier bestellt", "/images/achievements/thisissparta.png"),
 //      List((BEER, ALL) countEquals 300)
 //    ),
 //    /**
@@ -146,16 +146,13 @@ object AchievementDefinitions {
       Achievement(19,
                   "Rauf und runter",
                   "Jeweils ein Bier und ein Cocktail bestellt",
-                  "/internal/assets/achievements/raufUndRunter.jpg"),
+                  "/images/achievements/raufUndRunter.jpg"),
       (events: List[UserDrinkEvent]) =>
         events.exists(_.drink.`type` == BEER) &&
           events.exists(_.drink.`type` == COCKTAIL)
     ),
     AchievementDefinition(
-      Achievement(20,
-                  "Abenteurer",
-                  "Jeweils fünf Biere und Cocktails bestellt",
-                  "/internal/assets/achievements/abenteurer.jpg"),
+      Achievement(20, "Abenteurer", "Jeweils fünf Biere und Cocktails bestellt", "/images/achievements/abenteurer.jpg"),
       (events: List[UserDrinkEvent]) =>
         countTypes(events, BEER) >= 5 &&
           countTypes(events, COCKTAIL) >= 5
@@ -164,16 +161,13 @@ object AchievementDefinitions {
       Achievement(21,
                   "Der Alles-Trinker",
                   "Jeweils 10 Biere und Cocktails bestellt",
-                  "/internal/assets/achievements/derallestrinker.jpg"),
+                  "/images/achievements/derallestrinker.jpg"),
       (events: List[UserDrinkEvent]) =>
         countTypes(events, BEER) >= 10 &&
           countTypes(events, COCKTAIL) >= 10
     ),
     AchievementDefinition(
-      Achievement(22,
-                  "Herrengedeck",
-                  "Nen Bier und nen Kurzen bestellt",
-                  "/internal/assets/achievements/herrengedeck.jpg"),
+      Achievement(22, "Herrengedeck", "Nen Bier und nen Kurzen bestellt", "/images/achievements/herrengedeck.jpg"),
       (events: List[UserDrinkEvent]) =>
         events.exists(_.drink.`type` == BEER) &&
           events.exists(_.drink.`type` == SHOT)
@@ -183,14 +177,11 @@ object AchievementDefinitions {
       */
 
     AchievementDefinition(
-      Achievement(23,
-                  "Luftalarm",
-                  "Mindestens 5 Berliner Luft bestellt",
-                  "/internal/assets/achievements/luftalarm.jpg"),
+      Achievement(23, "Luftalarm", "Mindestens 5 Berliner Luft bestellt", "/images/achievements/luftalarm.jpg"),
       (events: List[UserDrinkEvent]) => events.last.amount > 5 && events.last.drink.name == "Berliner Luft"
     ),
     AchievementDefinition(
-      Achievement(24, "Zombieland", "Mindestens 3 Zombies bestellt", "/internal/assets/achievements/zombieland.jpg"),
+      Achievement(24, "Zombieland", "Mindestens 3 Zombies bestellt", "/images/achievements/zombieland.jpg"),
       (events: List[UserDrinkEvent]) => events.count(_.drink.name == "Zombie") >= 3
     ),
     AchievementDefinition(
@@ -198,7 +189,7 @@ object AchievementDefinitions {
         25,
         "...den trinkt man auf Long Island so",
         "Mindestens einen Long Island Iced Tea bestellt",
-        "/internal/assets/achievements/dentrinktmanauflongislandso.jpg"
+        "/images/achievements/dentrinktmanauflongislandso.jpg"
       ),
       (events: List[UserDrinkEvent]) => events.count(_.drink.name == "Long Island Iced Tea") >= 1
     ),
@@ -207,7 +198,7 @@ object AchievementDefinitions {
         26,
         "Anwärter des B.R.A.rabischen Frühlings",
         "Einen Long Island Iced Tea, einen Zombie und ein Bier bestellt",
-        "/internal/assets/achievements/pseudoadmin.png"
+        "/images/achievements/pseudoadmin.png"
       ),
       (events: List[UserDrinkEvent]) =>
         events.count(_.drink.name == "Long Island Iced Tea") >= 1 &&
