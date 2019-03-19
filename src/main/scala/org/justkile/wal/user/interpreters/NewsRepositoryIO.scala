@@ -10,8 +10,13 @@ import org.justkile.wal.db.Database
 import org.justkile.wal.user.algebras.NewsRepository
 import org.justkile.wal.user.domain._
 object NewsRepositoryIO {
+
+  import java.time.format.DateTimeFormatter
+
+  val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
   implicit val drinkTypeMeta: Meta[LocalDateTime] = Meta[String]
-    .xmap((s: String) => LocalDateTime.parse(s), (d: LocalDateTime) => d.toString)
+    .xmap((s: String) => LocalDateTime.parse(s, formatter), (d: LocalDateTime) => d.format(formatter))
 
   implicit def newsRepoInterpreter: NewsRepository[IO] = new NewsRepository[IO] {
     def addDrinkNews(userId: String, drinkId: Int, amount: Int, createdAt: LocalDateTime): IO[Option[News]] =
