@@ -18,7 +18,7 @@ object NewsRepositoryIO {
       sql"INSERT INTO news (newsType, userId, amount, referenceId, createdAt) VALUES (${NewsType.DRINK}, $userId, $amount, $drinkId, $createdAt)".update
         .withUniqueGeneratedKeys[Int]("id")
         .attemptSql
-        .map(_.toOption.map(id => News(id, NewsType.DRINK, userId, amount, drinkId)))
+        .map(_.toOption.map(id => News(id, NewsType.DRINK, userId, amount, drinkId, createdAt)))
         .transact(Database.xa)
 
     override def getNews(skip: Int, pageSize: Int): IO[List[JoinedNews]] =
@@ -103,7 +103,7 @@ object NewsRepositoryIO {
       sql"INSERT INTO news (newsType, userId, amount, referenceId, createdAt) VALUES (${NewsType.ACHIEVEMENT}, $userId, 1, $achievementId, $createdAt)".update
         .withUniqueGeneratedKeys[Int]("id")
         .attemptSql
-        .map(_.toOption.map(id => News(id, NewsType.DRINK, userId, 1, achievementId)))
+        .map(_.toOption.map(id => News(id, NewsType.DRINK, userId, 1, achievementId, createdAt)))
         .transact(Database.xa)
 
     def removeAchievement(userId: String, achievementId: Int): IO[Int] =
