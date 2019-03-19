@@ -3,9 +3,29 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import { format } from 'date-fns';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faBeer,
+  faCartPlus,
+  faCocktail,
+  faCoffee,
+  faGlassWhiskey,
+  faSave,
+  faSync,
+  faUndo,
+  faUserPlus,
+} from '@fortawesome/free-solid-svg-icons';
+
 import './FeedItem.css';
 
 const ACHIEVEMENT = 'ACHIEVEMENT';
+
+const typeToIconMap = {
+  COCKTAIL: faCocktail,
+  BEER: faBeer,
+  SHOT: faGlassWhiskey,
+  SOFTDRINK: faCoffee,
+};
 function AchievementItem(news) {
   const newsMeta = news.news;
   const payload = news.payload.AchievementPayload;
@@ -30,7 +50,7 @@ function DrinkItem(news) {
     <CardHeader
       avatar={
         <Avatar aria-label="Recipe" >
-          OPA
+          <FontAwesomeIcon icon={typeToIconMap[drinkPayload.type]} size="1x" />
         </Avatar>
       }
       title={`${user.name} hat ${drinkPayload.name} bestellt`}

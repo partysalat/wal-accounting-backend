@@ -56,7 +56,7 @@ object NewsRepositoryIO {
          LEFT JOIN ACHIEVEMENTS a ON
              CASE WHEN n.newsType = 'ACHIEVEMENT' AND n.REFERENCEID = a.id THEN 1
              ELSE 0 END = 1
-         ORDER BY createdAt DESC
+         ORDER BY n.createdAt DESC, n.id
          LIMIT $pageSize OFFSET $skip
          """
         .query[(News, UserProjection, Option[DrinkPayload], Option[AchievementPayload])]
@@ -92,7 +92,7 @@ object NewsRepositoryIO {
          LEFT JOIN USERS u ON n.userId = u.userId
          LEFT JOIN DRINKS d ON n.REFERENCEID = d.id
          WHERE n.newsType = 'DRINK'
-         ORDER BY createdAt DESC
+         ORDER BY n.createdAt DESC, n.id
          LIMIT $pageSize OFFSET $skip
          """
         .query[(News, UserProjection, DrinkPayload)]
@@ -146,7 +146,7 @@ object NewsRepositoryIO {
              CASE WHEN n.newsType = 'ACHIEVEMENT' AND n.REFERENCEID = a.id THEN 1
              ELSE 0 END = 1
          WHERE n.id = $newsId     
-         ORDER BY createdAt DESC
+         ORDER BY createdAt DESC, n.id
          """
         .query[(News, UserProjection, Option[DrinkPayload], Option[AchievementPayload])]
         .unique

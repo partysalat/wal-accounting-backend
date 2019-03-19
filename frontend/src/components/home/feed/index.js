@@ -17,9 +17,12 @@ class Feed extends Component {
   }
   handleInfiniteLoad = () => {
     console.log('On infinite load');
-    this.props.appendNewsItems(this.state.offset + 20);
+    // this.props.appendNewsItems(this.state.offset + 20);
+    if (this.props.news.length) {
+      this.props.appendNewsItems(this.props.news.length);
+    }
     this.setState(({ offset }) => ({
-      offset: offset + 20,
+      // offset: offset + 20,
       isInfiniteLoading: true,
     }));
   }
@@ -31,7 +34,7 @@ class Feed extends Component {
           elementHeight={80}
           // containerHeight={300}
           useWindowAsScrollContainer
-          infiniteLoadBeginEdgeOffset={200}
+          infiniteLoadBeginEdgeOffset={0}
           onInfiniteLoad={this.handleInfiniteLoad}
           isInfiniteLoading={this.props.loading || this.props.lastLoadEmpty}
         >{this.props.news.map(newsItem => (<FeedItem news={newsItem} key={newsItem.news.id} />))}
