@@ -10,7 +10,7 @@ import {
   REMOVE_NEWS_SUCCESS,
   APPEND_NEWS_ITEMS,
   APPEND_NEWS_ITEMS_SUCCESS,
-  LOAD_NEWS_SUCCESS, LOAD_NEWS, PREPEND_NEWS_ITEM,
+  LOAD_NEWS_SUCCESS, LOAD_NEWS, PREPEND_NEWS_ITEM, LOAD_BESTLIST, LOAD_BESTLIST_SUCCESS,
 } from './actions';
 
 function usersReducer(state = [], action) {
@@ -104,12 +104,22 @@ function newsReducer(state = [], action) {
       return state;
   }
 }
-
+function bestlistReducer(state = [], action) {
+  switch (action.type) {
+    case LOAD_BESTLIST_SUCCESS:
+      return {
+        data: action.data,
+      };
+    default:
+      return state;
+  }
+}
 
 export default combineReducers({
   users: usersReducer,
   drinks: drinksReducer,
   drinkNews: drinkNewsReducer,
   news: newsReducer,
+  bestlist: bestlistReducer,
 
 });

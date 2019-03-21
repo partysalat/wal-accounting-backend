@@ -90,8 +90,8 @@ object BestlistRepositoryIO extends MetaInstances {
 
            a.id,
            a.name,
-           a.description,
-           a.imagePath
+           a.imagePath,
+           a.description
           FROM bestlist_user_achievements ba
           LEFT JOIN ACHIEVEMENTS a ON ba.ACHIEVEMENTID = a.ID
               """.query[(String, Achievement)].to[List].transact(Database.xa)

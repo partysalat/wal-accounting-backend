@@ -238,3 +238,26 @@ export function prependNewsItem(newsItem) {
     data: newsItem,
   };
 }
+
+
+export const LOAD_BESTLIST = 'LOAD_BESTLIST';
+export const LOAD_BESTLIST_SUCCESS = 'LOAD_BESTLIST_SUCCESS';
+export const LOAD_BESTLIST_FAILED = 'LOAD_BESTLIST_FAILED';
+export function loadBestlist() {
+  return {
+    type: LOAD_BESTLIST
+  };
+}
+export function loadBestlistSuccess(bestlist) {
+  return {
+    type: LOAD_BESTLIST_SUCCESS,
+    data: bestlist,
+  };
+}
+export function loadBestlistFailure(message) {
+  return {
+    type: LOAD_BESTLIST_FAILED,
+    error: message,
+  };
+}
+

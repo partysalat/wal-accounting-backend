@@ -1,6 +1,6 @@
 import { call, put, take, takeEvery } from 'redux-saga/effects';
 import { websocketToChannel } from './services/websocketClient';
-import { prependNewsItem, SUBSCRIBE_NEWS_UPDATE } from '../actions';
+import {loadBestlist, prependNewsItem, SUBSCRIBE_NEWS_UPDATE} from '../actions';
 
 
 function* subscribeWebsockets() {
@@ -8,6 +8,7 @@ function* subscribeWebsockets() {
   while (true) {
     const data = yield take(chan);
     yield put(prependNewsItem(data));
+    yield put(loadBestlist());
   }
 }
 
