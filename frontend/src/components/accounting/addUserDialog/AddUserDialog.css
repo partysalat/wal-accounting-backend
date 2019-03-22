@@ -5,13 +5,13 @@
   height:100px;
   width: 100%;
   font-size: 14pt;
-  background-color: white!important;
+  background-color: lightgray!important;
   color: black!important;
 
   border-radius: 5px!important;
 }
 .active{
-  background: lightgray!important;
+  background: white!important;
 }
 .dialog-content{
   overflow-x:hidden;

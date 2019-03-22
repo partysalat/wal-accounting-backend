@@ -1,2 +1,7 @@
 body{
+    background: #000;
+    color: #eee;
+}
+.logo{
+    width: 100%;
 }
