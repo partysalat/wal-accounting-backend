@@ -39,8 +39,8 @@ const CustomTableCell = withStyles(theme => ({
     color: theme.palette.common.white,
   },
   root: {
-    paddingLeft: "5px",
-    paddingRight: "5px",
+    paddingLeft: '5px',
+    paddingRight: '5px',
 
   },
   body: {
