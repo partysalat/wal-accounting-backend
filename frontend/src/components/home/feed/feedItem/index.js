@@ -16,12 +16,12 @@ const typeToIconMap = {
   SHOT: faGlassWhiskey,
   SOFTDRINK: faCoffee,
 };
-function AchievementItem(news) {
+function AchievementItem(news, rest) {
   const newsMeta = news.news;
   const payload = news.payload.AchievementPayload;
   const user = news.user;
 
-  return (<Card className="feedItem">
+  return (<Card {...rest} className={['feedItem', rest.className].join(' ')} >
     <CardHeader
       avatar={
         <Tooltip title={`${payload.name}:${payload.description}`}>
@@ -34,11 +34,11 @@ function AchievementItem(news) {
 
   </Card>);
 }
-function DrinkItem(news) {
+function DrinkItem(news, rest) {
   const newsMeta = news.news;
   const drinkPayload = news.payload.DrinkPayload;
   const user = news.user;
-  return (<Card className="feedItem">
+  return (<Card {...rest} className={['feedItem', rest.className].join(' ')} >
     <CardHeader
       avatar={
         <Avatar aria-label="Recipe" >
@@ -53,6 +53,7 @@ function DrinkItem(news) {
 }
 
 export default function FeedItem(props) {
+  const { news, key, ...rest } = props;
   return props.news.news.newsType === ACHIEVEMENT ?
-    AchievementItem(props.news) : DrinkItem(props.news);
+    AchievementItem(news, rest) : DrinkItem(news, rest);
 }

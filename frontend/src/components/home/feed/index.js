@@ -39,7 +39,9 @@ class Feed extends Component {
           infiniteLoadBeginEdgeOffset={0}
           onInfiniteLoad={this.handleInfiniteLoad}
           isInfiniteLoading={this.props.loading || this.props.lastLoadEmpty}
-        >{this.props.news.map(newsItem => (<FeedItem news={newsItem} key={newsItem.news.id} />))}
+        >{this.props.news.map(newsItem => (
+          <FeedItem news={newsItem} key={newsItem.news.id} className="animated lightSpeedIn"/>
+          ))}
         </Infinite>
 
       </div>

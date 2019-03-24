@@ -79,7 +79,7 @@ class Bestlist extends Component {
                 <CustomTableCell className={classes.smallCell} align="right">{row.shotCount}</CustomTableCell>
                 <CustomTableCell className={classes.smallCell} align="right">{row.softdrinkCount}</CustomTableCell>
                 <CustomTableCell className={classes.smallCell} align="right">{row.achievements.map(payload => (<Tooltip key={payload.id} title={`${payload.name}:${payload.description}`}>
-                  <Avatar alt={payload.name} src={payload.imagePath} className="avatar-small" />
+                  <Avatar alt={payload.name} src={payload.imagePath} className="avatar-small animated jackInTheBox" />
                 </Tooltip>))}</CustomTableCell>
               </TableRow>
                 ))}
