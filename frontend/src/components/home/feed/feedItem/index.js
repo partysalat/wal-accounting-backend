@@ -5,6 +5,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import { format } from 'date-fns';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { withStyles } from '@material-ui/core/styles';
 import { faBeer, faCocktail, faCoffee, faGlassWhiskey } from '@fortawesome/free-solid-svg-icons';
 import './FeedItem.css';
 
@@ -16,12 +17,28 @@ const typeToIconMap = {
   SHOT: faGlassWhiskey,
   SOFTDRINK: faCoffee,
 };
-function AchievementItem(news, rest) {
+const styles = theme => ({
+  root: {
+    background: `
+     repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    #666 2px,
+    transparent 4px
+  );`,
+    border: '1px solid #333',
+    // boxShadow: '0 0 4px 2px #0ff',
+
+  },
+});
+
+function AchievementItem(news, classes, rest) {
   const newsMeta = news.news;
   const payload = news.payload.AchievementPayload;
   const user = news.user;
 
-  return (<Card {...rest} className={['feedItem', rest.className].join(' ')} >
+  return (<Card {...rest} className={['feedItem', classes.root, rest.className].join(' ')} >
     <CardHeader
       avatar={
         <Tooltip title={`${payload.name}:${payload.description}`}>
@@ -34,11 +51,11 @@ function AchievementItem(news, rest) {
 
   </Card>);
 }
-function DrinkItem(news, rest) {
+function DrinkItem(news, classes, rest) {
   const newsMeta = news.news;
   const drinkPayload = news.payload.DrinkPayload;
   const user = news.user;
-  return (<Card {...rest} className={['feedItem', rest.className].join(' ')} >
+  return (<Card {...rest} className={['feedItem', classes.root, rest.className].join(' ')} >
     <CardHeader
       avatar={
         <Avatar aria-label="Recipe" >
@@ -52,8 +69,11 @@ function DrinkItem(news, rest) {
   </Card>);
 }
 
-export default function FeedItem(props) {
-  const { news, key, ...rest } = props;
+function FeedItem(props) {
+  const {
+    news, key, classes, ...rest
+  } = props;
   return props.news.news.newsType === ACHIEVEMENT ?
-    AchievementItem(news, rest) : DrinkItem(news, rest);
+    AchievementItem(news, classes, rest) : DrinkItem(news, classes, rest);
 }
+export default withStyles(styles)(FeedItem);
