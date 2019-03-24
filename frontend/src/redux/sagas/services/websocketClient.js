@@ -15,7 +15,7 @@ function WebSocketClient() {
 
   function connectWebsocket() {
     try {
-      const connection = new window.WebSocket(`ws://${window.location.hostname}:8080/api/news/ws`);
+      const connection = new window.WebSocket(`ws://${window.location.hostname}/api/news/ws`);
       connection.onmessage = (data) => {
         if (firstMessageConsumed) {
           handlers.forEach(cb => cb(JSON.parse(data.data)));

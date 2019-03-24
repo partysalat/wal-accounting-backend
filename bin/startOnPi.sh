@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-BASE=/home/pi/2null16-bra-scala
-ZIPFILE=${BASE}/2null16-bra-1.0-SNAPSHOT.zip
-FOLDER=${BASE}/2null16-bra-1.0-SNAPSHOT
+BASE=/home/pi/wal-accounting-backend
+ZIPFILE=${BASE}/wal-accounting-backend-0.0.1-SNAPSHOT.zip
+FOLDER=${BASE}/wal-accounting-backend-0.0.1-SNAPSHOT
 
 cd ${BASE}
 echo "Kill old processes"
