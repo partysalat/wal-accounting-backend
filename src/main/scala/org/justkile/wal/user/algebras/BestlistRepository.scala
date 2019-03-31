@@ -6,9 +6,9 @@ import org.justkile.wal.utils.Done
 trait BestlistRepository[F[_]] {
   def initUser(userId: String): F[Option[Done]]
   def addDrinkNews(userId: String, drinkId: Int, amount: Int): F[Option[Done]]
-  def removeDrinkNews(userId: String, drinkId: Int, amount: Int): F[Option[Done]]
+  def removeDrinkNews(userId: String, drinkId: Int, amount: Int): F[Int]
   def addAchievement(userId: String, achievementId: Int): F[Option[Done]]
-  def removeAchievement(userId: String, achievementId: Int): F[Option[Done]]
+  def removeAchievement(userId: String, achievementId: Int): F[Int]
 
   def getStats(): F[List[BestlistUserStats]]
 }

@@ -54,7 +54,22 @@ object BestlistRepositoryIO extends MetaInstances {
 
     }
 
-    override def removeDrinkNews(userId: String, drinkId: Int, amount: Int): IO[Option[Done]] = ???
+    override def removeDrinkNews(userId: String, drinkId: Int, amount: Int): IO[Int] =
+      for {
+        drink <- getDrinkFromId(drinkId)
+        query = drink.`type` match {
+          case DrinkType.BEER =>
+            sql"UPDATE bestlist_user_stats SET beerCount = beerCount - $amount WHERE userId = $userId"
+          case DrinkType.COCKTAIL =>
+            sql"UPDATE bestlist_user_stats SET cocktailCount = cocktailCount - $amount WHERE userId = $userId"
+          case DrinkType.SOFTDRINK =>
+            sql"UPDATE bestlist_user_stats SET softdrinkCount = softdrinkCount - $amount WHERE userId = $userId"
+          case _ => sql"UPDATE bestlist_user_stats SET shotCount = shotCount - $amount WHERE userId = $userId"
+        }
+
+        res <- query.update.run.transact(Database.xa)
+
+      } yield res
 
     override def addAchievement(userId: String, achievementId: Int): IO[Option[Done]] =
       sql"INSERT INTO bestlist_user_achievements (userId, achievementId) VALUES ($userId, $achievementId)".update
@@ -63,7 +78,9 @@ object BestlistRepositoryIO extends MetaInstances {
         .map(_.toOption.map(_ => Done))
         .transact(Database.xa)
 
-    override def removeAchievement(userId: String, achievementId: Int): IO[Option[Done]] = ???
+    override def removeAchievement(userId: String, achievementId: Int): IO[Int] =
+      sql"DELETE from bestlist_user_achievements where userId = $userId AND achievementId = $achievementId".update.run
+        .transact(Database.xa)
 
     override def getStats(): IO[List[BestlistUserStats]] = {
       for {
