@@ -10,7 +10,7 @@ import org.justkile.wal.user.events.achievements.AchievementDefinitions
 object Database {
   val xa: Transactor[IO] = Transactor.fromDriverManager[IO](
     "org.h2.Driver",
-    "jdbc:h2:./db.h2:test;DB_CLOSE_DELAY=-1",
+    "jdbc:h2:~/db.h2.wal;DB_CLOSE_DELAY=-1",
     "sa",
     ""
   )
