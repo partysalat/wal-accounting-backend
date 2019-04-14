@@ -41,7 +41,7 @@ class Feed extends Component {
       <div>
         <Infinite
           elementHeight={80}
-          // containerHeight={}
+          // containerHeight={500}
           useWindowAsScrollContainer
           infiniteLoadBeginEdgeOffset={0}
           onInfiniteLoad={this.handleInfiniteLoad}
@@ -61,8 +61,19 @@ const mapDispatchToProps = {
   subscribeToNewsUpdate,
 };
 
-const mapStateToProps = state => ({
-  news: state.news.data || [],
+function getNews(state, props) {
+  const news = state.news.data;
+  if (!news) {
+    return [];
+  }
+  const from = props.from || 0;
+  const until = props.until || news.length;
+
+  return state.news.data.slice(from, until);
+}
+
+const mapStateToProps = (state, props) => ({
+  news: getNews(state, props),
   loading: state.news.loading || false,
   lastLoadEmpty: state.news.lastLoadEmpty,
 
