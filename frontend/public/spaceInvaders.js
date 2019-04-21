@@ -3,14 +3,17 @@
  * MIT Licensed.
  */
 // Inspired by base2 and Prototype
-(function(){
-  var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
+(function () {
+  var initializing = false, fnTest = /xyz/.test(function () {
+    xyz;
+  }) ? /\b_super\b/ : /.*/;
 
   // The base Class implementation (does nothing)
-  this.Class = function(){};
+  this.Class = function () {
+  };
 
   // Create a new Class that inherits from this class
-  Class.extend = function(prop) {
+  Class.extend = function (prop) {
     var _super = this.prototype;
 
     // Instantiate a base class (but only create the instance,
@@ -24,8 +27,8 @@
       // Check if we're overwriting an existing function
       prototype[name] = typeof prop[name] == "function" &&
       typeof _super[name] == "function" && fnTest.test(prop[name]) ?
-        (function(name, fn){
-          return function() {
+        (function (name, fn) {
+          return function () {
             var tmp = this._super;
 
             // Add a new ._super() method that is the same method
@@ -46,7 +49,7 @@
     // The dummy class constructor
     function Class() {
       // All construction is actually done in the init method
-      if ( !initializing && this.init )
+      if (!initializing && this.init)
         this.init.apply(this, arguments);
     }
 
@@ -68,15 +71,19 @@
 // shims
 //
 // ###################################################################
-(function() {
+(function () {
   var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
   window.requestAnimationFrame = requestAnimationFrame;
 })();
 
-(function() {
+(function () {
   if (!window.performance.now) {
-    window.performance.now = (!Date.now) ? function() { return new Date().getTime(); } :
-      function() { return Date.now(); }
+    window.performance.now = (!Date.now) ? function () {
+        return new Date().getTime();
+      } :
+      function () {
+        return Date.now();
+      }
   }
 })();
 
@@ -92,13 +99,12 @@ var LEFT_KEY = 37;
 var RIGHT_KEY = 39;
 var SHOOT_KEY = 88;
 var TEXT_BLINK_FREQ = 500;
-var PLAYER_CLIP_RECT = { x: 0, y: 204, w: 62, h: 32 };
-var ALIEN_BOTTOM_ROW = [ { x: 0, y: 0, w: 51, h: 34 }, { x: 0, y: 102, w: 51, h: 34 }];
-var ALIEN_MIDDLE_ROW = [ { x: 0, y: 137, w: 50, h: 33 }, { x: 0, y: 170, w: 50, h: 34 }];
-var ALIEN_TOP_ROW = [ { x: 0, y: 68, w: 50, h: 32 }, { x: 0, y: 34, w: 50, h: 32 }];
+var PLAYER_CLIP_RECT = {x: 0, y: 204, w: 62, h: 32};
+var ALIEN_BOTTOM_ROW = [{x: 0, y: 0, w: 51, h: 34}, {x: 0, y: 102, w: 51, h: 34}];
+var ALIEN_MIDDLE_ROW = [{x: 0, y: 137, w: 50, h: 33}, {x: 0, y: 170, w: 50, h: 34}];
+var ALIEN_TOP_ROW = [{x: 0, y: 68, w: 50, h: 32}, {x: 0, y: 34, w: 50, h: 32}];
 var ALIEN_X_MARGIN = 40;
 var ALIEN_SQUAD_WIDTH = 11 * ALIEN_X_MARGIN;
-
 
 
 // ###################################################################
@@ -131,33 +137,32 @@ function checkRectCollision(A, B) {
 }
 
 var Point2D = Class.extend({
-  init: function(x, y) {
+  init: function (x, y) {
     this.x = (typeof x === 'undefined') ? 0 : x;
     this.y = (typeof y === 'undefined') ? 0 : y;
   },
 
-  set: function(x, y) {
+  set: function (x, y) {
     this.x = x;
     this.y = y;
   }
 });
 
 var Rect = Class.extend({
-  init: function(x, y, w, h) {
+  init: function (x, y, w, h) {
     this.x = (typeof x === 'undefined') ? 0 : x;
     this.y = (typeof y === 'undefined') ? 0 : y;
     this.w = (typeof w === 'undefined') ? 0 : w;
     this.h = (typeof h === 'undefined') ? 0 : h;
   },
 
-  set: function(x, y, w, h) {
+  set: function (x, y, w, h) {
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
   }
 });
-
 
 
 // ###################################################################
@@ -179,8 +184,19 @@ var alienDirection = -1;
 var alienYDown = 0;
 var alienCount = 0;
 var wave = 1;
-var hasGameStarted = false;
-
+var gameState = {
+  _started: false,
+  get hasGameStarted() {
+    return this._started;
+  },
+  set hasGameStarted(value) {
+    this._started = value;
+    if (!value) {
+      var event = new CustomEvent('space-invaders-finished',{detail: player});
+      document.body.dispatchEvent(event);
+    }
+  }
+};
 
 
 // ###################################################################
@@ -188,7 +204,7 @@ var hasGameStarted = false;
 //
 // ###################################################################
 var BaseSprite = Class.extend({
-  init: function(img, x, y) {
+  init: function (img, x, y) {
     this.img = img;
     this.position = new Point2D(x, y);
     this.scale = new Point2D(1, 1);
@@ -196,17 +212,18 @@ var BaseSprite = Class.extend({
     this.doLogic = true;
   },
 
-  update: function(dt) { },
+  update: function (dt) {
+  },
 
-  _updateBounds: function() {
+  _updateBounds: function () {
     this.bounds.set(this.position.x, this.position.y, ~~(0.5 + this.img.width * this.scale.x), ~~(0.5 + this.img.height * this.scale.y));
   },
 
-  _drawImage: function() {
+  _drawImage: function () {
     ctx.drawImage(this.img, this.position.x, this.position.y);
   },
 
-  draw: function(resized) {
+  draw: function (resized) {
     this._updateBounds();
 
     this._drawImage();
@@ -214,36 +231,37 @@ var BaseSprite = Class.extend({
 });
 
 var SheetSprite = BaseSprite.extend({
-  init: function(sheetImg, clipRect, x, y) {
+  init: function (sheetImg, clipRect, x, y) {
     this._super(sheetImg, x, y);
     this.clipRect = clipRect;
     this.bounds.set(x, y, this.clipRect.w, this.clipRect.h);
   },
 
-  update: function(dt) {},
-
-  _updateBounds: function() {
-    var w = ~~(0.5 + this.clipRect.w * this.scale.x);
-    var h = ~~(0.5 + this.clipRect.h * this.scale.y);
-    this.bounds.set(this.position.x - w/2, this.position.y - h/2, w, h);
+  update: function (dt) {
   },
 
-  _drawImage: function() {
+  _updateBounds: function () {
+    var w = ~~(0.5 + this.clipRect.w * this.scale.x);
+    var h = ~~(0.5 + this.clipRect.h * this.scale.y);
+    this.bounds.set(this.position.x - w / 2, this.position.y - h / 2, w, h);
+  },
+
+  _drawImage: function () {
     ctx.save();
     ctx.transform(this.scale.x, 0, 0, this.scale.y, this.position.x, this.position.y);
-    ctx.drawImage(this.img, this.clipRect.x, this.clipRect.y, this.clipRect.w, this.clipRect.h, ~~(0.5 + -this.clipRect.w*0.5), ~~(0.5 + -this.clipRect.h*0.5), this.clipRect.w, this.clipRect.h);
+    ctx.drawImage(this.img, this.clipRect.x, this.clipRect.y, this.clipRect.w, this.clipRect.h, ~~(0.5 + -this.clipRect.w * 0.5), ~~(0.5 + -this.clipRect.h * 0.5), this.clipRect.w, this.clipRect.h);
     ctx.restore();
 
   },
 
-  draw: function(resized) {
+  draw: function (resized) {
     this._super(resized);
   }
 });
 
 var Player = SheetSprite.extend({
-  init: function() {
-    this._super(spriteSheetImg, PLAYER_CLIP_RECT, CANVAS_WIDTH/2, CANVAS_HEIGHT - 70);
+  init: function () {
+    this._super(spriteSheetImg, PLAYER_CLIP_RECT, CANVAS_WIDTH / 2, CANVAS_HEIGHT - 70);
     this.scale.set(0.85, 0.85);
     this.lives = 3;
     this.xVel = 0;
@@ -252,18 +270,18 @@ var Player = SheetSprite.extend({
     this.score = 0;
   },
 
-  reset: function() {
+  reset: function () {
     this.lives = 3;
     this.score = 0;
-    this.position.set(CANVAS_WIDTH/2, CANVAS_HEIGHT - 70);
+    this.position.set(CANVAS_WIDTH / 2, CANVAS_HEIGHT - 70);
   },
 
-  shoot: function() {
+  shoot: function () {
     var bullet = new Bullet(this.position.x, this.position.y - this.bounds.h / 2, 1, 1000);
     this.bullets.push(bullet);
   },
 
-  handleInput: function() {
+  handleInput: function () {
     if (isKeyDown(LEFT_KEY)) {
       this.xVel = -175;
     } else if (isKeyDown(RIGHT_KEY)) {
@@ -278,7 +296,7 @@ var Player = SheetSprite.extend({
     }
   },
 
-  updateBullets: function(dt) {
+  updateBullets: function (dt) {
     for (var i = this.bullets.length - 1; i >= 0; i--) {
       var bullet = this.bullets[i];
       if (bullet.alive) {
@@ -290,7 +308,7 @@ var Player = SheetSprite.extend({
     }
   },
 
-  update: function(dt) {
+  update: function (dt) {
     // update time passed between shots
     this.bulletDelayAccumulator += dt;
 
@@ -298,11 +316,11 @@ var Player = SheetSprite.extend({
     this.position.x += this.xVel * dt;
 
     // cap player position in screen bounds
-    this.position.x = clamp(this.position.x, this.bounds.w/2, CANVAS_WIDTH - this.bounds.w/2);
+    this.position.x = clamp(this.position.x, this.bounds.w / 2, CANVAS_WIDTH - this.bounds.w / 2);
     this.updateBullets(dt);
   },
 
-  draw: function(resized) {
+  draw: function (resized) {
     this._super(resized);
 
     // draw bullets
@@ -316,14 +334,14 @@ var Player = SheetSprite.extend({
 });
 
 var Bullet = BaseSprite.extend({
-  init: function(x, y, direction, speed) {
+  init: function (x, y, direction, speed) {
     this._super(bulletImg, x, y);
     this.direction = direction;
     this.speed = speed;
     this.alive = true;
   },
 
-  update: function(dt) {
+  update: function (dt) {
     this.position.y -= (this.speed * this.direction) * dt;
 
     if (this.position.y < 0) {
@@ -331,13 +349,13 @@ var Bullet = BaseSprite.extend({
     }
   },
 
-  draw: function(resized) {
+  draw: function (resized) {
     this._super(resized);
   }
 });
 
 var Enemy = SheetSprite.extend({
-  init: function(clipRects, x, y) {
+  init: function (clipRects, x, y) {
     this._super(spriteSheetImg, clipRects[0], x, y);
     this.clipRects = clipRects;
     this.scale.set(0.5, 0.5);
@@ -349,22 +367,23 @@ var Enemy = SheetSprite.extend({
     this.bullet = null;
   },
 
-  toggleFrame: function() {
+  toggleFrame: function () {
     this.onFirstState = !this.onFirstState;
     this.clipRect = (this.onFirstState) ? this.clipRects[0] : this.clipRects[1];
   },
 
-  shoot: function() {
-    this.bullet = new Bullet(this.position.x, this.position.y + this.bounds.w/2, -1, 500);
+  shoot: function () {
+    this.bullet = new Bullet(this.position.x, this.position.y + this.bounds.w / 2, -1, 500);
   },
 
-  update: function(dt) {
+  update: function (dt) {
     this.stepAccumulator += dt;
 
     if (this.stepAccumulator >= this.stepDelay) {
-      if (this.position.x < this.bounds.w/2 + 20 && alienDirection < 0) {
+      if (this.position.x < this.bounds.w / 2 + 20 && alienDirection < 0) {
         updateAlienLogic = true;
-      } if (alienDirection === 1 && this.position.x > CANVAS_WIDTH - this.bounds.w/2 - 20) {
+      }
+      if (alienDirection === 1 && this.position.x > CANVAS_WIDTH - this.bounds.w / 2 - 20) {
         updateAlienLogic = true;
       }
       if (this.position.y > CANVAS_WIDTH - 50) {
@@ -388,7 +407,7 @@ var Enemy = SheetSprite.extend({
     }
   },
 
-  draw: function(resized) {
+  draw: function (resized) {
     this._super(resized);
     if (this.bullet !== null && this.bullet.alive) {
       this.bullet.draw(resized);
@@ -397,12 +416,12 @@ var Enemy = SheetSprite.extend({
 });
 
 var ParticleExplosion = Class.extend({
-  init: function() {
+  init: function () {
     this.particlePool = [];
     this.particles = [];
   },
 
-  draw: function() {
+  draw: function () {
     for (var i = this.particles.length - 1; i >= 0; i--) {
       var particle = this.particles[i];
       particle.moves++;
@@ -410,14 +429,14 @@ var ParticleExplosion = Class.extend({
       particle.y += particle.yunits + (particle.gravity * particle.moves);
       particle.life--;
 
-      if (particle.life <= 0 ) {
+      if (particle.life <= 0) {
         if (this.particlePool.length < 100) {
-          this.particlePool.push(this.particles.splice(i,1));
+          this.particlePool.push(this.particles.splice(i, 1));
         } else {
-          this.particles.splice(i,1);
+          this.particles.splice(i, 1);
         }
       } else {
-        ctx.globalAlpha = (particle.life)/(particle.maxLife);
+        ctx.globalAlpha = (particle.life) / (particle.maxLife);
         ctx.fillStyle = particle.color;
         ctx.fillRect(particle.x, particle.y, particle.width, particle.height);
         ctx.globalAlpha = 1;
@@ -425,12 +444,12 @@ var ParticleExplosion = Class.extend({
     }
   },
 
-  createExplosion: function(x, y, color, number, width, height, spd, grav, lif) {
-    for (var i =0;i < number;i++) {
-      var angle = Math.floor(Math.random()*360);
-      var speed = Math.floor(Math.random()*spd/2) + spd;
-      var life = Math.floor(Math.random()*lif)+lif/2;
-      var radians = angle * Math.PI/ 180;
+  createExplosion: function (x, y, color, number, width, height, spd, grav, lif) {
+    for (var i = 0; i < number; i++) {
+      var angle = Math.floor(Math.random() * 360);
+      var speed = Math.floor(Math.random() * spd / 2) + spd;
+      var life = Math.floor(Math.random() * lif) + lif / 2;
+      var radians = angle * Math.PI / 180;
       var xunits = Math.cos(radians) * speed;
       var yunits = Math.sin(radians) * speed;
 
@@ -450,13 +469,25 @@ var ParticleExplosion = Class.extend({
         tempParticle.maxLife = life;
         this.particles.push(tempParticle);
       } else {
-        this.particles.push({x:x,y:y,xunits:xunits,yunits:yunits,life:life,color:color,width:width,height:height,gravity:grav,moves:0,alpha:1, maxLife:life});
+        this.particles.push({
+          x: x,
+          y: y,
+          xunits: xunits,
+          yunits: yunits,
+          life: life,
+          color: color,
+          width: width,
+          height: height,
+          gravity: grav,
+          moves: 0,
+          alpha: 1,
+          maxLife: life
+        });
       }
 
     }
   }
 });
-
 
 
 // ###################################################################
@@ -483,7 +514,7 @@ function initCanvas() {
 }
 
 function preDrawImages() {
-  var canvas = drawIntoCanvas(2, 8, function(ctx) {
+  var canvas = drawIntoCanvas(2, 8, function (ctx) {
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   });
@@ -516,12 +547,18 @@ function setupAlienFormation() {
     var clipRects;
     switch (gridY) {
       case 0:
-      case 1: clipRects = ALIEN_BOTTOM_ROW; break;
+      case 1:
+        clipRects = ALIEN_BOTTOM_ROW;
+        break;
       case 2:
-      case 3: clipRects = ALIEN_MIDDLE_ROW; break;
-      case 4: clipRects = ALIEN_TOP_ROW; break;
+      case 3:
+        clipRects = ALIEN_MIDDLE_ROW;
+        break;
+      case 4:
+        clipRects = ALIEN_TOP_ROW;
+        break;
     }
-    aliens.push(new Enemy(clipRects, (CANVAS_WIDTH/2 - ALIEN_SQUAD_WIDTH/2) + ALIEN_X_MARGIN/2 + gridX * ALIEN_X_MARGIN, CANVAS_HEIGHT/3.25 - gridY * 40));
+    aliens.push(new Enemy(clipRects, (CANVAS_WIDTH / 2 - ALIEN_SQUAD_WIDTH / 2) + ALIEN_X_MARGIN / 2 + gridX * ALIEN_X_MARGIN, CANVAS_HEIGHT / 3.25 - gridY * 40));
     alienCount++;
   }
 }
@@ -538,7 +575,6 @@ function init() {
   prevKeyStates = [];
   resize();
 }
-
 
 
 // ###################################################################
@@ -601,7 +637,7 @@ function resolveBulletEnemyCollisions() {
       var alien = aliens[j];
       if (checkRectCollision(bullet.bounds, alien.bounds)) {
         alien.alive = bullet.alive = false;
-        particleManager.createExplosion(alien.position.x, alien.position.y, 'white', 70, 5,5,3,.15,50);
+        particleManager.createExplosion(alien.position.x, alien.position.y, 'white', 70, 5, 5, 3, .15, 50);
         player.score += 25;
       }
     }
@@ -613,11 +649,11 @@ function resolveBulletPlayerCollisions() {
     var alien = aliens[i];
     if (alien.bullet !== null && checkRectCollision(alien.bullet.bounds, player.bounds)) {
       if (player.lives === 0) {
-        hasGameStarted = false;
+        gameState.hasGameStarted = false;
       } else {
         alien.bullet.alive = false;
-        particleManager.createExplosion(player.position.x, player.position.y, 'green', 100, 8,8,6,0.001,40);
-        player.position.set(CANVAS_WIDTH/2, CANVAS_HEIGHT - 70);
+        particleManager.createExplosion(player.position.x, player.position.y, 'green', 100, 8, 8, 6, 0.001, 40);
+        player.position.set(CANVAS_WIDTH / 2, CANVAS_HEIGHT - 70);
         player.lives--;
         break;
       }
@@ -656,7 +692,7 @@ function fillText(text, x, y, color, fontSize) {
 
 function fillCenteredText(text, x, y, color, fontSize) {
   var metrics = ctx.measureText(text);
-  fillText(text, x - metrics.width/2, y, color, fontSize);
+  fillText(text, x - metrics.width / 2, y, color, fontSize);
 }
 
 function fillBlinkingText(text, x, y, blinkFreq, color, fontSize) {
@@ -673,7 +709,7 @@ function drawBottomHud() {
     player.clipRect.h, 45, CANVAS_HEIGHT - 23, player.clipRect.w * 0.5,
     player.clipRect.h * 0.5);
   fillText('CREDIT: ', CANVAS_WIDTH - 115, CANVAS_HEIGHT - 7.5);
-  fillCenteredText('SCORE: ' + player.score, CANVAS_WIDTH/2, 20);
+  fillCenteredText('SCORE: ' + player.score, CANVAS_WIDTH / 2, 20);
   fillBlinkingText('00', CANVAS_WIDTH - 25, CANVAS_HEIGHT - 7.5, TEXT_BLINK_FREQ);
 }
 
@@ -692,27 +728,27 @@ function drawGame(resized) {
 }
 
 function drawStartScreen() {
-  fillCenteredText("Space Invaders", CANVAS_WIDTH/2, CANVAS_HEIGHT/2.75, '#FFFFFF', 36);
-  fillBlinkingText("Press enter to play!", CANVAS_WIDTH/2, CANVAS_HEIGHT/2, 500, '#FFFFFF', 36);
+  fillCenteredText("Space Invaders", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2.75, '#FFFFFF', 36);
+  fillBlinkingText("Press enter to play!", CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, 500, '#FFFFFF', 36);
 }
 
 function animate() {
   var now = window.performance.now();
   var dt = now - lastTime;
   if (dt > 100) dt = 100;
-  if (wasKeyPressed(13) && !hasGameStarted) {
+  if (wasKeyPressed(13) && !gameState.hasGameStarted) {
     initGame();
-    hasGameStarted = true;
+    gameState.hasGameStarted = true;
   }
 
-  if (hasGameStarted) {
+  if (gameState.hasGameStarted) {
     updateGame(dt / 1000);
   }
 
 
   ctx.fillStyle = 'black';
   ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-  if (hasGameStarted) {
+  if (gameState.hasGameStarted) {
     drawGame(false);
   } else {
     drawStartScreen();
@@ -720,7 +756,6 @@ function animate() {
   lastTime = now;
   requestAnimationFrame(animate);
 }
-
 
 
 // ###################################################################
@@ -761,7 +796,7 @@ function onKeyUp(e) {
 // Start game!
 //
 // ###################################################################
-window.startSpaceInvaders = function() {
+window.startSpaceInvaders = function () {
   init();
   animate();
 };
