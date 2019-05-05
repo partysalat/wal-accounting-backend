@@ -19,7 +19,7 @@ import org.justkile.wal.drinks.interpreters.DrinkRepositoryIO._
 import org.justkile.wal.event_sourcing.CommandProcessorIO._
 import org.justkile.wal.event_sourcing.event_bus.EventBusIO._
 import org.justkile.wal.user.bootstrap.BootstrapService
-import org.justkile.wal.user.domain.JoinedNews
+import org.justkile.wal.user.domain.{FrontendNews, JoinedNews}
 import org.justkile.wal.user.events.UserEvents
 import org.justkile.wal.user.http.websocket.NewsWebsocketQueue
 import org.justkile.wal.user.http.{NewsService, UserService}
@@ -37,7 +37,7 @@ object Server extends IOApp {
 
   def stream(args: List[String]): Stream[IO, Unit] =
     for {
-      topic <- Stream.eval(Topic[IO, Option[JoinedNews]](None))
+      topic <- Stream.eval(Topic[IO, Option[FrontendNews]](None))
       websocketQueue = new NewsWebsocketQueue[IO](topic)
       _ <- Stream.eval(Database.schemaDefinition)
       _ <- Stream.eval(Database.insertions)

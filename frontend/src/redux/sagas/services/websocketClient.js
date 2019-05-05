@@ -1,5 +1,5 @@
-import { eventChannel } from 'redux-saga';
 import _ from 'lodash';
+import { eventChannel } from 'redux-saga';
 
 
 function WebSocketClient() {
@@ -15,7 +15,7 @@ function WebSocketClient() {
 
   function connectWebsocket() {
     try {
-      const connection = new window.WebSocket(`ws://${window.location.hostname}/api/news/ws`);
+      const connection = new window.WebSocket(`ws://${window.location.hostname}:8080/api/news/ws`);
       connection.onmessage = (data) => {
         if (firstMessageConsumed) {
           handlers.forEach(cb => cb(JSON.parse(data.data)));
@@ -25,6 +25,7 @@ function WebSocketClient() {
       };
       connection.onclose = function () {
         console.log('ws connection error, retry in 5s...');
+        firstMessageConsumed = false;
         setTimeout(connectWebsocket, 5000);
       };
 
@@ -35,6 +36,7 @@ function WebSocketClient() {
       };
     } catch (e) {
       console.log('ws connection error, retry in 5s...');
+      firstMessageConsumed = false;
       setTimeout(connectWebsocket, 5000);
     }
   }

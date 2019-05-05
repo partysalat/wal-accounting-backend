@@ -15,7 +15,6 @@ class DrinkAddedEventHandler[F[_]: Sync: Logger: NewsRepository: NewsWebsocketQu
     for {
       _ <- Logger[F].info(s"UserDrinkAdded $event")
       res <- NewsRepository[F].addDrinkNews(event.userId, event.drinkId, event.amount)
-//      drinkNews <- Traverse[Option].sequence(res.map(news => NewsRepository[F].getNewsItem(news.id)))
       drinkNews <- res.map(news => NewsRepository[F].getNewsItem(news.id)).sequence
       _ <- drinkNews.map(NewsWebsocketQueue[F].publish(_)).sequence
       _ <- Logger[F].info(s"UserDrinkAdded result $res")

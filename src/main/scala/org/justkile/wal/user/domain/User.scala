@@ -28,7 +28,6 @@ object User {
   case class AddUserDrinkCommand(userId: String, drinkId: Int, amount: Int) extends Command[User] {
     override def getAggregateIdentifier: AggregateIdentifier[User] = UserIdentifier(userId)
   }
-  //TODO: Handle Rollback Case for ALL Event handlers!
   case class RemoveUserDrinkCommand(userId: String, newsId: Int, drinkId: Int, amount: Int) extends Command[User] {
     override def getAggregateIdentifier: AggregateIdentifier[User] = UserIdentifier(userId)
   }
