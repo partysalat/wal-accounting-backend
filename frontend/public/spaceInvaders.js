@@ -762,9 +762,9 @@ function animate() {
 // Event Listener functions
 //
 // ###################################################################
-function resize() {
-  var w = document.querySelector(".space-invaders-container").offsetWidth;
-  var h = document.querySelector(".space-invaders-container").offsetWidth;
+function resize(width) {
+  var w = width || document.querySelector(".space-invaders-container").offsetWidth;
+  var h = width || document.querySelector(".space-invaders-container").offsetWidth;
 
   // calculate the scale factor to keep a correct aspect ratio
   var scaleFactor = Math.min(w / CANVAS_WIDTH, h / CANVAS_HEIGHT);
