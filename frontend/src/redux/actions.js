@@ -181,6 +181,27 @@ export function addDrinkFailure(message) {
     error: message,
   };
 }
+export const SEND_SPACE_INVADERS_SCORE = 'SEND_SPACE_INVADERS_SCORE';
+export const SEND_SPACE_INVADERS_SCORE_SUCCESS = 'SEND_SPACE_INVADERS_SCORE_SUCCESS';
+export const SEND_SPACE_INVADERS_SCORE_FAILED = 'SEND_SPACE_INVADERS_SCORE_SUCCESS';
+export function sendSpaceInvadersScore(userId, score) {
+  return {
+    type: SEND_SPACE_INVADERS_SCORE,
+    userId,
+    score,
+  };
+}
+export function sendSpaceInvadersScoreSuccess() {
+  return {
+    type: SEND_SPACE_INVADERS_SCORE_SUCCESS,
+  };
+}
+export function sendSpaceInvadersScoreFailure(message) {
+  return {
+    type: SEND_SPACE_INVADERS_SCORE_FAILED,
+    error: message,
+  };
+}
 
 
 export const LOAD_NEWS = 'LOAD_NEWS';
@@ -245,7 +266,7 @@ export const LOAD_BESTLIST_SUCCESS = 'LOAD_BESTLIST_SUCCESS';
 export const LOAD_BESTLIST_FAILED = 'LOAD_BESTLIST_FAILED';
 export function loadBestlist() {
   return {
-    type: LOAD_BESTLIST
+    type: LOAD_BESTLIST,
   };
 }
 export function loadBestlistSuccess(bestlist) {

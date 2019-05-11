@@ -8,6 +8,7 @@ import createNewEntitySaga from './createNewEntitySaga';
 import loadNewsSaga from './loadNewsSaga';
 import subscribeSaga from './subscribeSaga';
 import bestlistSaga from './bestlistSaga';
+import sendSpaceInvadersScoreSaga from './sendSpaceInvadersScoreSaga';
 
 
 export default function* rootSaga() {
@@ -21,7 +22,7 @@ export default function* rootSaga() {
     fork(createNewEntitySaga),
     fork(subscribeSaga),
     fork(bestlistSaga),
-    // fork(mutexSaga),
+    fork(sendSpaceInvadersScoreSaga),
     // fork(bestlistInfoSaga),
   ]);
 }
