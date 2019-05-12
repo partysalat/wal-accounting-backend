@@ -10,11 +10,22 @@ case class Achievement(
     description: String,
     imagePath: String
 )
-case class AchievementDefinition(achievement: Achievement, predicate: List[UserDrinkEvent] => Boolean)
+case class AchievementDefinition[T](achievement: Achievement, predicate: T => Boolean)
 object AchievementDefinitions {
   private def countTypes(events: List[UserDrinkEvent], drinkType: DrinkType) =
     events.filter(_.drink.`type` == drinkType).foldLeft(0)(_ + _.amount)
   import DrinkType._
+  val spaceInvadersScoreAchievements = List(
+    AchievementDefinition(
+      Achievement(
+        1000,
+        "Rookie",
+        "1000 Punkte in Space Invaders erspielt",
+        "/images/achievements/rookie.png"
+      ),
+      (score: Long) => score >= 1000
+    )
+  )
   val eventBaseAchievements = List(
     /**
       * Beer

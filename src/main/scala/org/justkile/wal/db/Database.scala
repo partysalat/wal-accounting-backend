@@ -140,14 +140,15 @@ object Database {
           VALUES  (${drink.id}, ${drink.name}, ${drink.`type`})
       """.update.run
   })
-  private val achievements = AchievementDefinitions.eventBaseAchievements
-    .map(_.achievement)
-    .map(achievement => {
-      sql"""MERGE INTO achievements
+  private val achievements =
+    List(AchievementDefinitions.eventBaseAchievements, AchievementDefinitions.spaceInvadersScoreAchievements).flatten
+      .map(_.achievement)
+      .map(achievement => {
+        sql"""MERGE INTO achievements
           KEY(id)
           VALUES  (${achievement.id}, ${achievement.name}, ${achievement.description}, ${achievement.imagePath})
       """.update.run
-    })
+      })
 
   val insertions: IO[Unit] = List(drinks, achievements).flatten
     .traverse_(_.transact(xa))
