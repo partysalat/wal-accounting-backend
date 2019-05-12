@@ -9,6 +9,7 @@ trait BestlistRepository[F[_]] {
   def removeDrinkNews(userId: String, drinkId: Int, amount: Int): F[Int]
   def addAchievement(userId: String, achievementId: Int): F[Option[Done]]
   def removeAchievement(userId: String, achievementId: Int): F[Int]
+  def setScore(userId: String, score: Long): F[Int]
 
   def getStats(): F[List[BestlistUserStats]]
 }

@@ -10,6 +10,7 @@ import org.justkile.wal.user.algebras.{BestlistRepository, UserRepository}
 import org.justkile.wal.user.domain.User.{
   AchievementGained,
   AchievementRemoved,
+  ScoreSet,
   UserCreated,
   UserDrinkAdded,
   UserDrinkRemoved
@@ -26,6 +27,7 @@ class BestlistStatsEventHandler[F[_]: Sync: Logger: BestlistRepository: Applicat
         case achievementGained: AchievementGained => handleAchievementGained(achievementGained)
         case achievementRemoved: AchievementRemoved => handleAchievementRemoved(achievementRemoved)
         case drinkRemoved: UserDrinkRemoved => handleDrinkRemoved(drinkRemoved)
+        case scoreSet: ScoreSet => handleScoreSet(scoreSet)
         case _ => Applicative[F].pure(Done)
       }
     } yield Done
@@ -34,6 +36,12 @@ class BestlistStatsEventHandler[F[_]: Sync: Logger: BestlistRepository: Applicat
     for {
       _ <- BestlistRepository[F].initUser(userCreated.id)
     } yield Done
+
+  private def handleScoreSet(scoreSet: ScoreSet) =
+    for {
+      _ <- BestlistRepository[F].setScore(scoreSet.userId, scoreSet.score)
+    } yield Done
+
   private def handleDrinkRemoved(drinkRemoved: UserDrinkRemoved) =
     for {
       _ <- BestlistRepository[F].removeDrinkNews(

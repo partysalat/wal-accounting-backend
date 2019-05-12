@@ -18,6 +18,7 @@ object BestlistRepositoryIO extends MetaInstances {
                                           cocktailCount: Int,
                                           softdrinkCount: Int,
                                           shotCount: Int,
+                                          spaceInvadersScore: Long,
                                           user: UserProjection)
 
     def initUser(userId: String): IO[Option[Done]] =
@@ -91,6 +92,7 @@ object BestlistRepositoryIO extends MetaInstances {
                 s.cocktailCount,
                 s.softdrinkCount,
                 s.shotCount,
+                s.spaceInvadersScore,
 
                 u.id,
                 u.userId,
@@ -121,6 +123,7 @@ object BestlistRepositoryIO extends MetaInstances {
                             cocktailCount,
                             softdrinkCount,
                             shotCount,
+                            spaceInvadersScore,
                             user,
                             groupedAchievements.getOrElse(userId, List.empty).map(_._2))
         }
@@ -128,6 +131,10 @@ object BestlistRepositoryIO extends MetaInstances {
 
 //      res.transact(Database.xa)
     }
-
+    def setScore(userId: String, score: Long): IO[Int] = {
+      sql"""
+           UPDATE bestlist_user_stats SET spaceInvadersScore = $score WHERE userId = $userId
+         """.update.run.transact(Database.xa)
+    }
   }
 }

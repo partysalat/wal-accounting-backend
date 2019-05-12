@@ -18,6 +18,7 @@ class UserService[F[_]: Sync: AchievementRepository: CommandProcessor: UserRepos
   case class CreateUserRequest(name: String)
   case class UserNews(userId: String, amount: Int)
   case class AddDrinkRequest(drinkId: Int, users: List[UserNews])
+  case class AddScoreRequest(userId: String, score: Long)
 
   val service: HttpRoutes[F] = HttpRoutes.of[F] {
 
@@ -47,6 +48,14 @@ class UserService[F[_]: Sync: AchievementRepository: CommandProcessor: UserRepos
         addDrinkCommands = addDrinkRequest.users.map(userNews =>
           AddUserDrinkCommand(userNews.userId, addDrinkRequest.drinkId, userNews.amount))
         res <- addDrinkCommands.map(CommandProcessor[F].process[User](_)).sequence
+        result <- Created(res)
+      } yield result
+
+    case req @ POST -> Root / "space-invaders" =>
+      for {
+        setScoreRequest <- req.as[AddScoreRequest]
+        setScoreCommand = SetUserScoreCommand(setScoreRequest.userId, setScoreRequest.score)
+        res <- CommandProcessor[F].process[User](setScoreCommand)
         result <- Created(res)
       } yield result
 

@@ -66,6 +66,7 @@ class Bestlist extends Component {
               <CustomTableCell align="right">Cocktails</CustomTableCell>
               <CustomTableCell align="right">Shots</CustomTableCell>
               <CustomTableCell align="right">Softdrinks</CustomTableCell>
+              <CustomTableCell align="right">Space Invaders Score</CustomTableCell>
               <CustomTableCell align="right">Achievements</CustomTableCell>
             </TableRow>
           </TableHead>
@@ -78,6 +79,7 @@ class Bestlist extends Component {
                 <CustomTableCell className={classes.smallCell} align="right">{row.cocktailCount}</CustomTableCell>
                 <CustomTableCell className={classes.smallCell} align="right">{row.shotCount}</CustomTableCell>
                 <CustomTableCell className={classes.smallCell} align="right">{row.softdrinkCount}</CustomTableCell>
+                <CustomTableCell className={classes.smallCell} align="right">{row.spaceInvadersScore}</CustomTableCell>
                 <CustomTableCell className={classes.smallCell} align="right">{row.achievements.map(payload => (<Tooltip key={payload.id} title={`${payload.name}:${payload.description}`}>
                   <Avatar alt={payload.name} src={payload.imagePath} className="avatar-small animated jackInTheBox" />
                 </Tooltip>))}</CustomTableCell>

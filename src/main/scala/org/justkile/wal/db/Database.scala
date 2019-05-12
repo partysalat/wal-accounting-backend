@@ -67,7 +67,8 @@ object Database {
         beerCount INT NOT NULL DEFAULT 0,
         cocktailCount INT NOT NULL DEFAULT 0,
         softdrinkCount INT NOT NULL DEFAULT 0,
-        shotCount INT NOT NULL DEFAULT 0
+        shotCount INT NOT NULL DEFAULT 0,
+        spaceInvadersScore BIGINT NOT NULL DEFAULT 0
     )
     """.update.run,
     sql"""

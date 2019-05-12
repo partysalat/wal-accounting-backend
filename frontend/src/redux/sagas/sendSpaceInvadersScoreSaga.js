@@ -7,7 +7,7 @@ function* sendSpaceInvadersScoreSaga({ score, userId }) {
     const client = yield call(getInstance);
     yield call(client.post, '/api/users/space-invaders', {
       score,
-      userId,
+      userId: `${userId}`,
     });
     yield put(sendSpaceInvadersScoreSuccess());
   } catch (e) {

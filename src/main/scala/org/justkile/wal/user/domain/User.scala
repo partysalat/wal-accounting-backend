@@ -9,7 +9,8 @@ import org.justkile.wal.user.domain.User.AchievementId
 case class User(
     id: String,
     name: Option[String],
-    achievements: List[AchievementId]
+    achievements: List[AchievementId],
+    score: Long
 )
 
 object User {
@@ -17,7 +18,7 @@ object User {
   case class UserIdentifier(id: String) extends AggregateIdentifier[User] {
     override def idAsString: String = s"user-$id"
 
-    override def initialState: User = User(id, None, List.empty)
+    override def initialState: User = User(id, None, List.empty, 0)
   }
 
   //Commands
@@ -26,6 +27,9 @@ object User {
   }
 
   case class AddUserDrinkCommand(userId: String, drinkId: Int, amount: Int) extends Command[User] {
+    override def getAggregateIdentifier: AggregateIdentifier[User] = UserIdentifier(userId)
+  }
+  case class SetUserScoreCommand(userId: String, score: Long) extends Command[User] {
     override def getAggregateIdentifier: AggregateIdentifier[User] = UserIdentifier(userId)
   }
   case class RemoveUserDrinkCommand(userId: String, newsId: Int, drinkId: Int, amount: Int) extends Command[User] {
@@ -44,6 +48,7 @@ object User {
   case class UserDrinkRemoved(userId: String, newsId: Int, drinkId: Int, amount: Int) extends Event
   case class AchievementGained(userId: String, achievementId: Int) extends Event
   case class AchievementRemoved(userId: String, achievementId: Int) extends Event
+  case class ScoreSet(userId: String, score: Long) extends Event
 
   implicit def userAggregate: Aggregate[User] = new Aggregate[User] {
     override def identifier(agg: User): AggregateIdentifier[User] = UserIdentifier(agg.id)
@@ -51,8 +56,9 @@ object User {
     override def empty(id: AggregateIdentifier[User]): User = id.initialState
 
     override def applyEvent(agg: User)(event: Event): User = event match {
-      case UserCreated(id, name) => User(id, Some(name), List.empty)
+      case UserCreated(id, name) => User(id, Some(name), List.empty, 0)
       case UserDrinkAdded(_, _, _) => agg
+      case ScoreSet(_, score) => agg.copy(score = score)
       case UserDrinkRemoved(_, _, _, _) => agg
       case AchievementGained(_, achievementId) => agg.copy(achievements = achievementId :: agg.achievements)
       case AchievementRemoved(_, achievementId) =>
@@ -69,6 +75,8 @@ object User {
         List(AchievementGained(userId, achievementId))
       case RemoveAchievement(userId, achievementId) if agg.achievements.contains(achievementId) && agg.name.isDefined =>
         List(AchievementRemoved(userId, achievementId))
+      case SetUserScoreCommand(userId, score) if score > agg.score =>
+        List(ScoreSet(userId, score))
       case _ => List.empty
     }
   }
