@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { eventChannel } from 'redux-saga';
 
-
 function WebSocketClient() {
   const connection = null;
   let firstMessageConsumed = false;
@@ -12,10 +11,16 @@ function WebSocketClient() {
   function unsubscribe(cb) {
     _.remove(handlers, cb);
   }
-
+  function getWebsocketUrl() {
+    const hostName = window.location.hostname;
+    if (hostName.indexOf('localhost') > -1) {
+      return `ws://${hostName}:8080/api/news/ws`;
+    }
+    return `ws://${hostName}/api/news/ws`;
+  }
   function connectWebsocket() {
     try {
-      const connection = new window.WebSocket(`ws://${window.location.hostname}:8080/api/news/ws`);
+      const connection = new window.WebSocket(getWebsocketUrl());
       connection.onmessage = (data) => {
         if (firstMessageConsumed) {
           handlers.forEach(cb => cb(JSON.parse(data.data)));
