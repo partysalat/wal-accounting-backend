@@ -123,20 +123,17 @@ object Database {
     Drink(35, "Mexikaner", SHOT),
     Drink(35, "Whisky", SHOT),
     Drink(36, "Cola", SOFTDRINK),
-    Drink(37, "Fanta", SOFTDRINK),
-    Drink(38, "Sprite", SOFTDRINK),
     Drink(39, "Mate", SOFTDRINK),
     Drink(40, "Wasser", SOFTDRINK),
     Drink(41, "Orangensaft", SOFTDRINK),
     Drink(42, "Apfelsaft", SOFTDRINK),
-    Drink(43, "Spezi", SOFTDRINK),
     Drink(44, "Mogh's Wine", SOFTDRINK),
-    Drink(44, "Mogh's Gimlet", SOFTDRINK),
-    Drink(45, "Watermelon Margarita 2000", SOFTDRINK),
-    Drink(45, "Virgin Comet Coitus", SOFTDRINK),
-    Drink(45, "KontinuumstransMockitor", SOFTDRINK),
-    Drink(45, "Virgin Mercury Mule", SOFTDRINK),
-    Drink(45, "Shirleys Ginger Rocket", SOFTDRINK)
+    Drink(45, "Mogh's Gimlet", SOFTDRINK),
+    Drink(46, "Watermelon Margarita 2000", SOFTDRINK),
+    Drink(47, "Virgin Comet Coitus", SOFTDRINK),
+    Drink(48, "KontinuumstransMockitor", SOFTDRINK),
+    Drink(49, "Virgin Mercury Mule", SOFTDRINK),
+    Drink(50, "Shirleys Ginger Rocket", SOFTDRINK)
   ).map(drink => {
     sql"""MERGE INTO drinks
           KEY(id)
