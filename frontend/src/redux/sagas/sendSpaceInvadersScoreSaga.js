@@ -1,6 +1,11 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import getInstance from './services/httpService';
-import { SEND_SPACE_INVADERS_SCORE, sendSpaceInvadersScoreFailure, sendSpaceInvadersScoreSuccess } from './../actions';
+import {
+  loadBestlist,
+  SEND_SPACE_INVADERS_SCORE,
+  sendSpaceInvadersScoreFailure,
+  sendSpaceInvadersScoreSuccess
+} from './../actions';
 
 function* sendSpaceInvadersScoreSaga({ score, userId }) {
   try {
@@ -10,6 +15,7 @@ function* sendSpaceInvadersScoreSaga({ score, userId }) {
       userId: `${userId}`,
     });
     yield put(sendSpaceInvadersScoreSuccess());
+    yield put(loadBestlist());
   } catch (e) {
     yield put(sendSpaceInvadersScoreFailure(e.message));
   }
