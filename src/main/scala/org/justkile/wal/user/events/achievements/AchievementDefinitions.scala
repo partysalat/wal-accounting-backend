@@ -23,7 +23,7 @@ object AchievementDefinitions {
         1000,
         "Rookie",
         "min. 1000 Punkte in Space Invaders erspielt",
-        "/images/new_achievements/rookie.png"
+        "/images/new_achievements/rookie.jpg"
       ),
       (score: Long) => score >= 1000
     ),
@@ -250,7 +250,7 @@ object AchievementDefinitions {
         26,
         "Anwärter des galaktischen B.R.A.rabischen Frühlings",
         "Einen Deep Space 9 Iced Tea, einen Space Zombie und ein Bier bestellt",
-        "/images/new_achievements/pseudoadmin.png"
+        "/images/achievements/pseudoadmin.png"
       ),
       (events: List[UserDrinkEvent]) =>
         events.count(_.drink.name == "Deep Space 9 Iced Tea") >= 1 &&
@@ -270,10 +270,12 @@ object AchievementDefinitions {
       Achievement(
         33,
         "Scheiss aufs Universssum!",
-        "1x KontinuumstransMojitor bestellt",
+        "1x KontinuumstransMojitor oder 1x KontinuumstransMockitor bestellt. (Dies ist ein sehr mächtiges und rätselhaftes Gerät dessen Rätselhaftigkeit nur durch seine Macht übertroffen wird)",
         "/images/new_achievements/scheiss_aufs_universssum.jpg"
       ),
-      (events: List[UserDrinkEvent]) => events.count(_.drink.name == "KontinuumstransMojitor") >= 1
+      (events: List[UserDrinkEvent]) =>
+        events.count(_.drink.name == "KontinuumstransMojitor") >= 1 || events.count(
+          _.drink.name == "KontinuumstransMockitor") >= 1
     ),
     AchievementDefinition(
       Achievement(
@@ -289,7 +291,7 @@ object AchievementDefinitions {
         35,
         "Glorb Attack!",
         "1x White Glorb bestellt",
-        "/images/new_achievements/glorb_attack.jpg"
+        "/images/new_achievements/glorb_attack.jpeg"
       ),
       (events: List[UserDrinkEvent]) => events.count(_.drink.name == "White Glorb") >= 1
     ),
@@ -345,7 +347,7 @@ object AchievementDefinitions {
       Achievement(
         39,
         "Hol den gleichen Drink nochmal!",
-        "5x denselben Drink bestellt",
+        "3x denselben Drink bestellt",
         "/images/new_achievements/hol_den_selben_drink_nochmal.jpg"
       ),
       (events: List[UserDrinkEvent]) => {
