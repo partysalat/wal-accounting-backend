@@ -270,7 +270,7 @@ object AchievementDefinitions {
       Achievement(
         33,
         "Scheiss aufs Universssum!",
-        "1x KontinuumstransMojitor oder 1x KontinuumstransMockitor bestellt. (Dies ist ein sehr mächtiges und rätselhaftes Gerät dessen Rätselhaftigkeit nur durch seine Macht übertroffen wird)",
+        "1x KontinuumstransMojitor oder 1x KontinuumstransMockitor bestellt. Dies ist ein sehr mächtiges und rätselhaftes Gerät dessen Rätselhaftigkeit nur durch seine Macht übertroffen wird.",
         "/images/new_achievements/scheiss_aufs_universssum.jpg"
       ),
       (events: List[UserDrinkEvent]) =>

@@ -45,7 +45,8 @@ function AchievementItem(news, classes, rest) {
           <Avatar alt={payload.name} src={payload.imagePath} />
         </Tooltip>
       }
-      title={`${user.name} hat "${payload.name}" erreicht`}
+      title={`${user.name} hat "${payload.name}" erreicht. (${payload.description})`}
+
       subheader={format(new Date(newsMeta.createdAt), 'DD.MM.YYYY HH:mm')}
     />
 
