@@ -10,11 +10,11 @@ export default function Accounting() {
   return (
     <div>
       <Grid container spacing={16}>
-        <Grid item md={6}><Bestlist /></Grid>
-        <Grid item md={6}>
+        <Grid item xs={6}><Bestlist /></Grid>
+        <Grid item xs={6}>
           <Grid container spacing={8}>
-            <Grid md={6} item className="feed-container"><Feed /></Grid>
-            <Grid md={6} item className="space-invaders-container">
+            <Grid xs={6} item className="feed-container"><Feed /></Grid>
+            <Grid xs={6} item className="space-invaders-container">
               <img src="/images/logo.png" className="logo" />
               <SpaceInvaders />
             </Grid>
