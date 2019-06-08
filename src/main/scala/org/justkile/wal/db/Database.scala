@@ -134,7 +134,9 @@ object Database {
     Drink(47, "Virgin Comet Coitus", SOFTDRINK),
     Drink(48, "KontinuumstransMockitor", SOFTDRINK),
     Drink(49, "Virgin Mercury Mule", SOFTDRINK),
-    Drink(50, "Shirleys Ginger Rocket", SOFTDRINK)
+    Drink(50, "Shirleys Ginger Rocket", SOFTDRINK),
+    Drink(50, "Hemingways Astro Sour", COCKTAIL),
+    Drink(51, "Victory Gin Sour", COCKTAIL),
   ).map(drink => {
     sql"""MERGE INTO drinks
           KEY(id)
