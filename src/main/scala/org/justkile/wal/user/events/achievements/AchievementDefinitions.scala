@@ -31,19 +31,19 @@ object AchievementDefinitions {
       Achievement(
         1001,
         "Laser Powered Alien Smasher!",
-        "min. 10000 Punkte in Space Invaders erspielt",
+        "min. 5000 Punkte in Space Invaders erspielt",
         "/images/new_achievements/laser_powered_alien_smasher.jpg"
       ),
-      (score: Long) => score >= 10000
+      (score: Long) => score >= 5000
     ),
     AchievementDefinition(
       Achievement(
         1002,
         "Beyond the Galactic Terror Vortex",
-        "min. 20000 Punkte in Space Invaders erspielt",
+        "min. 10000 Punkte in Space Invaders erspielt",
         "/images/new_achievements/beyond_the_galactic_terror_vortex.jpg"
       ),
-      (score: Long) => score >= 20000
+      (score: Long) => score >= 10000
     )
   )
   val eventBaseAchievements = List(
