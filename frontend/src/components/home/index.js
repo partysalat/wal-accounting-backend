@@ -4,6 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Bestlist from './bestlist';
 import Feed from './feed';
 import SpaceInvaders from './space-invaders';
+import RandomFacts from './randomFacts';
 import './home.css';
 
 export default function Accounting() {
@@ -11,14 +12,17 @@ export default function Accounting() {
     <div>
       <Grid container spacing={16}>
         <Grid item xs={6}><Bestlist /></Grid>
-        <Grid item xs={6}>
-          <Grid container spacing={8}>
-            <Grid xs={6} item className="feed-container"><Feed /></Grid>
-            <Grid xs={6} item className="space-invaders-container">
-              <img src="/images/logo.png" className="logo" />
-              <SpaceInvaders />
-            </Grid>
+        <Grid item xs={3}> <Feed /> </Grid>
+        <Grid item xs={3}>
+          <Grid container spacing={16}>
+            <Grid item><img src="/images/logo.png" className="logo" /></Grid>
+          </Grid>
 
+          <Grid container className="space-invaders-container" >
+            <Grid item><SpaceInvaders /></Grid>
+          </Grid>
+          <Grid container className="space-invaders-container">
+            <Grid item><RandomFacts /></Grid>
           </Grid>
         </Grid>
       </Grid>
