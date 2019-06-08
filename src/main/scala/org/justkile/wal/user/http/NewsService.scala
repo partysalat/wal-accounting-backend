@@ -47,7 +47,8 @@ class NewsService[F[_]: Sync: NewsRepository: CommandProcessor: Logger: Timer](w
           .map(newsItem => {
             newsItem.payload match {
               case DrinkPayload(id, drinkName, drinkType) =>
-                List(newsItem.user.name, drinkName, newsItem.news.amount).mkString(",")
+                List(newsItem.user.name, drinkType, drinkName, newsItem.news.amount, newsItem.news.createdAt)
+                  .mkString(",")
               case _ => ""
             }
           })
