@@ -34,12 +34,15 @@ class BootstrapService[F[_]: Sync: CommandProcessor] {
     CreateUserCommand("Pierre Colin", "24"),
     CreateUserCommand("Noreen", "25"),
     CreateUserCommand("Florian", "26"),
-    CreateUserCommand("Christian", "27"),
+    CreateUserCommand("Schröder", "27"),
     CreateUserCommand("Felix", "28"),
     CreateUserCommand("Lea", "29"),
     CreateUserCommand("Jan", "30"),
     CreateUserCommand("Catalina", "31"),
-    CreateUserCommand("Saskia", "32")
+    CreateUserCommand("Saskia", "32"),
+    CreateUserCommand("Charly", "33"),
+    CreateUserCommand("Winnii", "34"),
+    CreateUserCommand("Tinifini Zimmer", "35")
   )
   val sendInitialData: F[Done] = {
     for {
