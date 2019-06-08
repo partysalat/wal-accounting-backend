@@ -7,7 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import facts from './facts.json';
 
-const FACT_SWITCH_INTERVAL = 6000;
+const FACT_SWITCH_INTERVAL = 60000;
 
 const styles = theme => ({
   root: {
