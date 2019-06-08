@@ -85,10 +85,10 @@ class AddDrinkDialog extends React.Component {
           </form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.close}>
+          <Button onClick={this.close} variant="raised" size="large">
             Abbrechen
           </Button>
-          <Button variant="contained" color="primary" onClick={this.onSubmit}>
+          <Button size="large" variant="contained" color="primary" onClick={this.onSubmit}>
             Ok
           </Button>
 

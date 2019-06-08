@@ -106,7 +106,7 @@ class RevertDialog extends React.Component {
           </List>
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" color="primary" onClick={this.close}>
+          <Button variant="contained" color="primary" onClick={this.close} size="large">
             Ok
           </Button>
         </DialogActions>

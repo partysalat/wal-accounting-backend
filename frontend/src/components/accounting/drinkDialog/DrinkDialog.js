@@ -125,13 +125,13 @@ class DrinkDialog extends React.Component {
         <DialogTitle id="max-width-dialog-title">Neue Bestellung von {!this.state.selectedDrink && `${this.props.drinkType}`} {this.state.selectedDrink && `${this.state.selectedDrink.name}`}</DialogTitle>
         <DialogContent className="dialog-content">{pageContent}</DialogContent>
         <DialogActions>
-          <Button color="primary" onClick={this.close}>
+          <Button onClick={this.close} variant="raised" size="large">
             Abbrechen
           </Button>
-          {this.state.page === PAGES.USERS && <Button variant="contained" color="secondary" onClick={this.goToDrinkPage}>
+          {this.state.page === PAGES.USERS && <Button size="large" variant="contained" color="secondary" onClick={this.goToDrinkPage}>
             Zurück
           </Button>}
-          {this.state.page === PAGES.USERS && <Button variant="contained" color="primary" onClick={this.submit}>
+          {this.state.page === PAGES.USERS && <Button size="large" variant="contained" color="primary" onClick={this.submit}>
             Ok
           </Button>}
         </DialogActions>

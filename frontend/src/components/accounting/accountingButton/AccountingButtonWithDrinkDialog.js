@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {AccountingButton} from './AccountingButton';
+import React, { Component } from 'react';
+import { AccountingButton } from './AccountingButton';
 
 export default class AccountingButtonWithDrinkDialog extends Component {
   constructor(props) {
