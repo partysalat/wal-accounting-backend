@@ -83,7 +83,7 @@ object AchievementDefinitions {
       (events: List[UserDrinkEvent]) => countTypes(events, BEER) >= 15
     ),
     AchievementDefinition(
-      Achievement(5, "Barney", "20 Bier bestellt", "/images/new_achievements/bender.jpg"),
+      Achievement(5, "Bender", "20 Bier bestellt", "/images/new_achievements/bender.jpg"),
       (events: List[UserDrinkEvent]) => countTypes(events, BEER) >= 20
     ),
     /**
