@@ -91,12 +91,12 @@ class DrinkDialog extends React.Component {
       pageContent = (
         <Grid container spacing={8}>
           {this.props.users.map((user) => {
-            const selectedUser = this.isSelected(user.id);
+            const selectedUser = this.isSelected(user.userId);
             return (
-              <Grid xs={3} item key={user.id}>
+              <Grid xs={3} item key={user.userId}>
                 <ButtonBase
                   className={`dialog-buttons ${selectedUser && 'active'}`}
-                  onClick={() => this.selectUser(user.id)}
+                  onClick={() => this.selectUser(user.userId)}
                 > {user.name} {selectedUser ? `(${selectedUser.amount})` : ''}
                 </ButtonBase>
                 {selectedUser && (<Slider
@@ -105,7 +105,7 @@ class DrinkDialog extends React.Component {
                   min={1}
                   max={20}
                   step={1}
-                  onChange={(event, amount) => this.handleSliderChange(user.id, amount)}
+                  onChange={(event, amount) => this.handleSliderChange(user.userId, amount)}
                 />)}
               </Grid>);
           })}
