@@ -44,6 +44,15 @@ object AchievementDefinitions {
         "/images/new_achievements/beyond_the_galactic_terror_vortex.jpg"
       ),
       (score: Long) => score >= 10000
+    ),
+    AchievementDefinition(
+      Achievement(
+        1003,
+        "Defender of the Darkstorm Galaxy",
+        "min. 20000 Punkte in Space Invaders erspielt",
+        "/images/new_achievements/darkstorm_galaxy.jpg"
+      ),
+      (score: Long) => score >= 20000
     )
   )
   val eventBaseAchievements = List(
