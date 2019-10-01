@@ -10,13 +10,7 @@ import org.justkile.wal.event_sourcing.event_bus.EventBus.EventHandler
 import org.justkile.wal.event_sourcing.{AggregateRepository, CommandProcessor}
 import org.justkile.wal.user.algebras.AchievementRepository
 import org.justkile.wal.user.domain.User
-import org.justkile.wal.user.domain.User.{
-  GainAchievement,
-  RemoveAchievement,
-  UserDrinkAdded,
-  UserDrinkRemoved,
-  UserIdentifier
-}
+import org.justkile.wal.user.domain.User.{RemoveAchievement, UserDrinkRemoved, UserIdentifier}
 import org.justkile.wal.utils.Done
 
 class AchievementUserDrinkRemovedHandler[

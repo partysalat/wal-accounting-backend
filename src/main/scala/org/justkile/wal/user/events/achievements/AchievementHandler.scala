@@ -1,15 +1,15 @@
 package org.justkile.wal.user.events.achievements
-import cats.{Applicative, Traverse}
-import cats.syntax.functor._
-import cats.syntax.flatMap._
-import cats.implicits.catsStdInstancesForList
+import cats.Traverse
 import cats.effect.Sync
+import cats.implicits.catsStdInstancesForList
+import cats.syntax.flatMap._
+import cats.syntax.functor._
 import io.chrisdavenport.log4cats.Logger
-import org.justkile.wal.event_sourcing.{AggregateRepository, CommandProcessor, Event}
 import org.justkile.wal.event_sourcing.event_bus.EventBus.EventHandler
-import org.justkile.wal.user.algebras.{AchievementRepository, UserRepository}
+import org.justkile.wal.event_sourcing.{AggregateRepository, CommandProcessor}
+import org.justkile.wal.user.algebras.AchievementRepository
 import org.justkile.wal.user.domain.User
-import org.justkile.wal.user.domain.User.{GainAchievement, UserCreated, UserDrinkAdded, UserIdentifier}
+import org.justkile.wal.user.domain.User.{GainAchievement, UserDrinkAdded, UserIdentifier}
 import org.justkile.wal.utils.Done
 
 class AchievementHandler[F[_]: Sync: Logger: AchievementRepository: CommandProcessor: AggregateRepository]

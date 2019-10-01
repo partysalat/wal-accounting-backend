@@ -2,12 +2,6 @@ package org.justkile.wal
 
 import java.util.concurrent.ForkJoinPool
 
-import cats.effect._
-import cats.implicits._
-import org.http4s.HttpRoutes
-import org.http4s.server.Router
-import org.http4s.server.blaze.BlazeServerBuilder
-import org.http4s.syntax.kleisli._
 import cats.effect.{ExitCode, IO, IOApp}
 import cats.implicits._
 import fs2.Stream
@@ -19,7 +13,7 @@ import org.justkile.wal.drinks.interpreters.DrinkRepositoryIO._
 import org.justkile.wal.event_sourcing.CommandProcessorIO._
 import org.justkile.wal.event_sourcing.event_bus.EventBusIO._
 import org.justkile.wal.user.bootstrap.BootstrapService
-import org.justkile.wal.user.domain.{FrontendNews, JoinedNews}
+import org.justkile.wal.user.domain.FrontendNews
 import org.justkile.wal.user.events.UserEvents
 import org.justkile.wal.user.http.websocket.NewsWebsocketQueue
 import org.justkile.wal.user.http.{NewsService, UserService}

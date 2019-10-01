@@ -10,7 +10,7 @@ import org.justkile.wal.event_sourcing.event_bus.EventBus.EventHandler
 import org.justkile.wal.event_sourcing.{AggregateRepository, CommandProcessor}
 import org.justkile.wal.user.algebras.AchievementRepository
 import org.justkile.wal.user.domain.User
-import org.justkile.wal.user.domain.User.{GainAchievement, ScoreSet, UserDrinkAdded, UserIdentifier}
+import org.justkile.wal.user.domain.User.{GainAchievement, ScoreSet, UserIdentifier}
 import org.justkile.wal.utils.Done
 
 class SpaceInvadersAchievementHandler[F[_]: Sync: Logger: AchievementRepository: CommandProcessor: AggregateRepository]

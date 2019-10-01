@@ -3,7 +3,6 @@ package org.justkile.wal.user.domain
 import java.util.UUID.randomUUID
 
 import org.justkile.wal.event_sourcing.{Aggregate, AggregateIdentifier, Command, Event}
-import org.justkile.wal.user.domain.NewsType.NewsType
 import org.justkile.wal.user.domain.User.AchievementId
 
 case class User(
