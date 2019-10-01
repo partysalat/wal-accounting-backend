@@ -21,4 +21,16 @@ case class JoinedNews(
     payload: NewsPayload
 ) extends FrontendNews
 
+object JoinedNews {
+  def from(res: (News, UserProjection, Option[DrinkPayload], Option[AchievementPayload])): JoinedNews = {
+    JoinedNews(res._1,
+               res._2,
+               List(res._3, res._4)
+                 .find(_.isDefined)
+                 .flatten
+                 .get)
+
+  }
+}
+
 case class RemoveNews() extends FrontendNews
