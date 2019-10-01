@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { call, put, debounce } from 'redux-saga/effects';
 import getInstance from './services/httpService';
 import { LOAD_BESTLIST, loadBestlistFailure, loadBestlistSuccess } from './../actions';
 
@@ -13,5 +13,5 @@ function* loadBestlistSaga() {
 }
 
 export default function* () {
-  yield takeEvery(LOAD_BESTLIST, loadBestlistSaga);
+  yield debounce(500, LOAD_BESTLIST, loadBestlistSaga);
 }
