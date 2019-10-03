@@ -57,7 +57,7 @@ class NewsService[F[_]: Sync: NewsRepository: CommandProcessor: Logger: Timer](w
         res <- Ok(csv)
       } yield res
 
-    case req @ GET -> Root / IntVar(skip) / drinks =>
+    case req @ GET -> Root / IntVar(skip) / "drinks" =>
       for {
         news <- NewsRepository[F].getDrinkNews(skip, PAGE_SIZE)
         res <- Ok(news.asJson)

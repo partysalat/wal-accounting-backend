@@ -28,12 +28,6 @@ class UserService[F[_]: Sync: AchievementRepository: CommandProcessor: UserRepos
         result <- Ok(users)
       } yield result
 
-    case req @ GET -> Root / userId / "ach" =>
-      for {
-        achievementUserStats <- AchievementRepository[F].getDrinkEventsForUser(userId)
-        result <- Ok(achievementUserStats)
-      } yield result
-
     case req @ POST -> Root =>
       for {
         createUser <- req.as[CreateUserRequest]
