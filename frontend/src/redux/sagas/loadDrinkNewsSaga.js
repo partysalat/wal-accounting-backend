@@ -13,7 +13,7 @@ import getInstance from './services/httpService';
 function* loadDrinkNewsSaga({ offset }) {
   try {
     const client = yield call(getInstance);
-    const news = yield call(client.get, `/api/news/${offset}/drinks`);
+    const news = yield call(client.get, `/api/news?offset=${offset}&filter=drinks`);
     yield put(loadNewsSuccess(news.data));
   } catch (e) {
     yield put(loadNewsFailure(e.message));
@@ -23,7 +23,7 @@ function* loadDrinkNewsSaga({ offset }) {
 function* appendNewsSaga({ offset }) {
   try {
     const client = yield call(getInstance);
-    const news = yield call(client.get, `/api/news/${offset}/drinks`);
+    const news = yield call(client.get, `/api/news?offset=${offset}&filter=drinks`);
     yield put(appendNewsSuccess(news.data));
   } catch (e) {
     yield put(appendNewsFailure(e.message));
@@ -33,7 +33,7 @@ function* appendNewsSaga({ offset }) {
 function* removeNewsSaga({ newsId }) {
   try {
     const client = yield call(getInstance);
-    const news = yield call(client.delete, `/api/news/item/${newsId}`);
+    yield call(client.delete, `/api/news/${newsId}`);
     yield put(removeNewsSuccess(newsId));
   } catch (e) {
     toast.error('Fehler beim News entfernen');
