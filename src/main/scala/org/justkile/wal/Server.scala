@@ -8,19 +8,18 @@ import fs2.Stream
 import fs2.concurrent.Topic
 import org.http4s.server.blaze.BlazeBuilder
 import org.justkile.wal.db.Database
-import org.justkile.wal.drinks.http.DrinkService
-import org.justkile.wal.drinks.interpreters.DrinkRepositoryIO._
+import org.justkile.wal.core.drinks.DrinkRepositoryIO._
 import org.justkile.wal.event_sourcing.CommandProcessorIO._
 import org.justkile.wal.event_sourcing.event_bus.EventBusIO._
-import org.justkile.wal.user.bootstrap.BootstrapService
-import org.justkile.wal.user.domain.FrontendNews
-import org.justkile.wal.user.events.UserEvents
-import org.justkile.wal.user.http.websocket.NewsWebsocketQueue
-import org.justkile.wal.user.http.{NewsService, UserService}
-import org.justkile.wal.user.interpreters.AchievementRepositoryIO._
-import org.justkile.wal.user.interpreters.BestlistRepositoryIO._
-import org.justkile.wal.user.interpreters.NewsRepositoryIO._
-import org.justkile.wal.user.interpreters.UserRepositoryIO._
+import org.justkile.wal.bootstrap.BootstrapService
+import org.justkile.wal.event_handlers.UserEventHandlers
+import org.justkile.wal.http.websocket.NewsWebsocketQueue
+import org.justkile.wal.http.{DrinkService, NewsService, UserService}
+import org.justkile.wal.projections.domain.FrontendNews
+import org.justkile.wal.projections.AchievementRepositoryIO._
+import org.justkile.wal.projections.BestlistRepositoryIO._
+import org.justkile.wal.projections.NewsRepositoryIO._
+import org.justkile.wal.projections.UserRepositoryIO._
 import org.justkile.wal.utils.LoggerIO._
 
 import scala.concurrent.ExecutionContext
@@ -35,7 +34,7 @@ object Server extends IOApp {
       websocketQueue = new NewsWebsocketQueue[IO](topic)
       _ <- Stream.eval(Database.schemaDefinition)
       _ <- Stream.eval(Database.insertions)
-      _ <- Stream.eval(new UserEvents[IO](websocketQueue).start)
+      _ <- Stream.eval(new UserEventHandlers[IO](websocketQueue).start)
       _ <- Stream.eval(new BootstrapService[IO].sendInitialData)
 
       _ <- BlazeBuilder[IO]
