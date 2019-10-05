@@ -3,8 +3,8 @@ package org.justkile.wal.event_handlers.user
 import cats.effect.Sync
 import cats.implicits._
 import io.chrisdavenport.log4cats.Logger
+import org.justkile.wal.domain.UserEvents.UserCreated
 import org.justkile.wal.event_sourcing.event_bus.EventBus.EventHandler
-import org.justkile.wal.domain.User.UserCreated
 import org.justkile.wal.projections.UserRepository
 import org.justkile.wal.utils.Done
 

@@ -8,9 +8,9 @@ import org.http4s.HttpRoutes
 import org.http4s.circe.CirceEntityCodec._
 import org.http4s.dsl.Http4sDsl
 import org.justkile.wal.domain.User
-import org.justkile.wal.event_sourcing.CommandProcessor
-import org.justkile.wal.projections.{BestlistRepository, UserRepository}
 import org.justkile.wal.domain.User._
+import org.justkile.wal.domain.UserCommands.{AddUserDrinkCommand, CreateUserCommand, SetUserScoreCommand}
+import org.justkile.wal.event_sourcing.CommandProcessor
 import org.justkile.wal.projections.{AchievementRepository, BestlistRepository, UserRepository}
 
 class UserService[F[_]: Sync: AchievementRepository: CommandProcessor: UserRepository: BestlistRepository: Applicative]

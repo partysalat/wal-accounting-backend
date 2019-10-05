@@ -33,7 +33,7 @@ object Server extends IOApp {
       topic <- Stream.eval(Topic[IO, Option[FrontendNews]](None))
       websocketQueue = new NewsWebsocketQueue[IO](topic)
       _ <- Stream.eval(Database.schemaDefinition)
-      _ <- Stream.eval(Database.insertions)
+      _ <- Stream.eval(new BootstrapService[IO].insertions)
       _ <- Stream.eval(new UserEventHandlers[IO](websocketQueue).start)
       _ <- Stream.eval(new BootstrapService[IO].sendInitialData)
 

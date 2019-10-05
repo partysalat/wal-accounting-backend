@@ -14,8 +14,8 @@ import org.http4s.server.websocket.WebSocketBuilder
 import org.http4s.websocket.WebSocketFrame
 import org.http4s.websocket.WebSocketFrame.Text
 import org.justkile.wal.domain.User
+import org.justkile.wal.domain.UserCommands.RemoveUserDrinkCommand
 import org.justkile.wal.event_sourcing.CommandProcessor
-import org.justkile.wal.domain.User.RemoveUserDrinkCommand
 import org.justkile.wal.http.websocket.NewsWebsocketQueue
 import org.justkile.wal.projections.domain.DrinkPayload
 import org.justkile.wal.projections.NewsRepository

@@ -1,8 +1,8 @@
 package org.justkile.wal.domain
 
-import java.util.UUID.randomUUID
-
 import org.justkile.wal.domain.User.AchievementId
+import org.justkile.wal.domain.UserCommands._
+import org.justkile.wal.domain.UserEvents._
 import org.justkile.wal.event_sourcing.{Aggregate, AggregateIdentifier, Command, Event}
 
 case class User(
@@ -19,35 +19,6 @@ object User {
 
     override def initialState: User = User(id, None, List.empty, 0)
   }
-
-  //Commands
-  case class CreateUserCommand(name: String, id: String = randomUUID().toString) extends Command[User] {
-    override def getAggregateIdentifier: AggregateIdentifier[User] = UserIdentifier(id)
-  }
-
-  case class AddUserDrinkCommand(userId: String, drinkId: Int, amount: Int) extends Command[User] {
-    override def getAggregateIdentifier: AggregateIdentifier[User] = UserIdentifier(userId)
-  }
-  case class SetUserScoreCommand(userId: String, score: Long) extends Command[User] {
-    override def getAggregateIdentifier: AggregateIdentifier[User] = UserIdentifier(userId)
-  }
-  case class RemoveUserDrinkCommand(userId: String, newsId: Int, drinkId: Int, amount: Int) extends Command[User] {
-    override def getAggregateIdentifier: AggregateIdentifier[User] = UserIdentifier(userId)
-  }
-  case class GainAchievement(userId: String, achievementId: Int) extends Command[User] {
-    override def getAggregateIdentifier: AggregateIdentifier[User] = UserIdentifier(userId)
-  }
-  case class RemoveAchievement(userId: String, achievementId: Int) extends Command[User] {
-    override def getAggregateIdentifier: AggregateIdentifier[User] = UserIdentifier(userId)
-  }
-
-  //Events
-  case class UserCreated(id: String, name: String) extends Event
-  case class UserDrinkAdded(userId: String, drinkId: Int, amount: Int) extends Event
-  case class UserDrinkRemoved(userId: String, newsId: Int, drinkId: Int, amount: Int) extends Event
-  case class AchievementGained(userId: String, achievementId: Int) extends Event
-  case class AchievementRemoved(userId: String, achievementId: Int) extends Event
-  case class ScoreSet(userId: String, score: Long) extends Event
 
   implicit def userAggregate: Aggregate[User] = new Aggregate[User] {
     override def identifier(agg: User): AggregateIdentifier[User] = UserIdentifier(agg.id)

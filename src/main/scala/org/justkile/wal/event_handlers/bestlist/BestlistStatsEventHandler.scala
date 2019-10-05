@@ -4,16 +4,9 @@ import cats.Applicative
 import cats.effect.Sync
 import cats.implicits._
 import io.chrisdavenport.log4cats.Logger
+import org.justkile.wal.domain.UserEvents._
 import org.justkile.wal.event_sourcing.Event
 import org.justkile.wal.event_sourcing.event_bus.EventBus.EventHandler
-import org.justkile.wal.domain.User.{
-  AchievementGained,
-  AchievementRemoved,
-  ScoreSet,
-  UserCreated,
-  UserDrinkAdded,
-  UserDrinkRemoved
-}
 import org.justkile.wal.projections.BestlistRepository
 import org.justkile.wal.utils.Done
 
