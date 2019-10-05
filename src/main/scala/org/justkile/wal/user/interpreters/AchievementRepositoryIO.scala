@@ -11,7 +11,7 @@ import org.justkile.wal.user.domain.UserDrinkEvent
 import org.justkile.wal.utils.Done
 
 object AchievementRepositoryIO extends MetaInstances {
-  implicit val DateTimeMeta: Meta[LocalDateTime] = Meta[java.sql.Timestamp].xmap(
+  implicit val dateTimeMeta: Meta[LocalDateTime] = Meta[java.sql.Timestamp].xmap(
     ts => ts.toLocalDateTime,
     dt => java.sql.Timestamp.valueOf(dt)
   )
