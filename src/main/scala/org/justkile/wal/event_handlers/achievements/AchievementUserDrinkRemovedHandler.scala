@@ -34,7 +34,8 @@ class AchievementUserDrinkRemovedHandler[
       reachableAchievements = AchievementDefinitions.eventBaseAchievements
         .filter(achievementDef => userAgg.achievements.contains(achievementDef.achievement.id))
 
-      achievementsToBeRemoved = reachableAchievements.filterNot(_.predicate(stats))
+      achievementsToBeRemoved = if (stats.nonEmpty) reachableAchievements.filterNot(_.predicate(stats))
+      else reachableAchievements
       achievementCommands = achievementsToBeRemoved.map(ach => RemoveAchievement(userId, ach.achievement.id))
       _ <- Traverse[List].sequence(achievementCommands.map(CommandProcessor[F].process[User](_)))
     } yield ()
