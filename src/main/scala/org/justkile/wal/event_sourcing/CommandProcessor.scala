@@ -6,7 +6,6 @@ import cats.syntax.flatMap._
 import cats.syntax.functor._
 import io.chrisdavenport.log4cats.Logger
 import org.justkile.wal.event_sourcing.event_bus.EventBus
-import org.justkile.wal.utils.Done
 
 trait Command[A] {
   def getAggregateIdentifier: AggregateIdentifier[A]
@@ -14,7 +13,7 @@ trait Command[A] {
 
 class CommandProcessor[F[_]: Sync: AggregateRepository: Logger: EventBus] {
 
-  def process[A: Aggregate](command: Command[A]): F[Done] = {
+  def process[A: Aggregate](command: Command[A]): F[A] = {
     for {
       _ <- Logger[F].info(s"Processing command $command ")
       aggregateNumberOfEvtTuple <- AggregateRepository[F].load[A](command.getAggregateIdentifier)
@@ -23,10 +22,10 @@ class CommandProcessor[F[_]: Sync: AggregateRepository: Logger: EventBus] {
         .processCommand(command)
         .run(aggregate)
         .value
-      (_, events) = transformedAggregateEventsTuple
+      (transformedAggregate, events) = transformedAggregateEventsTuple
       _ <- persist(events, command.getAggregateIdentifier, nbrOfExistingEvents)
       _ <- publish(events)
-    } yield Done
+    } yield transformedAggregate
   }
 
   private def persist[A: Aggregate](events: List[Event],

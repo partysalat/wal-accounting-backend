@@ -3,18 +3,15 @@ package org.justkile.wal.projections
 import java.time.LocalDateTime
 
 import cats.effect.IO
-import doobie.util.meta.{Meta, MetaInstances}
+import doobie.implicits._
+import doobie.util.meta.MetaInstances
 import org.justkile.wal.db.Database
 import org.justkile.wal.projections.domain.UserDrinkEvent
 import org.justkile.wal.utils.Done
-import doobie.implicits._
-import doobie.util.meta.{Meta, MetaInstances}
 
 object AchievementRepositoryIO extends MetaInstances {
-  implicit val dateTimeMeta: Meta[LocalDateTime] = Meta[java.sql.Timestamp].xmap(
-    ts => ts.toLocalDateTime,
-    dt => java.sql.Timestamp.valueOf(dt)
-  )
+  implicit val dateTimeMeta = Database.dateTimeMeta
+
   implicit def achievementRepoInterpreter: AchievementRepository[IO] = new AchievementRepository[IO] {
     override def saveUserStats(userId: String, drinkId: Int, amount: Int, createdAt: LocalDateTime): IO[Option[Done]] =
       sql"INSERT INTO achievement_user_stats (userId, drinkId, amount, createdAt) VALUES ($userId,$drinkId, $amount, $createdAt)".update

@@ -1,8 +1,11 @@
 package org.justkile.wal.db
 
+import java.time.LocalDateTime
+
 import cats.effect.IO
 import cats.implicits._
 import doobie.implicits._
+import doobie.util.meta.Meta
 import doobie.util.transactor.Transactor
 
 object Database {
@@ -23,6 +26,7 @@ object Database {
       id         INT AUTO_INCREMENT PRIMARY KEY,
       identifier VARCHAR,
       sequence   INT,
+      created_at TIMESTAMP NOT NULL,
       event      BINARY
     )
     """.update.run,
@@ -86,4 +90,10 @@ object Database {
     )
     """.update.run
   ).traverse_(_.transact(xa))
+
+  implicit val dateTimeMeta: Meta[LocalDateTime] = Meta[java.sql.Timestamp].xmap(
+    ts => ts.toLocalDateTime,
+    dt => java.sql.Timestamp.valueOf(dt)
+  )
+
 }

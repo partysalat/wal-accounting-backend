@@ -1,5 +1,7 @@
 package org.justkile.wal.event_sourcing.store
 
+import java.time.LocalDateTime
+
 import cats.Traverse
 import cats.effect.IO
 import cats.implicits._
@@ -15,7 +17,8 @@ import org.justkile.wal.utils.AvroSerializer
 
 object EventStoreIO {
 
-  case class EventEnvelope(identifier: String, sequence: Int, event: Array[Byte])
+  case class EventEnvelope(identifier: String, sequence: Int, createdAt: LocalDateTime, event: Array[Byte])
+  implicit val dateTimeMeta = Database.dateTimeMeta
 
   implicit def eventStore: EventStore[IO] = new EventStore[IO] {
     implicit def loggingInterpreter: Logger[IO] = Slf4jLogger.unsafeCreate[IO]
@@ -26,11 +29,14 @@ object EventStoreIO {
     private def eventToByteArray(evt: Event): Array[Byte] =
       AvroSerializer.serialise(evt.asInstanceOf[UserEvent])(Encoder[UserEvent], UserEvents.schema)
 
-    private def insert1(identifier: String, sequence: Int, event: Event) = {
+    private def insert1(identifier: String,
+                        sequence: Int,
+                        event: Event,
+                        createdAt: LocalDateTime = LocalDateTime.now()) = {
 
       loggingInterpreter.info(s"Persisting $identifier, $sequence")
-      sql"""INSERT INTO events (identifier, sequence, event)
-             VALUES ($identifier, $sequence, ${eventToByteArray(event)})
+      sql"""INSERT INTO events (identifier, sequence, created_at, event)
+             VALUES ($identifier, $sequence, $createdAt,${eventToByteArray(event)})
         """.update
         .withUniqueGeneratedKeys[Int]("id")
         .attemptSql
@@ -53,7 +59,7 @@ object EventStoreIO {
 
     override def loadEventsFor[A](aggregateIdentifier: AggregateIdentifier[A]): IO[List[Event]] = {
       sql"""
-        SELECT identifier, sequence, event
+        SELECT identifier, sequence, created_at, event
         FROM events
         WHERE identifier = ${aggregateIdentifier.idAsString}
         ORDER BY sequence ASC

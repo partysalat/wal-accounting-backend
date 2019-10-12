@@ -13,5 +13,12 @@ object UserEvents {
   case class AchievementRemoved(userId: String, achievementId: Int) extends UserEvent
   case class ScoreSet(userId: String, score: Long) extends UserEvent
 
+//  case class RfidCardSet(userId: String, rfid: String) extends UserEvent
+//  case class KegCreated(userId: String, kegId: String) extends UserEvent // <- Different aggregate / plain CRUD
+
+//  case class DraftStarted(userId: String, kegId: String) extends UserEvent
+//  case class DraftEnded(userId: String, kegId: String) extends UserEvent
+//  case class DraftAmountUpdated(userId: String, kegId: String) extends UserEvent
+
   implicit val schema: Schema = AvroSchema[UserEvent]
 }
