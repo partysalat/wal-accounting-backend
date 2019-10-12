@@ -8,6 +8,7 @@ lazy val ScalaCheckVersion = "1.13.4"
 lazy val Log4CatsVersion = "0.1.1"
 lazy val SimulacrumVersion = "0.14.0"
 lazy val PureConfigVersion = "0.10.1"
+lazy val AvroVersion = "3.0.1"
 
 enablePlugins(JavaAppPackaging)
 
@@ -41,7 +42,7 @@ lazy val root = (project in file("."))
       "io.circe"              %% "circe-core"          % CirceVersion,
       "io.circe"              %% "circe-generic"       % CirceVersion,
       "io.circe"              %% "circe-parser"        % CirceVersion,
-      "io.circe"              %% "circe-java8"        % CirceVersion,
+      "io.circe"              %% "circe-java8"         % CirceVersion,
       "com.h2database"        % "h2"                   % H2Version,
       "org.tpolecat"          %% "doobie-core"         % DoobieVersion,
       "org.tpolecat"          %% "doobie-h2"           % DoobieVersion,
@@ -50,6 +51,7 @@ lazy val root = (project in file("."))
       "io.chrisdavenport"     %% "log4cats-slf4j"      % Log4CatsVersion,
       "com.github.pureconfig" %% "pureconfig"          % PureConfigVersion,
       "com.github.mpilquist"  %% "simulacrum"          % SimulacrumVersion,
+      "com.sksamuel.avro4s"   %% "avro4s-core"         % AvroVersion,
       "org.scalatest"         %% "scalatest"           % ScalaTestVersion % Test,
       "org.scalacheck"        %% "scalacheck"          % ScalaCheckVersion % Test
     )

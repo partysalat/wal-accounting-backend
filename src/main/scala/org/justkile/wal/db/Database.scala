@@ -4,8 +4,6 @@ import cats.effect.IO
 import cats.implicits._
 import doobie.implicits._
 import doobie.util.transactor.Transactor
-import org.justkile.wal.core.achievements.AchievementDefinitions
-import org.justkile.wal.core.drinks.domain.{Drink, DrinkType}
 
 object Database {
   val xa: Transactor[IO] = Transactor.fromDriverManager[IO](

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,20 +9,15 @@ import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import { withStyles } from '@material-ui/core/styles';
-import { appendNewsItems, loadBestlist, subscribeToNewsUpdate } from '../../../redux/actions';
+import { loadBestlist } from '../../../redux/actions';
 import './bestlist.css';
 
 const styles = theme => ({
   root: {
-    // width: '100%',
-    // marginTop: theme.spacing.unit * 3,
     overflowX: 'auto',
   },
   table: {
-    // width: '100%',
-
     boxSizing: 'border-box',
-    // padding: '0',
   },
   row: {
     '&:nth-of-type(odd)': {
